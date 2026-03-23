@@ -1,17 +1,24 @@
-# klinico_front
+<a id="readme-top"></a>
 
-A new Flutter project.
+# Klinico 🏥 - App de Gestión Clínica Hospitalaria
 
-## Getting Started
+Klinico es una plataforma integral para la gestión de pacientes, admisiones y episodios clínicos, diseñada bajo estándares de alta disponibilidad y robustez técnica. Este proyecto se centra en la digitalización del flujo de trabajo médico, desde el ingreso del paciente hasta su alta, así como en la automatización de KPIs de interés para jefes de servicio.
 
-This project is a starting point for a Flutter application.
+## Estructura del proyecto
 
-A few resources to get you started if this is your first Flutter project:
+```text
+lib/
+├── core/                # Configuración global, constantes, temas, interceptores API
+├── data/                # Capa de datos (Acceso a Red / Almacenamiento Local)
+│   ├── models/          # Clases de datos (User, Patient, Admission...)
+│   ├── services/        # Clases que hacen las llamadas HTTP (Dio o Http)
+│   └── repositories/    # Lógica para decidir si los datos vienen de Red o Local
+├── ui/                  # Capa de Interfaz de Usuario
+│   ├── views/           # Tus Widgets de pantalla (Login, MedicoHome, etc.)
+│   ├── viewmodels/      # La lógica de cada pantalla (State Management)
+│   └── widgets/         # Componentes reutilizables (Botones, Inputs propios)
+└── main.dart            # Punto de entrada de la aplicación
+```
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
