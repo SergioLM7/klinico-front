@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/login_viewmodel.dart';
+import '../widgets/glass_container.dart';
 import 'home_view.dart';
 
 class LoginPage extends StatefulWidget {
@@ -26,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    passwordVisible = true;
+    passwordVisible = false;
   }
 
   @override
@@ -35,7 +36,15 @@ class _LoginPageState extends State<LoginPage> {
     final viewModel = context.watch<LoginViewModel>();
 
     return Scaffold(
-      body: Center(
+      body: Container(
+        alignment: Alignment.center,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color.fromARGB(255, 145, 180, 198), Color(0xFFFFFFFF)],
+          ),
+        ),
         // Centrado total para Tablet
         child: SingleChildScrollView(
           // Por si sale el teclado
@@ -45,11 +54,9 @@ class _LoginPageState extends State<LoginPage> {
             ), // Bloqueamos el ancho
             child: Padding(
               padding: const EdgeInsets.all(32.0),
-              child: Card(
-                elevation: 4,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
+              child: GlassContainer(
+                padding: const EdgeInsets.all(24.0),
+                opacity: 0.1,
                 child: Padding(
                   padding: const EdgeInsets.all(24.0),
                   child: Column(
@@ -105,19 +112,19 @@ class _LoginPageState extends State<LoginPage> {
                           ? const CircularProgressIndicator()
                           : ElevatedButton(
                               onPressed: () => _handleLogin(context, viewModel),
-                              child: const Text("Iniciar Sesión"),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color.fromARGB(
+                                backgroundColor: Color.fromARGB(
                                   255,
-                                  101,
-                                  214,
-                                  105,
+                                  128,
+                                  160,
+                                  176,
                                 ),
                                 foregroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(16),
                                 ),
                               ),
+                              child: const Text("Iniciar Sesión"),
                             ),
                     ],
                   ),
