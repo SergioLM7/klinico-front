@@ -5,17 +5,10 @@ import 'exceptions/auth_exception.dart';
 class ApiClient {
   late final Dio _dio;
 
-  /// Configure Dio options.
-  ///
-  /// This method sets Dio's options to the following:
-  ///
-  /// - Base URL:
-  /// iOS: http://localhost:8080/api/v1
-  /// Android: http://10.0.2.2:8080/api/v1
-  /// - Connect timeout: 5 seconds
-  /// - Receive timeout: 3 seconds
-  /// - Content type: application/json
-  ApiClient() {
+  /// [onUnauthorized]: callback que se invoca cuando la API devuelve 401
+  /// durante una sesión activa (token caducado en mitad del uso).
+  /// Se usa desde main.dart para limpiar el estado y redirigir al Login.
+  ApiClient({void Function()? onUnauthorized}) {
     _dio = Dio(
       BaseOptions(
         baseUrl: 'http://localhost:8080/api/v1',
@@ -24,14 +17,35 @@ class ApiClient {
         contentType: 'application/json',
       ),
     );
-    // 💡 Aquí es donde en el futuro añadiremos los INTERCEPTORES
-    // para meter el token JWT automáticamente en la cabecera 'Authorization'
+
+    // Capa 2: interceptor de sesión — captura 401 durante el uso de la app
+    _dio.interceptors.add(
+      InterceptorsWrapper(
+        onError: (DioException error, ErrorInterceptorHandler handler) {
+          // Solo interceptamos el 401 si hay sesión activa (token caducado).
+          // Si no hay callback, dejamos pasar el error para que _handleError
+          // lo procese con el mensaje correcto (ej.: credenciales incorrectas).
+          if (error.response?.statusCode == 401 && onUnauthorized != null) {
+            onUnauthorized();
+          }
+          handler.next(error);
+        },
+      ),
+    );
   }
 
-  // 3. Método genérico para peticiones POST
   Future<Response> post(String path, {dynamic data}) async {
     try {
       final response = await _dio.post(path, data: data);
+      return response;
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  Future<Response> get(String path, {Map<String, dynamic>? queryParams}) async {
+    try {
+      final response = await _dio.get(path, queryParameters: queryParams);
       return response;
     } on DioException catch (e) {
       throw _handleError(e);

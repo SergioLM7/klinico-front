@@ -9,11 +9,30 @@ import 'ui/viewmodels/login_viewmodel.dart';
 import 'ui/views/home_view.dart';
 import 'ui/views/login_view.dart';
 
+/// Clave global para poder navegar al Login desde el interceptor de 401
+/// sin necesitar un BuildContext.
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 void main() {
   runApp(
     MultiProvider(
       providers: [
-        Provider(create: (_) => ApiClient()),
+        Provider(
+          create: (_) => ApiClient(
+            // Callback (interceptor) que se invoca cuando la API devuelve 401 durante una sesión activa (token caducado en mitad del uso).
+            onUnauthorized: () {
+              // Capa 2: el token caducó durante la sesión → limpiar y redirigir
+              final context = navigatorKey.currentContext;
+              if (context != null) {
+                context.read<LoginViewModel>().signOut();
+              }
+              navigatorKey.currentState?.pushAndRemoveUntil(
+                MaterialPageRoute(builder: (_) => const LoginPage()),
+                (route) => false,
+              );
+            },
+          ),
+        ),
         ProxyProvider<ApiClient, AuthService>(
           update: (_, apiClient, _) => AuthService(apiClient),
         ),
@@ -35,14 +54,14 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Klinico Medical App',
+      navigatorKey: navigatorKey, // necesario para navegar desde el interceptor
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: .fromSeed(
+        colorScheme: ColorScheme.fromSeed(
           seedColor: const Color.fromARGB(255, 69, 212, 136),
         ),
         useMaterial3: true,
@@ -57,25 +76,22 @@ class AuthWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Chequeamos el token a través del AuthRepository
-    final authRepository = context.read<AuthRepository>();
-
-    return FutureBuilder<String?>(
-      future: authRepository.getToken(),
+    return FutureBuilder<bool>(
+      // Decodifica el JWT, comprueba expiración y carga el rol en el ViewModel
+      future: context.read<LoginViewModel>().initialize(),
       builder: (context, snapshot) {
-        // 1. Mientras está leyendo el storage (milésimas de segundo)
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
           );
         }
 
-        // 2. Si hay un token guardado, vamos a la Home
-        if (snapshot.hasData && snapshot.data != null) {
-          return const HomePage(); // Aquí luego filtraremos por Rol
+        // initialize() devuelve true = sesión válida con rol cargado
+        if (snapshot.data == true) {
+          return const HomePage();
         }
 
-        // 3. Si no hay nada, al Login
+        // Token caducado, inexistente o inválido → Login
         return const LoginPage();
       },
     );
