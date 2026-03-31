@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import '../../core/exceptions/auth_exception.dart';
-import '../../data/repositories/auth_repository.dart';
+import '../../data/services/auth_service.dart';
 
 class LoginViewModel extends ChangeNotifier {
-  final AuthRepository _authRepository;
+  final AuthService _authService;
   bool _isLoading = false;
   String? _errorMessage;
   String? _userRole;
   String? _userName;
   String? _serviceId;
 
-  LoginViewModel({required AuthRepository authRepository})
-    : _authRepository = authRepository;
+  LoginViewModel({required AuthService authService})
+    : _authService = authService;
 
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
@@ -25,7 +25,7 @@ class LoginViewModel extends ChangeNotifier {
       _errorMessage = null;
       notifyListeners();
 
-      final response = await _authRepository.signIn(email, password);
+      final response = await _authService.signIn(email, password);
 
       _userRole = response.role;
       _userName = response.name;
@@ -56,7 +56,7 @@ class LoginViewModel extends ChangeNotifier {
   ///   surname   → apellido (usado como nombre de display al reiniciar)
   ///   serviceId → id del servicio asignado
   Future<bool> initialize() async {
-    final claims = await _authRepository.initializeSession();
+    final claims = await _authService.initializeSession();
     if (claims == null) {
       _userRole = null;
       _userName = null;
@@ -80,7 +80,7 @@ class LoginViewModel extends ChangeNotifier {
       _isLoading = true;
       notifyListeners();
 
-      await _authRepository.logout();
+      await _authService.logout();
 
       _userRole = null;
       _userName = null;

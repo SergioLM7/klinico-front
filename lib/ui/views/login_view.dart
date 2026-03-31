@@ -64,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       // TODO: Logo e Icono
                       const Text(
-                        "Bienvenido a Klinico",
+                        "Klinico",
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
