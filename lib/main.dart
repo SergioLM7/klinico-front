@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'core/api_client.dart';
-import 'data/services/auth_service.dart';
 import 'data/repositories/auth_repository.dart';
+import 'data/services/auth_service.dart';
 import 'ui/viewmodels/login_viewmodel.dart';
 import 'ui/views/home_view.dart';
 import 'ui/views/login_view.dart';
@@ -33,17 +33,19 @@ void main() {
             },
           ),
         ),
-        ProxyProvider<ApiClient, AuthService>(
-          update: (_, apiClient, _) => AuthService(apiClient),
+        Provider(
+          create: (context) => AuthRepository(context.read<ApiClient>()),
         ),
         Provider(create: (_) => const FlutterSecureStorage()),
-        ProxyProvider2<AuthService, FlutterSecureStorage, AuthRepository>(
-          update: (_, authService, storage, _) =>
-              AuthRepository(authService: authService, storage: storage),
+        Provider(
+          create: (context) => AuthService(
+            authRepository: context.read<AuthRepository>(),
+            storage: context.read<FlutterSecureStorage>(),
+          ),
         ),
         ChangeNotifierProvider(
           create: (context) =>
-              LoginViewModel(authRepository: context.read<AuthRepository>()),
+              LoginViewModel(authService: context.read<AuthService>()),
         ),
       ],
       child: const MyApp(),
