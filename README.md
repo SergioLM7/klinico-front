@@ -20,5 +20,45 @@ lib/
 └── main.dart            # Punto de entrada de la aplicación
 ```
 
+## Arquitectura MVVM
+
+```mermaid
+flowchart TB
+ subgraph View["Capa de Vista (UI)"]
+        UI["<b>UI Components</b><br>LoginScreen, MedicoScreen"]
+  end
+ subgraph VM["Capa ViewModel (Estado)"]
+        AuthVM["<b>AuthViewModel</b><br>Gestiona login/sesión"]
+        DataVM["<b>OtrosViewModel</b><br>Gestiona datos clínicos"]
+  end
+ subgraph Logic["Capa de Servicios (Lógica)"]
+        Srv["<b>Services</b><br>ScaleService, AuthService"]
+  end
+ subgraph Repo["Capa Repositorio (Abstracción)"]
+        AuthRepo["<b>AuthRepository</b><br>Login / Logout"]
+        ClinicalRepo["<b>OtrosRepositories</b><br>CRUD Ingresos, Episodios | KPIs"]
+  end
+ subgraph Infra["Capa de Infraestructura (Data)"]
+        API["<b>API Client (Dio)</b><br>+ JWT Interceptor"]
+        Storage["<b>Secure Storage</b><br>Persistencia del JWT"]
+  end
+    UI --> AuthVM & DataVM
+    AuthVM --> Srv
+    DataVM --> Srv
+    Srv --> AuthRepo & ClinicalRepo
+    AuthRepo --> API
+    ClinicalRepo --> API
+    AuthRepo -. "1. Guarda Token" .-> Storage
+    API <-. "2. Inyecta Token en cada Header /
+Redirige al Login si error 401" .-> Storage
+
+    style View fill:#e1f5fe,stroke:#01579b
+    style VM fill:#f5f5f5,stroke:#616161
+    style Repo fill:#fff3e0,stroke:#e65100
+    style Infra fill:#e8f5e9,stroke:#2e7d32
+    style Logic fill:#E1BEE7
+
+```
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
