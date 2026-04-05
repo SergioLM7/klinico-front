@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../core/theme/app_theme.dart';
 import '../viewmodels/login_viewmodel.dart';
 import '../widgets/glass_container.dart';
 import 'home_view.dart';
@@ -38,13 +39,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color.fromARGB(255, 145, 180, 198), Color(0xFFFFFFFF)],
-          ),
-        ),
+        decoration: AppTheme.backgroundDecoration,
         // Centrado total para Tablet
         child: SingleChildScrollView(
           // Por si sale el teclado

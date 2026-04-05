@@ -9,6 +9,7 @@ class LoginViewModel extends ChangeNotifier {
   String? _userRole;
   String? _userName;
   String? _serviceId;
+  String? _userId;
 
   LoginViewModel({required AuthService authService})
     : _authService = authService;
@@ -18,6 +19,7 @@ class LoginViewModel extends ChangeNotifier {
   String? get userRole => _userRole;
   String? get userName => _userName;
   String? get serviceId => _serviceId;
+  String? get userId => _userId;
 
   Future<bool> signIn(String email, String password) async {
     try {
@@ -30,6 +32,7 @@ class LoginViewModel extends ChangeNotifier {
       _userRole = response.role;
       _userName = response.name;
       _serviceId = response.serviceId;
+      _userId = response.userId;
 
       return true;
     } catch (e) {
@@ -61,6 +64,7 @@ class LoginViewModel extends ChangeNotifier {
       _userRole = null;
       _userName = null;
       _serviceId = null;
+      _userId = null;
       notifyListeners();
       return false;
     }
@@ -70,6 +74,7 @@ class LoginViewModel extends ChangeNotifier {
     // hasta que el usuario haga un login completo que devuelva 'name'
     _userName = claims['surname'] as String?;
     _serviceId = claims['serviceId']?.toString();
+    _userId = claims['sub']?.toString();
 
     notifyListeners();
     return true;
@@ -85,6 +90,7 @@ class LoginViewModel extends ChangeNotifier {
       _userRole = null;
       _userName = null;
       _serviceId = null;
+      _userId = null;
       _errorMessage = null;
     } catch (e) {
       _errorMessage = "Error al cerrar sesión";
