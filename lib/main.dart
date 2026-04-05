@@ -3,8 +3,12 @@ import 'package:provider/provider.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'core/api_client.dart';
+import 'core/theme/app_theme.dart';
+import 'data/repositories/admission_repository.dart';
+import 'data/repositories/episode_repository.dart';
 import 'data/repositories/auth_repository.dart';
 import 'data/services/auth_service.dart';
+import 'ui/viewmodels/admission_viewmodel.dart';
 import 'ui/viewmodels/login_viewmodel.dart';
 import 'ui/views/home_view.dart';
 import 'ui/views/login_view.dart';
@@ -17,8 +21,10 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
+        Provider(create: (_) => const FlutterSecureStorage()),
         Provider(
-          create: (_) => ApiClient(
+          create: (context) => ApiClient(
+            getToken: () => context.read<FlutterSecureStorage>().read(key: 'token'),
             // Callback (interceptor) que se invoca cuando la API devuelve 401 durante una sesión activa (token caducado en mitad del uso).
             onUnauthorized: () {
               // Capa 2: el token caducó durante la sesión → limpiar y redirigir
@@ -36,7 +42,13 @@ void main() {
         Provider(
           create: (context) => AuthRepository(context.read<ApiClient>()),
         ),
-        Provider(create: (_) => const FlutterSecureStorage()),
+        Provider(
+          create: (context) => AdmissionRepository(context.read<ApiClient>()),
+        ),
+        Provider(
+          create: (context) => EpisodeRepository(context.read<ApiClient>()),
+        ),
+
         Provider(
           create: (context) => AuthService(
             authRepository: context.read<AuthRepository>(),
@@ -46,6 +58,10 @@ void main() {
         ChangeNotifierProvider(
           create: (context) =>
               LoginViewModel(authService: context.read<AuthService>()),
+        ),
+        ChangeNotifierProvider(
+          create: (context) =>
+              AdmissionViewModel(repository: context.read<AdmissionRepository>()),
         ),
       ],
       child: const MyApp(),
@@ -62,12 +78,7 @@ class MyApp extends StatelessWidget {
       title: 'Klinico Medical App',
       navigatorKey: navigatorKey, // necesario para navegar desde el interceptor
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 69, 212, 136),
-        ),
-        useMaterial3: true,
-      ),
+      theme: AppTheme.themeData,
       home: const AuthWrapper(),
     );
   }
@@ -83,8 +94,9 @@ class AuthWrapper extends StatelessWidget {
       future: context.read<LoginViewModel>().initialize(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
+          return Container(
+            decoration: AppTheme.backgroundDecoration,
+            child: const Center(child: CircularProgressIndicator()),
           );
         }
 
