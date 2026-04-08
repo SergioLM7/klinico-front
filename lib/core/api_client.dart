@@ -9,10 +9,7 @@ class ApiClient {
   /// [onUnauthorized]: callback que se invoca cuando la API devuelve 401
   /// durante una sesión activa (token caducado en mitad del uso).
   /// Se usa desde main.dart para limpiar el estado y redirigir al Login.
-  ApiClient({
-    this.getToken,
-    void Function()? onUnauthorized,
-  }) {
+  ApiClient({this.getToken, void Function()? onUnauthorized}) {
     _dio = Dio(
       BaseOptions(
         baseUrl: 'http://localhost:8080/api/v1',
@@ -38,7 +35,9 @@ class ApiClient {
           // Solo interceptamos el 401 si hay sesión activa (token caducado).
           // Si no hay callback, dejamos pasar el error para que _handleError
           // lo procese con el mensaje correcto (ej.: credenciales incorrectas).
-          if (error.response?.statusCode == 401 && onUnauthorized != null) {
+          if (error.response?.statusCode == 401 &&
+              onUnauthorized != null &&
+              !(error.requestOptions.path.contains('/auth/login'))) {
             onUnauthorized();
           }
           handler.next(error);
