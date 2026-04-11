@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 /// para garantizar consistencia visual en toda la app.
 abstract final class AppTheme {
   // ── Colores base ────────────────────────────────────────────────────────────
-  static const Color primaryBlue = Color.fromARGB(255, 9, 29, 182);
+  static const Color primaryBlue = Color.fromARGB(221, 10, 27, 150);
   static const Color accentIndigo = Color(0xFF4C56AF);
 
   /// Color de inicio del degradado (esquina superior-izquierda)
@@ -29,14 +29,14 @@ abstract final class AppTheme {
 
   // ── ThemeData global de la app ─────────────────────────────────────────────
   static ThemeData get themeData => ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: accentIndigo),
-        useMaterial3: true,
-        // AppBar transparente por defecto para que el gradiente se vea debajo
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          scrolledUnderElevation: 0,
-          foregroundColor: Colors.black87,
-        ),
-      );
+    colorScheme: ColorScheme.fromSeed(seedColor: accentIndigo),
+    useMaterial3: true,
+    // AppBar transparente por defecto para que el gradiente se vea debajo
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      scrolledUnderElevation: 0,
+      foregroundColor: Colors.black87,
+    ),
+  );
 }
