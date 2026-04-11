@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/theme/app_theme.dart';
 import '../../data/models/admission_response.dart';
 import '../../data/models/episode_response.dart';
 import '../../data/repositories/episode_repository.dart';
 import '../viewmodels/episode_viewmodel.dart';
+import '../views/episode_detail_view.dart';
+import '../views/episode_form_view.dart';
 import '../widgets/glass_container.dart';
 import '../widgets/gradient_scaffold.dart';
 
@@ -78,13 +81,51 @@ class _AdmissionDetailContent extends StatelessWidget {
             const SizedBox(height: 24),
 
             // ── Sección episodios ──
-            const Text(
-              "Episodios clínicos",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const Text(
+                  "Episodios clínicos",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                GlassContainer(
+                  blur: 10,
+                  opacity: 0.2,
+                  borderRadius: BorderRadius.circular(50),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(50),
+                      splashColor: AppTheme.primaryBlue.withValues(alpha: 0.3),
+                      highlightColor: AppTheme.primaryBlue.withValues(alpha: 0.1),
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => EpisodeFormView(
+                              admissionId: admission.admissionId,
+                            ),
+                          ),
+                        );
+                      },
+                      child: const Tooltip(
+                        message: "Nuevo episodio",
+                        child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Icon(
+                            Icons.add_rounded,
+                            color: AppTheme.primaryBlue,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 12),
             const _EpisodeList(),
@@ -468,7 +509,11 @@ class _EpisodeCard extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(14),
           onTap: () {
-            // TODO: Navegar al detalle del episodio
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => EpisodeDetailView(episode: episode),
+              ),
+            );
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
