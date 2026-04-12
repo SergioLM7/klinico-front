@@ -5,7 +5,6 @@ import 'jefeservicio_main_view.dart';
 import 'medico_main_view.dart';
 import 'login_view.dart';
 
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -30,6 +29,7 @@ class _HomePageState extends State<HomePage> {
     showDialog(
       context: context,
       barrierDismissible: false,
+      barrierColor: Colors.black.withValues(alpha: 0.05),
       builder: (context) => AlertDialog(
         title: const Text("Acceso no autorizado"),
         content: const Text(

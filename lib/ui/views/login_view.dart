@@ -156,6 +156,7 @@ class _LoginPageState extends State<LoginPage> {
     } else {
       showDialog(
         context: context,
+        barrierColor: Colors.black.withValues(alpha: 0.05),
         builder: (context) => Dialog(
           backgroundColor: Colors.transparent,
           elevation: 0,
