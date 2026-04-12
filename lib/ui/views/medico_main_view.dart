@@ -4,6 +4,7 @@ import '../../core/theme/app_theme.dart';
 import '../widgets/admissions_dashoard.dart';
 import '../widgets/gradient_scaffold.dart';
 import '../widgets/header_bar.dart';
+import 'admission_form_view.dart';
 
 class MedicoMainView extends StatefulWidget {
   const MedicoMainView({super.key});
@@ -108,10 +109,28 @@ class _MedicoMainViewState extends State<MedicoMainView> {
               child: Column(
                 children: [
                   // Barra Superior con Buscador
-                  HeaderBar(),
+                  if (_selectedIndex != 1) HeaderBar(),
 
-                  // Dashboard de Pacientes (Cards)
-                  Expanded(child: AdmissionDashboard()),
+                  Expanded(
+                    child: Builder(
+                      builder: (context) {
+                        switch (_selectedIndex) {
+                          case 0:
+                            return AdmissionDashboard();
+                          case 1:
+                            return const AdmissionFormView();
+                          case 2:
+                            return const Center(
+                              child: Text(
+                                "Sección de Pacientes en construcción",
+                              ),
+                            );
+                          default:
+                            return AdmissionDashboard();
+                        }
+                      },
+                    ),
+                  ),
                 ],
               ),
             ),
