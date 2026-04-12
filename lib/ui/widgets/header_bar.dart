@@ -45,6 +45,7 @@ class HeaderBar extends StatelessWidget {
               if (value == 'logout') {
                 final bool? confirm = await showDialog<bool>(
                   context: context,
+                  barrierColor: Colors.black.withValues(alpha: 0.05),
                   builder: (BuildContext context) {
                     return Dialog(
                       backgroundColor: Colors.transparent,
@@ -112,7 +113,7 @@ class HeaderBar extends StatelessWidget {
                                     const SizedBox(width: 12),
                                     ElevatedButton(
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: AppTheme.primaryBlue,
+                                        backgroundColor: AppTheme.gradientStart,
                                         foregroundColor: Colors.white,
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(

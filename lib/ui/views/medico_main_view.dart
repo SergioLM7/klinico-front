@@ -57,7 +57,7 @@ class _MedicoMainViewState extends State<MedicoMainView> {
             // 1. MENÚ LATERAL (Solo para Tablet/Desktop)
             if (!isMobile) ...[
               NavigationRail(
-                 backgroundColor: Colors.transparent,
+                backgroundColor: Colors.transparent,
                 extended: width > 900, // Extendido solo si hay mucho espacio
                 selectedIndex: _selectedIndex,
                 onDestinationSelected: (int index) {
@@ -72,7 +72,7 @@ class _MedicoMainViewState extends State<MedicoMainView> {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
-                      color: Colors.blue,
+                      color: AppTheme.primaryBlue,
                     ),
                   ),
                 ),
@@ -81,30 +81,24 @@ class _MedicoMainViewState extends State<MedicoMainView> {
                     alignment: Alignment.bottomLeft,
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 20),
-                      child: IconButton(
-                        icon: const Icon(
-                          Icons.logout,
-                          color: AppTheme.primaryBlue,
-                        ),
-                        onPressed: () => _handleLogout(context),
+                      child: const Icon(
+                        Icons.logout,
+                        color: AppTheme.primaryBlue,
                       ),
                     ),
                   ),
                 ),
                 destinations: const [
                   NavigationRailDestination(
-                    icon: Icon(
-                      Icons.dashboard,
-                      color: AppTheme.primaryBlue,
-                    ),
+                    icon: Icon(Icons.dashboard, color: AppTheme.primaryBlue),
                     label: Text('Mis pacientes'),
                   ),
                   NavigationRailDestination(
-                    icon: Icon(Icons.person_add),
+                    icon: Icon(Icons.person_add, color: AppTheme.primaryBlue),
                     label: Text('Nuevo ingreso'),
                   ),
                   NavigationRailDestination(
-                    icon: Icon(Icons.people),
+                    icon: Icon(Icons.people, color: AppTheme.primaryBlue),
                     label: Text('Pacientes'),
                   ),
                 ],
@@ -127,14 +121,6 @@ class _MedicoMainViewState extends State<MedicoMainView> {
           ],
         ),
       ),
-    );
-  }
-
-  void _handleLogout(BuildContext context) {
-    context.read<LoginViewModel>().signOut();
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (_) => const LoginPage()),
     );
   }
 }
