@@ -30,4 +30,35 @@ class AdmissionViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<bool> createAdmission({
+    required String patientId,
+    required String principalDiagnosis,
+    required String medicalHistory,
+    String? allergies,
+    String? chronicTreatment,
+    int? basalBarthel,
+  }) async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      final success = await _repository.createAdmission(
+        patientId: patientId,
+        principalDiagnosis: principalDiagnosis,
+        medicalHistory: medicalHistory,
+        allergies: allergies,
+        chronicTreatment: chronicTreatment,
+        basalBarthel: basalBarthel,
+      );
+      return success;
+    } catch (e) {
+      _errorMessage = e.toString().replaceAll("Exception: ", "");
+      return false;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
 }

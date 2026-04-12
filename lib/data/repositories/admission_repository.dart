@@ -26,7 +26,9 @@ class AdmissionRepository {
         } else if (payload.containsKey('content')) {
           content = payload['content'];
         } else {
-          throw Exception("Estructura de respuesta no soportada (sin 'data' o 'content'): $payload");
+          throw Exception(
+            "Estructura de respuesta no soportada (sin 'data' o 'content'): $payload",
+          );
         }
       } else {
         throw Exception("Estructura de respuesta no soportada: $payload");
@@ -35,6 +37,33 @@ class AdmissionRepository {
       return content.map((json) => AdmissionResponse.fromJson(json)).toList();
     } catch (e) {
       rethrow;
+    }
+  }
+
+  Future<bool> createAdmission({
+    required String patientId,
+    required String principalDiagnosis,
+    required String medicalHistory,
+    String? allergies,
+    String? chronicTreatment,
+    int? basalBarthel,
+  }) async {
+    try {
+      final body = {
+        "patientId": patientId,
+        "principalDiagnosis": principalDiagnosis,
+        "medicalHistory": medicalHistory,
+        if (allergies != null && allergies.isNotEmpty) "allergies": allergies,
+        if (chronicTreatment != null && chronicTreatment.isNotEmpty)
+          "chronicTreatment": chronicTreatment,
+        "basalBarthel": ?basalBarthel,
+      };
+
+      final response = await _apiClient.post("/admissions/create", data: body);
+
+      return response.statusCode != null && response.statusCode == 201;
+    } catch (e) {
+      throw Exception("Error creando ingreso: $e");
     }
   }
 }
