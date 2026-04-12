@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../../core/theme/app_theme.dart';
-import '../viewmodels/login_viewmodel.dart';
 import '../widgets/admissions_dashoard.dart';
 import '../widgets/gradient_scaffold.dart';
 import '../widgets/header_bar.dart';
-import 'login_view.dart';
 
 class MedicoMainView extends StatefulWidget {
   const MedicoMainView({super.key});
