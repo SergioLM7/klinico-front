@@ -9,6 +9,7 @@ import 'data/repositories/episode_repository.dart';
 import 'data/repositories/auth_repository.dart';
 import 'data/services/auth_service.dart';
 import 'ui/viewmodels/admission_viewmodel.dart';
+import 'ui/viewmodels/episode_viewmodel.dart';
 import 'ui/viewmodels/login_viewmodel.dart';
 import 'ui/views/home_view.dart';
 import 'ui/views/login_view.dart';
@@ -62,6 +63,10 @@ void main() {
         ChangeNotifierProvider(
           create: (context) =>
               AdmissionViewModel(repository: context.read<AdmissionRepository>()),
+        ),
+        ChangeNotifierProvider(
+          create: (context) =>
+              EpisodeViewModel(repository: context.read<EpisodeRepository>()),
         ),
       ],
       child: const MyApp(),

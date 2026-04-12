@@ -38,4 +38,33 @@ class EpisodeRepository {
       rethrow;
     }
   }
+
+  Future<Map<String, dynamic>> createEpisode({
+    required String admissionId,
+    required String doctorId,
+    required String clinicalProgress,
+    required String diagnosis,
+    int? bradenScore,
+    int? chads2Score,
+    bool? camScore,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        "/episodes/create",
+        data: {
+          "admissionId": admissionId,
+          "doctorId": doctorId,
+          "clinicalProgress": clinicalProgress,
+          "diagnosis": diagnosis,
+          "bradenScore": bradenScore,
+          "chads2Score": chads2Score,
+          "camScore": camScore,
+        },
+      );
+
+      return response.data as Map<String, dynamic>;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

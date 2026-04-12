@@ -1,5 +1,12 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../core/theme/app_theme.dart';
+import '../viewmodels/episode_viewmodel.dart';
+import '../viewmodels/login_viewmodel.dart';
+import '../widgets/braden_calculator_dialog.dart';
+import '../widgets/cam_calculator_dialog.dart';
+import '../widgets/chads2_calculator_dialog.dart';
 import '../widgets/glass_container.dart';
 import '../widgets/gradient_scaffold.dart';
 
@@ -34,25 +41,122 @@ class _EpisodeFormViewState extends State<EpisodeFormView> {
   void _submitForm() async {
     if (!_formKey.currentState!.validate()) return;
 
+    FocusScope.of(context).unfocus(); // Ocultar teclado
+
     setState(() {
       _isLoading = true;
     });
 
-    // TODO: Connect with ViewModel and Repository to send to backend
-    // final viewModel = context.read<EpisodeViewModel>();
-    // final success = await viewModel.createEpisode(...);
-    
-    // Simulating delay for now
-    await Future.delayed(const Duration(seconds: 1));
+    final viewModel = context.read<EpisodeViewModel>();
+    final loginVM = context.read<LoginViewModel>();
+    final currentUserId = loginVM.userId ?? "";
+
+    final success = await viewModel.createEpisode(
+      admissionId: widget.admissionId,
+      doctorId: currentUserId,
+      clinicalProgress: _clinicalProgressController.text,
+      diagnosis: _diagnosisController.text,
+      bradenScore: int.tryParse(_bradenScoreController.text),
+      chads2Score: int.tryParse(_chads2ScoreController.text),
+      camScore: _camScore,
+    );
 
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Episodio creado correctamente"),
-          backgroundColor: Colors.green,
+      setState(() {
+        _isLoading = false;
+      });
+
+      showDialog(
+        context: context,
+        barrierColor: Colors.black.withValues(alpha: 0.05),
+        barrierDismissible: false,
+        builder: (context) => Dialog(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+              child: Container(
+                constraints: const BoxConstraints(maxWidth: 320),
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.20),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: 0.35),
+                    width: 1.5,
+                  ),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      success
+                          ? Icons.check_circle_outline_rounded
+                          : Icons.error_outline_rounded,
+                      color: success
+                          ? const Color(0xFF4CAF50)
+                          : Colors.redAccent,
+                      size: 56,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      success ? "¡Excelente!" : "Error",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      success
+                          ? "Episodio creado exitosamente"
+                          : (viewModel.errorMessage ?? "Error desconocido"),
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        color: Colors.black87,
+                        height: 1.4,
+                      ),
+                    ),
+                    const SizedBox(height: 28),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppTheme.primaryBlue,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop(); // Cierra el pop-up
+                          if (success) {
+                            Navigator.of(
+                              context,
+                            ).pop(); // Vuelve a admission_detail_view
+                          }
+                        },
+                        child: const Text(
+                          "Aceptar",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
         ),
       );
-      Navigator.of(context).pop();
     }
   }
 
@@ -63,7 +167,10 @@ class _EpisodeFormViewState extends State<EpisodeFormView> {
     return GradientScaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black87),
+          icon: const Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: Colors.black87,
+          ),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: const Text(
@@ -77,7 +184,10 @@ class _EpisodeFormViewState extends State<EpisodeFormView> {
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.only(
-          top: MediaQuery.of(context).padding.top + kToolbarHeight + (isMobile ? 8 : 16),
+          top:
+              MediaQuery.of(context).padding.top +
+              kToolbarHeight +
+              (isMobile ? 8 : 16),
           left: isMobile ? 16 : 24,
           right: isMobile ? 16 : 24,
           bottom: isMobile ? 24 : 32,
@@ -152,6 +262,26 @@ class _EpisodeFormViewState extends State<EpisodeFormView> {
                             label: "Braden Score",
                             hint: "Ej. 15",
                             keyboardType: TextInputType.number,
+                            suffixIcon: IconButton(
+                              icon: const Icon(
+                                Icons.calculate_rounded,
+                                color: AppTheme.primaryBlue,
+                              ),
+                              tooltip: "Calcular Escala Braden",
+                              onPressed: () async {
+                                final int? result = await showDialog<int>(
+                                  context: context,
+                                  barrierColor: Colors.black.withValues(
+                                    alpha: 0.05,
+                                  ),
+                                  builder: (context) =>
+                                      const BradenCalculatorDialog(),
+                                );
+                                if (result != null) {
+                                  _bradenScoreController.text = result.toString();
+                                }
+                              },
+                            ),
                           ),
                         ),
                         const SizedBox(width: 16),
@@ -161,6 +291,27 @@ class _EpisodeFormViewState extends State<EpisodeFormView> {
                             label: "CHADS2 Score",
                             hint: "Ej. 2",
                             keyboardType: TextInputType.number,
+                            suffixIcon: IconButton(
+                              icon: const Icon(
+                                Icons.calculate_rounded,
+                                color: AppTheme.primaryBlue,
+                              ),
+                              tooltip: "Calcular con formulario",
+                              onPressed: () async {
+                                final int? result = await showDialog<int>(
+                                  context: context,
+                                  barrierColor: Colors.black.withValues(
+                                    alpha: 0.05,
+                                  ),
+                                  builder: (context) =>
+                                      const Chads2CalculatorDialog(),
+                                );
+                                if (result != null) {
+                                  _chads2ScoreController.text = result
+                                      .toString();
+                                }
+                              },
+                            ),
                           ),
                         ),
                       ],
@@ -175,31 +326,72 @@ class _EpisodeFormViewState extends State<EpisodeFormView> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.4),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.white.withValues(alpha: 0.6)),
-                      ),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<bool?>(
-                          value: _camScore,
-                          isExpanded: true,
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          borderRadius: BorderRadius.circular(12),
-                          hint: const Text("Seleccione resultado CAM"),
-                          items: const [
-                            DropdownMenuItem(value: null, child: Text("No evaluado")),
-                            DropdownMenuItem(value: true, child: Text("Positivo")),
-                            DropdownMenuItem(value: false, child: Text("Negativo")),
-                          ],
-                          onChanged: (value) {
-                            setState(() {
-                              _camScore = value;
-                            });
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white.withValues(alpha: 0.4),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: Colors.white.withValues(alpha: 0.6),
+                              ),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<bool?>(
+                                value: _camScore,
+                                isExpanded: true,
+                                padding: const EdgeInsets.symmetric(horizontal: 16),
+                                borderRadius: BorderRadius.circular(12),
+                                hint: const Text("Seleccione resultado CAM"),
+                                items: const [
+                                  DropdownMenuItem(
+                                    value: null,
+                                    child: Text("No evaluado"),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: true,
+                                    child: Text("Positivo"),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: false,
+                                    child: Text("Negativo"),
+                                  ),
+                                ],
+                                onChanged: (value) {
+                                  setState(() {
+                                    _camScore = value;
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        IconButton(
+                          icon: const Icon(
+                            Icons.calculate_rounded,
+                            color: AppTheme.primaryBlue,
+                            size: 32,
+                          ),
+                          tooltip: "Calcular Escala CAM",
+                          onPressed: () async {
+                            final bool? result = await showDialog<bool>(
+                              context: context,
+                              barrierColor: Colors.black.withValues(
+                                alpha: 0.05,
+                              ),
+                              builder: (context) =>
+                                  const CamCalculatorDialog(),
+                            );
+                            if (result != null) {
+                               setState(() {
+                                  _camScore = result;
+                               });
+                            }
                           },
                         ),
-                      ),
+                      ],
                     ),
                   ],
                 ),
@@ -240,6 +432,7 @@ class _EpisodeFormViewState extends State<EpisodeFormView> {
     required String hint,
     int maxLines = 1,
     TextInputType? keyboardType,
+    Widget? suffixIcon,
     String? Function(String?)? validator,
   }) {
     return Column(
@@ -261,19 +454,27 @@ class _EpisodeFormViewState extends State<EpisodeFormView> {
           validator: validator,
           decoration: InputDecoration(
             hintText: hint,
+            suffixIcon: suffixIcon,
             filled: true,
             fillColor: Colors.white.withValues(alpha: 0.7),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.8)),
+              borderSide: BorderSide(
+                color: Colors.white.withValues(alpha: 0.8),
+              ),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.8)),
+              borderSide: BorderSide(
+                color: Colors.white.withValues(alpha: 0.8),
+              ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: AppTheme.primaryBlue, width: 2),
+              borderSide: const BorderSide(
+                color: AppTheme.primaryBlue,
+                width: 2,
+              ),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),

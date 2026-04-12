@@ -38,9 +38,9 @@ class EpisodeResponse {
       doctorId: json['doctorId'] as String,
       clinicalProgress: json['clinicalProgress'] as String,
       diagnosis: json['diagnosis'] as String,
-      bradenScore: json['bradenScore'] as int,
-      camScore: json['camScore'] as bool,
-      chads2Score: json['chads2Score'] as int,
+      bradenScore: json['bradenScore'] as int?,
+      camScore: json['camScore'] as bool?,
+      chads2Score: json['chads2Score'] as int?,
       createdAt: DateTime.parse(json['createdAt'] as String),
       createdBy: json['createdBy'] as String,
       lastModifiedAt: json['lastModifiedAt'] != null

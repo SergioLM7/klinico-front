@@ -102,15 +102,22 @@ class _AdmissionDetailContent extends StatelessWidget {
                     child: InkWell(
                       borderRadius: BorderRadius.circular(50),
                       splashColor: AppTheme.primaryBlue.withValues(alpha: 0.3),
-                      highlightColor: AppTheme.primaryBlue.withValues(alpha: 0.1),
-                      onTap: () {
-                        Navigator.of(context).push(
+                      highlightColor: AppTheme.primaryBlue.withValues(
+                        alpha: 0.1,
+                      ),
+                      onTap: () async {
+                        final result = await Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => EpisodeFormView(
                               admissionId: admission.admissionId,
                             ),
                           ),
                         );
+                        
+                        // Si se creó el episodio con éxito (devolvió true), recargamos la lista
+                        if (result == true && context.mounted) {
+                          context.read<EpisodeViewModel>().loadEpisodes(admission.admissionId);
+                        }
                       },
                       child: const Tooltip(
                         message: "Nuevo episodio",
@@ -231,7 +238,11 @@ class _PatientInfoCard extends StatelessWidget {
             ],
             if (admission.allergies != null) ...[
               const SizedBox(height: 12),
-              _LongTextField(label: "Alergias", value: admission.allergies!),
+              _LongTextField(
+                label: "Alergias",
+                value: admission.allergies!,
+                color: Colors.red,
+              ),
             ],
           ],
         ),
@@ -355,8 +366,9 @@ class _DataTile extends StatelessWidget {
 class _LongTextField extends StatelessWidget {
   final String label;
   final String value;
+  final Color? color;
 
-  const _LongTextField({required this.label, required this.value});
+  const _LongTextField({required this.label, required this.value, this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -365,9 +377,9 @@ class _LongTextField extends StatelessWidget {
       children: [
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 12,
-            color: Colors.black54,
+            color: color ?? Colors.black54,
             fontWeight: FontWeight.w600,
           ),
         ),
