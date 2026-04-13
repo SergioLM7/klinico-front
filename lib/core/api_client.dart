@@ -75,7 +75,8 @@ class ApiClient {
       );
     } else if (error.response?.statusCode == 400) {
       throw AuthException(
-        "Email o contraseña con formato incorrecto. Revisa los datos enviados.",
+        error.response?.data['message'] ??
+            "Email o contraseña con formato incorrecto. Revisa los datos enviados.",
       );
     } else if (error.response?.statusCode == 500) {
       throw AuthException("Error en el servidor. Inténtalo más tarde.");
