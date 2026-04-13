@@ -42,6 +42,7 @@ class AdmissionRepository {
 
   Future<bool> createAdmission({
     required String patientId,
+    required String serviceId,
     required String principalDiagnosis,
     required String medicalHistory,
     String? allergies,
@@ -51,6 +52,7 @@ class AdmissionRepository {
     try {
       final body = {
         "patientId": patientId,
+        "serviceId": serviceId,
         "principalDiagnosis": principalDiagnosis,
         "medicalHistory": medicalHistory,
         if (allergies != null && allergies.isNotEmpty) "allergies": allergies,

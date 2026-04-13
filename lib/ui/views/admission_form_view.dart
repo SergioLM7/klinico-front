@@ -5,8 +5,10 @@ import 'package:provider/provider.dart';
 
 import '../../core/theme/app_theme.dart';
 import '../../data/models/patient_response.dart';
+import '../../data/models/service_response.dart';
 import '../viewmodels/admission_viewmodel.dart';
 import '../../data/repositories/patient_repository.dart';
+import '../../data/repositories/service_repository.dart';
 import '../widgets/glass_container.dart';
 
 class AdmissionFormView extends StatefulWidget {
@@ -21,6 +23,12 @@ class _AdmissionFormViewState extends State<AdmissionFormView> {
 
   String? _selectedPatientId;
   Timer? _debouncer;
+  Key _patientAutocompleteKey = UniqueKey();
+
+  String? _selectedServiceId;
+  Timer? _debouncerService;
+  Key _serviceAutocompleteKey = UniqueKey();
+
   final ScrollController _scrollController = ScrollController();
 
   final _principalDiagnosisController = TextEditingController();
@@ -36,6 +44,7 @@ class _AdmissionFormViewState extends State<AdmissionFormView> {
   void dispose() {
     _scrollController.dispose();
     _debouncer?.cancel();
+    _debouncerService?.cancel();
     _principalDiagnosisController.dispose();
     _medicalHistoryController.dispose();
     _allergiesController.dispose();
@@ -46,10 +55,14 @@ class _AdmissionFormViewState extends State<AdmissionFormView> {
 
   void _submitForm() async {
     if (!_formKey.currentState!.validate()) return;
-    if (_selectedPatientId == null) {
+    if (_selectedPatientId == null || _selectedServiceId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Debes seleccionar un paciente de la lista"),
+        SnackBar(
+          content: Text(
+            _selectedPatientId == null
+                ? "Debes seleccionar un paciente de la lista"
+                : "Debes seleccionar un servicio de la lista",
+          ),
         ),
       );
       return;
@@ -64,6 +77,7 @@ class _AdmissionFormViewState extends State<AdmissionFormView> {
     final viewModel = context.read<AdmissionViewModel>();
     final success = await viewModel.createAdmission(
       patientId: _selectedPatientId!,
+      serviceId: _selectedServiceId!,
       principalDiagnosis: _principalDiagnosisController.text,
       medicalHistory: _medicalHistoryController.text,
       allergies: _allergiesController.text,
@@ -156,6 +170,9 @@ class _AdmissionFormViewState extends State<AdmissionFormView> {
                             _basalBarthelController.clear();
                             setState(() {
                               _selectedPatientId = null;
+                              _selectedServiceId = null;
+                              _patientAutocompleteKey = UniqueKey();
+                              _serviceAutocompleteKey = UniqueKey();
                             });
 
                             // Hacemos scroll suave hasta arriba del todo
@@ -240,7 +257,7 @@ class _AdmissionFormViewState extends State<AdmissionFormView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          "Apellidos del paciente*",
+                          "Paciente*",
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.black87,
@@ -249,6 +266,7 @@ class _AdmissionFormViewState extends State<AdmissionFormView> {
                         ),
                         const SizedBox(height: 8),
                         Autocomplete<PatientResponse>(
+                          key: _patientAutocompleteKey,
                           optionsBuilder:
                               (TextEditingValue textEditingValue) async {
                                 final query = textEditingValue.text.trim();
@@ -429,6 +447,210 @@ class _AdmissionFormViewState extends State<AdmissionFormView> {
                                         },
                                       );
                                     },
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Servicio asignado*",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black87,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Autocomplete<ServiceResponse>(
+                          key: _serviceAutocompleteKey,
+                          optionsBuilder:
+                              (TextEditingValue textEditingValue) async {
+                                final query = textEditingValue.text.trim();
+                                if (query.length < 3) {
+                                  return const Iterable<
+                                    ServiceResponse
+                                  >.empty();
+                                }
+
+                                final completer =
+                                    Completer<Iterable<ServiceResponse>>();
+
+                                if (_debouncerService?.isActive ?? false) {
+                                  _debouncerService!.cancel();
+                                }
+                                _debouncerService = Timer(
+                                  const Duration(milliseconds: 500),
+                                  () async {
+                                    try {
+                                      final repo = context
+                                          .read<ServiceRepository>();
+                                      final results = await repo.searchByName(
+                                        query,
+                                        page: 0,
+                                        size: 10,
+                                      );
+                                      if (results.isEmpty) {
+                                        completer.complete([
+                                          ServiceResponse(
+                                            serviceId: "NO_RESULTS",
+                                            name: "Servicio no encontrado",
+                                            active: false,
+                                          ),
+                                        ]);
+                                      } else {
+                                        completer.complete(results);
+                                      }
+                                    } catch (e) {
+                                      completer.complete([
+                                        ServiceResponse(
+                                          serviceId: "NO_RESULTS",
+                                          name: "Error de conexión",
+                                          active: false,
+                                        ),
+                                      ]);
+                                    }
+                                  },
+                                );
+
+                                return completer.future;
+                              },
+                          displayStringForOption: (ServiceResponse option) =>
+                              option.serviceId == "NO_RESULTS"
+                              ? option.name
+                              : option.name,
+                          onSelected: (ServiceResponse selection) {
+                            if (selection.serviceId == "NO_RESULTS") return;
+                            setState(() {
+                              _selectedServiceId = selection.serviceId;
+                            });
+                          },
+                          fieldViewBuilder:
+                              (
+                                context,
+                                controller,
+                                focusNode,
+                                onFieldSubmitted,
+                              ) {
+                                return TextFormField(
+                                  controller: controller,
+                                  focusNode: focusNode,
+                                  validator: (value) =>
+                                      _selectedServiceId == null ||
+                                          value == null ||
+                                          value.isEmpty
+                                      ? "Debes seleccionar un servicio de la lista"
+                                      : null,
+                                  decoration: InputDecoration(
+                                    hintText: "Ej. Cardiología",
+                                    filled: true,
+                                    fillColor: Colors.white.withValues(
+                                      alpha: 0.7,
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                      borderSide: BorderSide(
+                                        color: Colors.white.withValues(
+                                          alpha: 0.8,
+                                        ),
+                                      ),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                      borderSide: BorderSide(
+                                        color: Colors.white.withValues(
+                                          alpha: 0.8,
+                                        ),
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                      borderSide: const BorderSide(
+                                        color: AppTheme.primaryBlue,
+                                        width: 2,
+                                      ),
+                                    ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                      borderSide: const BorderSide(
+                                        color: Colors.redAccent,
+                                        width: 2,
+                                      ),
+                                    ),
+                                    prefixIcon: const Icon(
+                                      Icons.local_hospital,
+                                      color: AppTheme.primaryBlue,
+                                    ),
+                                  ),
+                                );
+                              },
+                          optionsViewBuilder: (context, onSelected, options) {
+                            return Align(
+                              alignment: Alignment.topLeft,
+                              child: Material(
+                                elevation: 3,
+                                borderRadius: BorderRadius.circular(12),
+                                child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.8,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withValues(alpha: 0.95),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: ListView.builder(
+                                    padding: EdgeInsets.zero,
+                                    shrinkWrap: true,
+                                    itemCount: options.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                          final option = options.elementAt(
+                                            index,
+                                          );
+
+                                          if (option.serviceId ==
+                                              "NO_RESULTS") {
+                                            return ListTile(
+                                              leading: const Icon(
+                                                Icons.search_off_rounded,
+                                                color: Colors.grey,
+                                              ),
+                                              title: Text(
+                                                option.name,
+                                                style: const TextStyle(
+                                                  color: Colors.grey,
+                                                  fontStyle: FontStyle.italic,
+                                                ),
+                                              ),
+                                            );
+                                          }
+
+                                          return ListTile(
+                                            leading: const Icon(
+                                              Icons.local_hospital,
+                                              color: AppTheme.primaryBlue,
+                                            ),
+                                            title: Text(option.name),
+                                            subtitle: Text(
+                                              option.active
+                                                  ? "Activo"
+                                                  : "Inactivo",
+                                              style: TextStyle(
+                                                color: option.active
+                                                    ? Colors.green
+                                                    : Colors.red,
+                                              ),
+                                            ),
+                                            onTap: () {
+                                              onSelected(option);
+                                            },
+                                          );
+                                        },
                                   ),
                                 ),
                               ),

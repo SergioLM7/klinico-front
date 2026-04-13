@@ -33,6 +33,7 @@ class AdmissionViewModel extends ChangeNotifier {
 
   Future<bool> createAdmission({
     required String patientId,
+    required String serviceId,
     required String principalDiagnosis,
     required String medicalHistory,
     String? allergies,
@@ -46,6 +47,7 @@ class AdmissionViewModel extends ChangeNotifier {
     try {
       final success = await _repository.createAdmission(
         patientId: patientId,
+        serviceId: serviceId,
         principalDiagnosis: principalDiagnosis,
         medicalHistory: medicalHistory,
         allergies: allergies,
