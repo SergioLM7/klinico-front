@@ -1,10 +1,14 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../core/theme/app_theme.dart';
 import '../widgets/admissions_dashoard.dart';
 import '../widgets/gradient_scaffold.dart';
-import '../widgets/header_bar.dart';
 import 'admission_form_view.dart';
+import 'admissions_search_view.dart';
+import '../viewmodels/login_viewmodel.dart';
+import 'login_view.dart';
 
 class MedicoMainView extends StatefulWidget {
   const MedicoMainView({super.key});
@@ -79,9 +83,139 @@ class _MedicoMainViewState extends State<MedicoMainView> {
                     alignment: Alignment.bottomLeft,
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 20),
-                      child: const Icon(
-                        Icons.logout,
-                        color: AppTheme.primaryBlue,
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.logout,
+                          color: AppTheme.primaryBlue,
+                        ),
+                        onPressed: () async {
+                          final bool? confirm = await showDialog<bool>(
+                            context: context,
+                            barrierColor: Colors.black.withValues(alpha: 0.05),
+                            builder: (BuildContext context) {
+                              return Dialog(
+                                backgroundColor: Colors.transparent,
+                                elevation: 0,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: BackdropFilter(
+                                    filter: ImageFilter.blur(
+                                      sigmaX: 10,
+                                      sigmaY: 10,
+                                    ),
+                                    child: Container(
+                                      padding: const EdgeInsets.all(24),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white.withValues(
+                                          alpha: 0.20,
+                                        ),
+                                        borderRadius: BorderRadius.circular(20),
+                                        border: Border.all(
+                                          color: Colors.white.withValues(
+                                            alpha: 0.35,
+                                          ),
+                                          width: 1.5,
+                                        ),
+                                      ),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Row(
+                                            children: [
+                                              Icon(
+                                                Icons.warning_amber_rounded,
+                                                color: Colors.orange,
+                                                size: 28,
+                                              ),
+                                              SizedBox(width: 10),
+                                              Text(
+                                                'Cerrar sesión',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20,
+                                                  color: Colors.black87,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 16),
+                                          const Text(
+                                            '¿Estás seguro de que deseas cerrar la sesión actual?',
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.black87,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 24),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              TextButton(
+                                                onPressed: () => Navigator.of(
+                                                  context,
+                                                ).pop(false),
+                                                child: const Text(
+                                                  'Cancelar',
+                                                  style: TextStyle(
+                                                    color: Colors.black54,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(width: 12),
+                                              ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      AppTheme.gradientStart,
+                                                  foregroundColor: Colors.white,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          12,
+                                                        ),
+                                                  ),
+                                                  padding:
+                                                      const EdgeInsets.symmetric(
+                                                        horizontal: 20,
+                                                        vertical: 12,
+                                                      ),
+                                                ),
+                                                onPressed: () => Navigator.of(
+                                                  context,
+                                                ).pop(true),
+                                                child: const Text(
+                                                  'Confirmar',
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+
+                          if (confirm == true && context.mounted) {
+                            context.read<LoginViewModel>().signOut();
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const LoginPage(),
+                              ),
+                            );
+                          }
+                        },
                       ),
                     ),
                   ),
@@ -108,9 +242,7 @@ class _MedicoMainViewState extends State<MedicoMainView> {
             Expanded(
               child: Column(
                 children: [
-                  // Barra Superior con Buscador
-                  if (_selectedIndex != 1) HeaderBar(),
-
+                  // Dashboard y Vistas
                   Expanded(
                     child: Builder(
                       builder: (context) {
@@ -120,11 +252,7 @@ class _MedicoMainViewState extends State<MedicoMainView> {
                           case 1:
                             return const AdmissionFormView();
                           case 2:
-                            return const Center(
-                              child: Text(
-                                "Sección de Pacientes en construcción",
-                              ),
-                            );
+                            return const AdmissionsSearchView();
                           default:
                             return AdmissionDashboard();
                         }

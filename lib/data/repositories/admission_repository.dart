@@ -1,5 +1,6 @@
 import '../../core/api_client.dart';
 import '../models/admission_response.dart';
+import '../models/paginated_admission_result.dart';
 
 class AdmissionRepository {
   final ApiClient _apiClient;
@@ -35,6 +36,45 @@ class AdmissionRepository {
       }
 
       return content.map((json) => AdmissionResponse.fromJson(json)).toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<PaginatedAdmissionResult> searchBySurname({
+    required String surname,
+    int page = 0,
+  }) async {
+    try {
+      final response = await _apiClient.get(
+        "/admissions/search",
+        queryParams: {"surname": surname, "page": page},
+      );
+      final payload = response.data;
+
+      if (payload is! Map) {
+        throw Exception("Estructura de respuesta no soportada: $payload");
+      }
+
+      Iterable rawContent;
+      if (payload.containsKey('data')) {
+        rawContent = payload['data'];
+      } else if (payload.containsKey('content')) {
+        rawContent = payload['content'];
+      } else {
+        throw Exception(
+          "Estructura de respuesta no soportada (sin 'data' o 'content'): $payload",
+        );
+      }
+
+      final parsedList = rawContent
+          .map((json) => AdmissionResponse.fromJson(json))
+          .toList();
+
+      return PaginatedAdmissionResult.fromJson(
+        Map<String, dynamic>.from(payload),
+        parsedList,
+      );
     } catch (e) {
       rethrow;
     }
