@@ -9,6 +9,7 @@ import '../../data/models/service_response.dart';
 import '../viewmodels/admission_viewmodel.dart';
 import '../../data/repositories/patient_repository.dart';
 import '../../data/repositories/service_repository.dart';
+import '../widgets/barthel_calculator_dialog.dart';
 import '../widgets/glass_container.dart';
 
 class AdmissionFormView extends StatefulWidget {
@@ -685,8 +686,9 @@ class _AdmissionFormViewState extends State<AdmissionFormView> {
                       label: "Diagnóstico Principal*",
                       hint: "Describa el diagnóstico de ingreso...",
                       maxLines: 2,
-                      validator: (value) =>
-                          value == null || value.isEmpty ? "Requerido" : null,
+                      validator: (value) => value == null || value.isEmpty
+                          ? "Debes rellenar este apartado"
+                          : null,
                     ),
                     const SizedBox(height: 16),
                     _buildTextField(
@@ -694,8 +696,9 @@ class _AdmissionFormViewState extends State<AdmissionFormView> {
                       label: "Historial Médico*",
                       hint: "Detalle los antecedentes clínicos...",
                       maxLines: 4,
-                      validator: (value) =>
-                          value == null || value.isEmpty ? "Requerido" : null,
+                      validator: (value) => value == null || value.isEmpty
+                          ? "Debes rellenar este apartado"
+                          : null,
                     ),
                   ],
                 ),
@@ -734,7 +737,7 @@ class _AdmissionFormViewState extends State<AdmissionFormView> {
                     const SizedBox(height: 16),
                     _buildTextField(
                       controller: _basalBarthelController,
-                      label: "Índice de Barthel Basal (0-100)",
+                      label: "Índice de Barthel Basal",
                       hint: "Rango numérico 0 - 100",
                       keyboardType: TextInputType.number,
                       validator: (value) {
@@ -746,6 +749,24 @@ class _AdmissionFormViewState extends State<AdmissionFormView> {
                         }
                         return null;
                       },
+                      suffixIcon: IconButton(
+                        icon: const Icon(
+                          Icons.calculate_rounded,
+                          color: AppTheme.primaryBlue,
+                        ),
+                        tooltip: "Calcular Escala de Barthel",
+                        onPressed: () async {
+                          final int? result = await showDialog<int>(
+                            context: context,
+                            barrierColor: Colors.black.withValues(alpha: 0.05),
+                            builder: (context) =>
+                                const BarthelCalculatorDialog(),
+                          );
+                          if (result != null) {
+                            _basalBarthelController.text = result.toString();
+                          }
+                        },
+                      ),
                     ),
                   ],
                 ),
