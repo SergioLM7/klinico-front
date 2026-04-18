@@ -126,7 +126,7 @@ class _EpisodeFormViewState extends State<EpisodeFormView> {
                       width: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppTheme.primaryBlue,
+                          backgroundColor: AppTheme.gradientStart,
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -166,12 +166,26 @@ class _EpisodeFormViewState extends State<EpisodeFormView> {
 
     return GradientScaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: Colors.black87,
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: GlassContainer(
+            blur: 10,
+            opacity: 0.2,
+            borderRadius: BorderRadius.circular(50),
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(50),
+                splashColor: AppTheme.primaryBlue.withValues(alpha: 0.3),
+                highlightColor: AppTheme.primaryBlue.withValues(alpha: 0.1),
+                onTap: () => Navigator.of(context).pop(),
+                child: const Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: Colors.black87,
+                ),
+              ),
+            ),
           ),
-          onPressed: () => Navigator.of(context).pop(),
         ),
         title: const Text(
           "Nuevo Episodio Clínico",
@@ -406,7 +420,7 @@ class _EpisodeFormViewState extends State<EpisodeFormView> {
                   : ElevatedButton(
                       onPressed: _submitForm,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppTheme.primaryBlue,
+                        backgroundColor: AppTheme.gradientStart,
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(

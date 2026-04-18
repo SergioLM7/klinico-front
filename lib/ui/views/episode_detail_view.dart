@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../core/theme/app_theme.dart';
 import '../../data/models/episode_response.dart';
 import '../widgets/episode_info_card.dart';
 import '../widgets/glass_container.dart';
@@ -17,12 +18,26 @@ class EpisodeDetailView extends StatelessWidget {
 
     return GradientScaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: Colors.black87,
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: GlassContainer(
+            blur: 10,
+            opacity: 0.2,
+            borderRadius: BorderRadius.circular(50),
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(50),
+                splashColor: AppTheme.primaryBlue.withValues(alpha: 0.3),
+                highlightColor: AppTheme.primaryBlue.withValues(alpha: 0.1),
+                onTap: () => Navigator.of(context).pop(),
+                child: const Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: Colors.black87,
+                ),
+              ),
+            ),
           ),
-          onPressed: () => Navigator.of(context).pop(),
         ),
         title: const Text(
           "Detalle de Evolución",
