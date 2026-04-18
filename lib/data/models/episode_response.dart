@@ -13,6 +13,7 @@ class EpisodeResponse {
 
   final DateTime createdAt;
   final String createdBy;
+  final String? createdByName;
   final DateTime? lastModifiedAt;
   final String? lastModifiedBy;
 
@@ -27,6 +28,7 @@ class EpisodeResponse {
     this.chads2Score,
     required this.createdAt,
     required this.createdBy,
+    this.createdByName,
     this.lastModifiedAt,
     this.lastModifiedBy,
   });
@@ -43,6 +45,7 @@ class EpisodeResponse {
       chads2Score: json['chads2Score'] as int?,
       createdAt: DateTime.parse(json['createdAt'] as String),
       createdBy: json['createdBy'] as String,
+      createdByName: json['createdByName'] as String?,
       lastModifiedAt: json['lastModifiedAt'] != null
           ? DateTime.parse(json['lastModifiedAt'] as String)
           : null,
@@ -62,6 +65,7 @@ class EpisodeResponse {
       chads2Score: chads2Score,
       createdAt: createdAt,
       createdBy: createdBy,
+      createdByName: createdByName,
       lastModifiedAt: lastModifiedAt,
       lastModifiedBy: lastModifiedBy,
     );

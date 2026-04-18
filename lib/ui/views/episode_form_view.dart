@@ -138,7 +138,7 @@ class _EpisodeFormViewState extends State<EpisodeFormView> {
                           if (success) {
                             Navigator.of(
                               context,
-                            ).pop(); // Vuelve a admission_detail_view
+                            ).pop(success); // Vuelve a admission_detail_view
                           }
                         },
                         child: const Text(
@@ -278,7 +278,8 @@ class _EpisodeFormViewState extends State<EpisodeFormView> {
                                       const BradenCalculatorDialog(),
                                 );
                                 if (result != null) {
-                                  _bradenScoreController.text = result.toString();
+                                  _bradenScoreController.text = result
+                                      .toString();
                                 }
                               },
                             ),
@@ -341,7 +342,9 @@ class _EpisodeFormViewState extends State<EpisodeFormView> {
                               child: DropdownButton<bool?>(
                                 value: _camScore,
                                 isExpanded: true,
-                                padding: const EdgeInsets.symmetric(horizontal: 16),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                ),
                                 borderRadius: BorderRadius.circular(12),
                                 hint: const Text("Seleccione resultado CAM"),
                                 items: const [
@@ -381,13 +384,12 @@ class _EpisodeFormViewState extends State<EpisodeFormView> {
                               barrierColor: Colors.black.withValues(
                                 alpha: 0.05,
                               ),
-                              builder: (context) =>
-                                  const CamCalculatorDialog(),
+                              builder: (context) => const CamCalculatorDialog(),
                             );
                             if (result != null) {
-                               setState(() {
-                                  _camScore = result;
-                               });
+                              setState(() {
+                                _camScore = result;
+                              });
                             }
                           },
                         ),

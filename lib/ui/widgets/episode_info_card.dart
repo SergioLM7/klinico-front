@@ -61,7 +61,7 @@ class EpisodeInfoCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        "Creado por: ${episode.createdBy}",
+                        "Creado por:${episode.createdByName ?? "Dr. ${episode.createdBy}"}",
                         style: const TextStyle(
                           fontSize: 14,
                           color: Colors.black54,

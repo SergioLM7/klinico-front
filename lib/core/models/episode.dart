@@ -9,6 +9,7 @@ class Episode {
   final int? chads2Score;
   final DateTime createdAt;
   final String createdBy;
+  final String? createdByName;
   final DateTime? lastModifiedAt;
   final String? lastModifiedBy;
 
@@ -23,6 +24,7 @@ class Episode {
     this.chads2Score,
     required this.createdAt,
     required this.createdBy,
+    this.createdByName,
     this.lastModifiedAt,
     this.lastModifiedBy,
   });
