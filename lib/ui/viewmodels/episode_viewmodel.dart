@@ -35,6 +35,41 @@ class EpisodeViewModel extends ChangeNotifier {
     }
   }
 
+  Future<bool> updateEpisode({
+    required String episodeId,
+    required String clinicalProgress,
+    required String diagnosis,
+    int? bradenScore,
+    int? chads2Score,
+    bool? camScore,
+  }) async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      await _repository.updateEpisode(
+        episodeId: episodeId,
+        clinicalProgress: clinicalProgress,
+        diagnosis: diagnosis,
+        bradenScore: bradenScore,
+        chads2Score: chads2Score,
+        camScore: camScore,
+      );
+      return true;
+    } catch (e) {
+      if (e is AuthException) {
+        _errorMessage = e.message;
+      } else {
+        _errorMessage = "Error inesperado de conexión";
+      }
+      return false;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
   Future<bool> createEpisode({
     required String admissionId,
     required String doctorId,

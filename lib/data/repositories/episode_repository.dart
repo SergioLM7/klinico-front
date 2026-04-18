@@ -39,6 +39,32 @@ class EpisodeRepository {
     }
   }
 
+  Future<Map<String, dynamic>> updateEpisode({
+    required String episodeId,
+    required String clinicalProgress,
+    required String diagnosis,
+    int? bradenScore,
+    int? chads2Score,
+    bool? camScore,
+  }) async {
+    try {
+      final response = await _apiClient.put(
+        "/episodes/update/$episodeId",
+        data: {
+          "clinicalProgress": clinicalProgress,
+          "diagnosis": diagnosis,
+          "bradenScore": bradenScore,
+          "chads2Score": chads2Score,
+          "camScore": camScore,
+        },
+      );
+
+      return response.data as Map<String, dynamic>;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<Map<String, dynamic>> createEpisode({
     required String admissionId,
     required String doctorId,

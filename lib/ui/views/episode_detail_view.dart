@@ -7,10 +7,37 @@ import '../widgets/glass_container.dart';
 import '../widgets/gradient_scaffold.dart';
 
 /// Vista de detalle de un episodio (evolución clínica).
-class EpisodeDetailView extends StatelessWidget {
+class EpisodeDetailView extends StatefulWidget {
   final EpisodeResponse episode;
 
   const EpisodeDetailView({super.key, required this.episode});
+
+  @override
+  State<EpisodeDetailView> createState() => _EpisodeDetailViewState();
+}
+
+class _EpisodeDetailViewState extends State<EpisodeDetailView> {
+  late bool _canEdit;
+  late EpisodeResponse _episode;
+
+  @override
+  void initState() {
+    super.initState();
+    _episode = widget.episode;
+    // El episodio es editable solo si se creó hace menos de 2 horas.
+    final now = DateTime.now();
+    final diff = now.difference(_episode.createdAt);
+    _canEdit = diff.inMinutes < 120;
+  }
+
+  void _onEpisodeUpdated(EpisodeResponse updated) {
+    setState(() {
+      _episode = updated;
+      final now = DateTime.now();
+      final diff = now.difference(_episode.createdAt);
+      _canEdit = diff.inMinutes < 120;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +89,11 @@ class EpisodeDetailView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // ── Cabecera: Info básica del episodio ──
-            EpisodeInfoCard(episode: episode),
+            EpisodeInfoCard(
+              episode: _episode,
+              canEdit: _canEdit,
+              onEpisodeUpdated: _onEpisodeUpdated,
+            ),
 
             const SizedBox(height: 24),
 
@@ -83,7 +114,7 @@ class EpisodeDetailView extends StatelessWidget {
               padding: EdgeInsets.all(isMobile ? 16 : 24),
               child: _LongTextField(
                 label: "Descripción del progreso",
-                value: episode.clinicalProgress,
+                value: _episode.clinicalProgress,
               ),
             ),
 
@@ -106,7 +137,7 @@ class EpisodeDetailView extends StatelessWidget {
               padding: EdgeInsets.all(isMobile ? 16 : 24),
               child: _LongTextField(
                 label: "Diagnóstico médico",
-                value: episode.diagnosis,
+                value: _episode.diagnosis,
               ),
             ),
           ],
