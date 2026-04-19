@@ -302,6 +302,7 @@ class _PatientInfoCard extends StatelessWidget {
                           ),
                           child: const Icon(
                             Icons.edit_rounded,
+                            semanticLabel: "Editar ingreso",
                             size: 24,
                             color: AppTheme.primaryBlue,
                           ),
@@ -411,9 +412,9 @@ class _AdmissionUpdateSheetState extends State<_AdmissionUpdateSheet> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(
-                success ? Icons.check_circle : Icons.error,
-                size: 64,
-                color: success ? Colors.green : Colors.red,
+                success ? Icons.check_circle : Icons.error_outline_rounded,
+                size: 56,
+                color: success ? Colors.green : Colors.redAccent,
               ),
               const SizedBox(height: 16),
               Text(
@@ -421,11 +422,19 @@ class _AdmissionUpdateSheetState extends State<_AdmissionUpdateSheet> {
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                  fontSize: 15,
                 ),
               ),
               const SizedBox(height: 24),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppTheme.gradientStart,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                ),
                 onPressed: () => Navigator.of(ctx).pop(),
                 child: const Text("Aceptar"),
               ),
