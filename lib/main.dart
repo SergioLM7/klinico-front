@@ -9,6 +9,7 @@ import 'data/repositories/auth_repository.dart';
 import 'data/repositories/episode_repository.dart';
 import 'data/repositories/patient_repository.dart';
 import 'data/repositories/service_repository.dart';
+import 'data/repositories/user_repository.dart';
 import 'data/services/auth_service.dart';
 import 'ui/viewmodels/admission_viewmodel.dart';
 import 'ui/viewmodels/episode_viewmodel.dart';
@@ -57,6 +58,9 @@ void main() {
         ),
         Provider(
           create: (context) => ServiceRepository(context.read<ApiClient>()),
+        ),
+        Provider(
+          create: (context) => UserRepository(context.read<ApiClient>()),
         ),
 
         Provider(

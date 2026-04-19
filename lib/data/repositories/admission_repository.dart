@@ -158,4 +158,35 @@ class AdmissionRepository {
       rethrow;
     }
   }
+
+  Future<AdmissionResponse> assignDoctor({
+    required String admissionId,
+    required String doctorId,
+    required PatientPreviewResponse patient,
+  }) async {
+    try {
+      final response = await _apiClient.patch(
+        "/admissions/assign-doctor/$admissionId?doctorId=$doctorId",
+      );
+
+      final payload = response.data;
+      Map<String, dynamic> jsonData;
+
+      if (payload is Map<String, dynamic> && payload.containsKey('data')) {
+        jsonData = payload['data'] as Map<String, dynamic>;
+      } else {
+        jsonData = payload as Map<String, dynamic>;
+      }
+
+      // Si el endpoint devuelve el paciente o no, intentamos recuperarlo igual que en clinicalUpdate
+      if (jsonData.containsKey('patient') && jsonData['patient'] != null) {
+        return AdmissionResponse.fromJson(jsonData);
+      } else {
+        final update = AdmissionUpdateResponse.fromJson(jsonData);
+        return update.toFullResponse(patient);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

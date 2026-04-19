@@ -123,4 +123,40 @@ class AdmissionViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<bool> assignDoctor(
+    String admissionId,
+    String doctorId,
+    PatientPreviewResponse patient,
+  ) async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      final updated = await _repository.assignDoctor(
+        admissionId: admissionId,
+        doctorId: doctorId,
+        patient: patient,
+      );
+
+      // Usar _admissions local para actualizar la tabla
+      final index = _admissions.indexWhere((a) => a.admissionId == admissionId);
+      if (index != -1) {
+        _admissions[index] = updated;
+      }
+
+      return true;
+    } catch (e) {
+      if (e is AuthException) {
+        _errorMessage = e.message;
+      } else {
+        _errorMessage = "Error inesperado de conexión";
+      }
+      return false;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
 }
