@@ -1,6 +1,8 @@
 import '../../core/api_client.dart';
 import '../models/admission_response.dart';
+import '../models/admission_update_response.dart';
 import '../models/paginated_admission_result.dart';
+import '../models/patient_preview_response.dart';
 
 class AdmissionRepository {
   final ApiClient _apiClient;
@@ -106,6 +108,54 @@ class AdmissionRepository {
       return response.statusCode != null && response.statusCode == 201;
     } catch (e) {
       throw Exception("Error creando ingreso: $e");
+    }
+  }
+
+  Future<bool> dischargeAdmission(String admissionId) async {
+    try {
+      final response = await _apiClient.put(
+        "/admissions/discharge/$admissionId",
+      );
+      return response.statusCode == 200;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<AdmissionResponse> clinicalUpdate({
+    required String admissionId,
+    required String principalDiagnosis,
+    required String medicalHistory,
+    required PatientPreviewResponse patient,
+    String? allergies,
+    String? chronicTreatment,
+    int? basalBarthel,
+  }) async {
+    try {
+      final response = await _apiClient.put(
+        "/admissions/clinical-update/$admissionId",
+        data: {
+          "principalDiagnosis": principalDiagnosis,
+          "medicalHistory": medicalHistory,
+          "allergies": allergies,
+          "chronicTreatment": chronicTreatment,
+          "basalBarthel": basalBarthel,
+        },
+      );
+
+      final payload = response.data;
+      Map<String, dynamic> jsonData;
+
+      if (payload is Map<String, dynamic> && payload.containsKey('data')) {
+        jsonData = payload['data'] as Map<String, dynamic>;
+      } else {
+        jsonData = payload as Map<String, dynamic>;
+      }
+
+      final update = AdmissionUpdateResponse.fromJson(jsonData);
+      return update.toFullResponse(patient);
+    } catch (e) {
+      rethrow;
     }
   }
 }

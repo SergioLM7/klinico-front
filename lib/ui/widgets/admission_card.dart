@@ -15,7 +15,6 @@ class AdmissionCard extends StatelessWidget {
       opacity: 0.15,
       blur: 15.0,
       borderRadius: BorderRadius.circular(20),
-      // Material transparente para mantener el efecto ripple sin romper el cristal
       child: Material(
         color: Colors.transparent,
         child: InkWell(
@@ -30,6 +29,9 @@ class AdmissionCard extends StatelessWidget {
           child: LayoutBuilder(
             builder: (context, constraints) {
               final bool isSmallCard = constraints.maxWidth < 300;
+              final patient = admission.patient;
+              final bool isFemale = patient.sex.toUpperCase() == 'F';
+
               return Padding(
                 padding: EdgeInsets.all(isSmallCard ? 8.0 : 20.0),
                 child: Column(
@@ -41,26 +43,23 @@ class AdmissionCard extends StatelessWidget {
                       children: [
                         CircleAvatar(
                           backgroundColor:
-                              (admission.patient.sex.toUpperCase() == 'F'
-                                      ? Colors.pink
-                                      : Colors.blue)
-                                  .withValues(alpha: 0.2),
+                              (isFemale ? Colors.pink : Colors.blue).withValues(
+                                alpha: 0.2,
+                              ),
                           radius: isSmallCard ? 16 : 20,
                           child: Icon(
-                            admission.patient.sex.toUpperCase() == 'F'
+                            isFemale
                                 ? Icons.face_3_rounded
                                 : Icons.face_rounded,
                             size: isSmallCard ? 18 : 24,
-                            color: admission.patient.sex.toUpperCase() == 'F'
-                                ? Colors.pink
-                                : Colors.blue,
+                            color: isFemale ? Colors.pink : Colors.blue,
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      "${admission.patient.surname}, ${admission.patient.name}",
+                      "${patient.surname}, ${patient.name}",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: isSmallCard ? 14 : 16,
@@ -74,7 +73,7 @@ class AdmissionCard extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            "Edad: ${admission.patient.age}",
+                            "Edad: ${patient.age}",
                             style: TextStyle(
                               color: Colors.black54,
                               fontSize: isSmallCard ? 11 : 13,
@@ -99,7 +98,7 @@ class AdmissionCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      "Nº HC: ${admission.patient.patientId}",
+                      "Nº HC: ${patient.patientId}",
                       style: TextStyle(
                         color: Colors.black54,
                         fontSize: isSmallCard ? 11 : 13,
@@ -108,8 +107,6 @@ class AdmissionCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 12),
-                    // Usamos un Wrap para que si la tarjeta es muy estrecha,
-                    // la etiqueta del diagnóstico se ajuste correctamente.
                     Wrap(
                       children: [
                         Container(

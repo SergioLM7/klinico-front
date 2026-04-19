@@ -1,42 +1,91 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/theme/app_theme.dart';
 import '../../data/models/admission_response.dart';
 import '../../data/models/episode_response.dart';
+import '../../data/repositories/admission_repository.dart';
 import '../../data/repositories/episode_repository.dart';
+import '../viewmodels/admission_viewmodel.dart';
 import '../viewmodels/episode_viewmodel.dart';
 import '../views/episode_detail_view.dart';
 import '../views/episode_form_view.dart';
+import '../widgets/barthel_calculator_dialog.dart';
 import '../widgets/glass_container.dart';
 import '../widgets/gradient_scaffold.dart';
 
 /// Vista de detalle de un ingreso.
-/// Recibe el [AdmissionResponse] directamente del dashboard (sin fetch extra).
-/// Hace un fetch secundario a /episodes/{admissionId} para los episodios.
-class AdmissionDetailView extends StatelessWidget {
+class AdmissionDetailView extends StatefulWidget {
   final AdmissionResponse admission;
 
   const AdmissionDetailView({super.key, required this.admission});
 
   @override
+  State<AdmissionDetailView> createState() => _AdmissionDetailViewState();
+}
+
+class _AdmissionDetailViewState extends State<AdmissionDetailView> {
+  late AdmissionResponse _admission;
+
+  @override
+  void initState() {
+    super.initState();
+    _admission = widget.admission;
+  }
+
+  void _onAdmissionUpdated(AdmissionResponse updated) {
+    setState(() {
+      _admission = updated;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (ctx) =>
-          EpisodeViewModel(repository: ctx.read<EpisodeRepository>())
-            ..loadEpisodes(admission.admissionId),
-      child: _AdmissionDetailContent(admission: admission),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (ctx) =>
+              EpisodeViewModel(repository: ctx.read<EpisodeRepository>())
+                ..loadEpisodes(_admission.admissionId),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) =>
+              AdmissionViewModel(repository: ctx.read<AdmissionRepository>()),
+        ),
+      ],
+      child: _AdmissionDetailContent(
+        admission: _admission,
+        onAdmissionUpdated: _onAdmissionUpdated,
+      ),
     );
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Scaffold principal
-// ─────────────────────────────────────────────────────────────────────────────
 class _AdmissionDetailContent extends StatelessWidget {
   final AdmissionResponse admission;
+  final Function(AdmissionResponse) onAdmissionUpdated;
 
-  const _AdmissionDetailContent({required this.admission});
+  const _AdmissionDetailContent({
+    required this.admission,
+    required this.onAdmissionUpdated,
+  });
+
+  void _openUpdateSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      barrierColor: Colors.black.withValues(alpha: 0.05),
+      builder: (_) => ChangeNotifierProvider.value(
+        value: context.read<AdmissionViewModel>(),
+        child: _AdmissionUpdateSheet(
+          admission: admission,
+          onAdmissionUpdated: onAdmissionUpdated,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +115,7 @@ class _AdmissionDetailContent extends StatelessWidget {
           ),
         ),
         title: Text(
-          "${admission.patient.surname}, ${admission.patient.name}",
+          "Detalle de Ingreso",
           style: const TextStyle(
             color: Colors.black87,
             fontWeight: FontWeight.bold,
@@ -77,7 +126,6 @@ class _AdmissionDetailContent extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.only(
-          // Compensa AppBar (altura fija) + notch del sistema
           top:
               MediaQuery.of(context).padding.top +
               kToolbarHeight +
@@ -89,14 +137,12 @@ class _AdmissionDetailContent extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ── Datos principales del ingreso ──
-            _PatientInfoCard(admission: admission),
-
+            _PatientInfoCard(
+              admission: admission,
+              onEdit: () => _openUpdateSheet(context),
+            ),
             const SizedBox(height: 24),
-
-            // ── Sección episodios ──
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 const Text(
                   "Episodios clínicos",
@@ -127,8 +173,6 @@ class _AdmissionDetailContent extends StatelessWidget {
                             ),
                           ),
                         );
-
-                        // Si se creó el episodio con éxito (devolvió true), recargamos la lista
                         if (result == true && context.mounted) {
                           context.read<EpisodeViewModel>().loadEpisodes(
                             admission.admissionId,
@@ -164,8 +208,9 @@ class _AdmissionDetailContent extends StatelessWidget {
 // ─────────────────────────────────────────────────────────────────────────────
 class _PatientInfoCard extends StatelessWidget {
   final AdmissionResponse admission;
+  final VoidCallback onEdit;
 
-  const _PatientInfoCard({required this.admission});
+  const _PatientInfoCard({required this.admission, required this.onEdit});
 
   @override
   Widget build(BuildContext context) {
@@ -182,7 +227,6 @@ class _PatientInfoCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Cabecera: Avatar + nombre + chips
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -217,27 +261,61 @@ class _PatientInfoCard extends StatelessWidget {
                           _DiagnosisChip(
                             admission.principalDiagnosis ?? "Sin diagnóstico",
                           ),
-                          if (admission.roomNumber != null)
-                            _InfoChip(
-                              icon: Icons.door_front_door_outlined,
-                              label: "Hab. ${admission.roomNumber}",
-                            ),
+                          _InfoChip(
+                            icon: Icons.door_front_door_outlined,
+                            label: admission.roomNumber != null
+                                ? "Hab. ${admission.roomNumber}"
+                                : "Pend. habitación",
+                          ),
                         ],
+                      ),
+                      const SizedBox(height: 6),
+                      _InfoChip(
+                        icon: Icons.fact_check_outlined,
+                        label: "Nº HC: ${patient.patientId}",
                       ),
                     ],
                   ),
                 ),
+                // Botón Editar Ingreso
+                GlassContainer(
+                  blur: 10,
+                  opacity: 0.2,
+                  borderRadius: BorderRadius.circular(50),
+                  child: Tooltip(
+                    message: "Editar ingreso",
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(50),
+                        splashColor: AppTheme.primaryBlue.withValues(
+                          alpha: 0.2,
+                        ),
+                        highlightColor: Colors.transparent,
+                        onTap: onEdit,
+                        child: Container(
+                          width: 36,
+                          height: 36,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppTheme.primaryBlue.withValues(alpha: 0.05),
+                          ),
+                          child: const Icon(
+                            Icons.edit_rounded,
+                            size: 24,
+                            color: AppTheme.primaryBlue,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
-
             const SizedBox(height: 20),
             const Divider(color: Colors.black12),
             const SizedBox(height: 16),
-
-            // Grid de datos clínicos
             _InfoGrid(isMobile: isMobile, admission: admission),
-
-            // Campos de texto largo
             if (admission.medicalHistory != null) ...[
               const SizedBox(height: 16),
               _LongTextField(
@@ -268,8 +346,391 @@ class _PatientInfoCard extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Grid de datos clínicos (Wrap de tiles)
+// Bottom Sheet: Actualización de Ingreso
 // ─────────────────────────────────────────────────────────────────────────────
+class _AdmissionUpdateSheet extends StatefulWidget {
+  final AdmissionResponse admission;
+  final Function(AdmissionResponse) onAdmissionUpdated;
+
+  const _AdmissionUpdateSheet({
+    required this.admission,
+    required this.onAdmissionUpdated,
+  });
+
+  @override
+  State<_AdmissionUpdateSheet> createState() => _AdmissionUpdateSheetState();
+}
+
+class _AdmissionUpdateSheetState extends State<_AdmissionUpdateSheet> {
+  final _formKey = GlobalKey<FormState>();
+  late TextEditingController _diagnosisController;
+  late TextEditingController _historyController;
+  late TextEditingController _allergiesController;
+  late TextEditingController _treatmentController;
+  late TextEditingController _barthelController;
+
+  @override
+  void initState() {
+    super.initState();
+    _diagnosisController = TextEditingController(
+      text: widget.admission.principalDiagnosis,
+    );
+    _historyController = TextEditingController(
+      text: widget.admission.medicalHistory,
+    );
+    _allergiesController = TextEditingController(
+      text: widget.admission.allergies,
+    );
+    _treatmentController = TextEditingController(
+      text: widget.admission.chronicTreatment,
+    );
+    _barthelController = TextEditingController(
+      text: widget.admission.basalBarthel?.toString() ?? "",
+    );
+  }
+
+  @override
+  void dispose() {
+    _diagnosisController.dispose();
+    _historyController.dispose();
+    _allergiesController.dispose();
+    _treatmentController.dispose();
+    _barthelController.dispose();
+    super.dispose();
+  }
+
+  void _showFeedback(bool success, String message) {
+    showDialog(
+      context: context,
+      barrierColor: Colors.black.withValues(alpha: 0.05),
+      builder: (ctx) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: GlassContainer(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                success ? Icons.check_circle : Icons.error,
+                size: 64,
+                color: success ? Colors.green : Colors.red,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                message,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: () => Navigator.of(ctx).pop(),
+                child: const Text("Aceptar"),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final vm = context.watch<AdmissionViewModel>();
+    final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+
+    return ClipRRect(
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white.withValues(alpha: 0.25),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.4)),
+          ),
+          padding: EdgeInsets.fromLTRB(24, 20, 24, 24 + bottomInset),
+          child: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Center(
+                    child: Container(
+                      width: 40,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: Colors.black26,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    "Gestionar Ingreso/Alta",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 20),
+                  _buildField(
+                    _diagnosisController,
+                    "Diagnóstico principal*",
+                    2,
+                  ),
+                  const SizedBox(height: 12),
+                  _buildField(_historyController, "Antecedentes médicos*", 3),
+                  const SizedBox(height: 12),
+                  _buildField(_allergiesController, "Alergias", 1),
+                  const SizedBox(height: 12),
+                  _buildField(_treatmentController, "Tratamiento crónico", 2),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _buildField(
+                          _barthelController,
+                          "Barthel basal",
+                          1,
+                          keyboardType: TextInputType.number,
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.calculate,
+                          color: AppTheme.primaryBlue,
+                        ),
+                        onPressed: () async {
+                          final res = await showDialog<int>(
+                            context: context,
+                            builder: (_) => const BarthelCalculatorDialog(),
+                          );
+                          if (res != null) {
+                            _barthelController.text = res.toString();
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  if (vm.isLoading)
+                    const Center(child: CircularProgressIndicator())
+                  else
+                    Column(
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppTheme.gradientStart,
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                            ),
+                            onPressed: () async {
+                              if (!_formKey.currentState!.validate()) return;
+                              final updated = await vm.clinicalUpdate(
+                                admissionId: widget.admission.admissionId,
+                                principalDiagnosis: _diagnosisController.text,
+                                medicalHistory: _historyController.text,
+                                patient: widget.admission.patient,
+                                allergies: _allergiesController.text,
+                                chronicTreatment: _treatmentController.text,
+                                basalBarthel: int.tryParse(
+                                  _barthelController.text,
+                                ),
+                              );
+
+                              if (mounted) {
+                                if (updated != null) {
+                                  widget.onAdmissionUpdated(updated);
+                                  Navigator.of(
+                                    context,
+                                  ).pop(); // Cerramos el sheet
+                                  _showFeedback(true, "Ingreso actualizado");
+                                } else {
+                                  _showFeedback(
+                                    false,
+                                    vm.errorMessage ??
+                                        "Error al actualizar el ingreso",
+                                  );
+                                }
+                              }
+                            },
+                            child: const Text(
+                              "GUARDAR CAMBIOS",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        SizedBox(
+                          width: double.infinity,
+                          child: OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: Colors.redAccent,
+                              side: const BorderSide(color: Colors.redAccent),
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                            ),
+                            onPressed: () async {
+                              final confirm = await showDialog<bool>(
+                                context: context,
+                                barrierColor: Colors.black.withValues(
+                                  alpha: 0.1,
+                                ),
+                                builder: (ctx) => Dialog(
+                                  backgroundColor: Colors.transparent,
+                                  child: GlassContainer(
+                                    blur: 20,
+                                    opacity: 0.2,
+                                    padding: const EdgeInsets.all(24),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        const Icon(
+                                          Icons.warning_amber_rounded,
+                                          color: Colors.redAccent,
+                                          size: 48,
+                                        ),
+                                        const SizedBox(height: 16),
+                                        const Text(
+                                          "Firmar Alta",
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black87,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 12),
+                                        const Text(
+                                          "¿Estás seguro de que quieres dar el alta a este paciente? Esta acción no se puede deshacer",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.black54,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 24),
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: TextButton(
+                                                onPressed: () =>
+                                                    Navigator.pop(ctx, false),
+                                                child: const Text(
+                                                  "Cancelar",
+                                                  style: TextStyle(
+                                                    color: Colors.black54,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 12),
+                                            Expanded(
+                                              child: ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: Colors
+                                                      .redAccent
+                                                      .withValues(alpha: 0.8),
+                                                  foregroundColor: Colors.white,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          12,
+                                                        ),
+                                                  ),
+                                                ),
+                                                onPressed: () =>
+                                                    Navigator.pop(ctx, true),
+                                                child: const Text("Aceptar"),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+
+                              if (confirm == true && mounted) {
+                                final success = await vm.dischargeAdmission(
+                                  widget.admission.admissionId,
+                                );
+                                if (success && mounted) {
+                                  Navigator.of(context).pop(); // Cierra sheet
+                                  Navigator.of(
+                                    context,
+                                  ).pop(); // Vuelve al dashboard
+                                }
+                              }
+                            },
+                            child: const Text(
+                              "FIRMAR ALTA",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildField(
+    TextEditingController controller,
+    String label,
+    int maxLines, {
+    TextInputType? keyboardType,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.bold,
+            color: Colors.black54,
+          ),
+        ),
+        const SizedBox(height: 6),
+        TextFormField(
+          controller: controller,
+          maxLines: maxLines,
+          keyboardType: keyboardType,
+          style: const TextStyle(fontSize: 15),
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: Colors.white.withValues(alpha: 0.5),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide.none,
+            ),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 12,
+            ),
+          ),
+          validator: (v) => (v == null || v.isEmpty) && label.contains('*')
+              ? "Campo requerido"
+              : null,
+        ),
+      ],
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Resto de los widgets (Grid, DataTile, etc.)
+// ─────────────────────────────────────────────────────────────────────────────
+
 class _InfoGrid extends StatelessWidget {
   final bool isMobile;
   final AdmissionResponse admission;
@@ -325,9 +786,6 @@ class _InfoGrid extends StatelessWidget {
       "${dt.day.toString().padLeft(2, '0')}/${dt.month.toString().padLeft(2, '0')}/${dt.year}";
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Tile compacto de dato clínico
-// ─────────────────────────────────────────────────────────────────────────────
 class _DataTile extends StatelessWidget {
   final IconData icon;
   final String label;
@@ -376,9 +834,6 @@ class _DataTile extends StatelessWidget {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Campo de texto largo (antecedentes, tratamiento, alergias)
-// ─────────────────────────────────────────────────────────────────────────────
 class _LongTextField extends StatelessWidget {
   final String label;
   final String value;
@@ -409,12 +864,8 @@ class _LongTextField extends StatelessWidget {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Chips decorativos
-// ─────────────────────────────────────────────────────────────────────────────
 class _DiagnosisChip extends StatelessWidget {
   final String label;
-
   const _DiagnosisChip(this.label);
 
   @override
@@ -443,7 +894,6 @@ class _DiagnosisChip extends StatelessWidget {
 class _InfoChip extends StatelessWidget {
   final IconData icon;
   final String label;
-
   const _InfoChip({required this.icon, required this.label});
 
   @override
@@ -470,9 +920,6 @@ class _InfoChip extends StatelessWidget {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Lista de tarjetas de episodios
-// ─────────────────────────────────────────────────────────────────────────────
 class _EpisodeList extends StatelessWidget {
   const _EpisodeList();
 
@@ -512,12 +959,8 @@ class _EpisodeList extends StatelessWidget {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Mini-tarjeta de episodio (solo muestra la fecha del createdAt)
-// ─────────────────────────────────────────────────────────────────────────────
 class _EpisodeCard extends StatelessWidget {
   final EpisodeResponse episode;
-
   const _EpisodeCard({required this.episode});
 
   @override

@@ -16,8 +16,8 @@ class Admission {
 
   final DateTime createdAt;
   final String createdBy;
-  final DateTime lastModifiedAt;
-  final String lastModifiedBy;
+  final DateTime? lastModifiedAt;
+  final String? lastModifiedBy;
 
   Admission({
     required this.admissionId,
@@ -34,7 +34,7 @@ class Admission {
     this.roomNumber,
     required this.createdAt,
     required this.createdBy,
-    required this.lastModifiedAt,
-    required this.lastModifiedBy,
+    this.lastModifiedAt,
+    this.lastModifiedBy,
   });
 }

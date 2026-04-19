@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../core/exceptions/auth_exception.dart';
 import '../../data/repositories/admission_repository.dart';
 import '../../data/models/admission_response.dart';
+import '../../data/models/patient_preview_response.dart';
 
 class AdmissionViewModel extends ChangeNotifier {
   final AdmissionRepository _repository;
@@ -58,6 +60,64 @@ class AdmissionViewModel extends ChangeNotifier {
     } catch (e) {
       _errorMessage = e.toString().replaceAll("Exception: ", "");
       return false;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<bool> dischargeAdmission(String admissionId) async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      final success = await _repository.dischargeAdmission(admissionId);
+      return success;
+    } catch (e) {
+      if (e is AuthException) {
+        _errorMessage = e.message;
+      } else {
+        _errorMessage = "Error inesperado de conexión";
+      }
+      return false;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<AdmissionResponse?> clinicalUpdate({
+    required String admissionId,
+    required String principalDiagnosis,
+    required String medicalHistory,
+    required PatientPreviewResponse patient,
+    String? allergies,
+    String? chronicTreatment,
+    int? basalBarthel,
+  }) async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      final updated = await _repository.clinicalUpdate(
+        admissionId: admissionId,
+        principalDiagnosis: principalDiagnosis,
+        medicalHistory: medicalHistory,
+        patient: patient,
+        allergies: allergies,
+        chronicTreatment: chronicTreatment,
+        basalBarthel: basalBarthel,
+      );
+      return updated;
+    } catch (e) {
+      if (e is AuthException) {
+        _errorMessage = e.message;
+      } else {
+        _errorMessage = "Error inesperado de conexión";
+      }
+      return null;
     } finally {
       _isLoading = false;
       notifyListeners();
