@@ -6,11 +6,12 @@ import '../../core/theme/app_theme.dart';
 import '../widgets/admissions_dashoard.dart';
 import '../widgets/glass_container.dart';
 import '../widgets/gradient_scaffold.dart';
-import 'admission_form_view.dart';
-import 'admissions_search_view.dart';
-import 'jefe_admissions_table_view.dart';
+import 'admissions/admission_form_view.dart';
+import 'admissions/admissions_search_view.dart';
+import 'servicekpis/service_new_admissions_view.dart';
 import '../viewmodels/login_viewmodel.dart';
 import 'login_view.dart';
+import 'servicekpis/service_workload_view.dart';
 
 class JefeServicioMainView extends StatefulWidget {
   const JefeServicioMainView({super.key});
@@ -260,6 +261,10 @@ class _JefeServicioMainViewState extends State<JefeServicioMainView> {
                     label: Text('Nuevos ingresos'),
                   ),
                   NavigationRailDestination(
+                    icon: Icon(Icons.work_history, color: AppTheme.primaryBlue),
+                    label: Text('Carga de trabajo'),
+                  ),
+                  NavigationRailDestination(
                     icon: Icon(Icons.dashboard, color: AppTheme.primaryBlue),
                     label: Text('Dashboard'),
                   ),
@@ -286,15 +291,17 @@ class _JefeServicioMainViewState extends State<JefeServicioMainView> {
                       builder: (context) {
                         switch (_selectedIndex) {
                           case 0:
-                            return const JefeAdmissionsTableView();
+                            return const ServiceNewAdmissionsView();
                           case 1:
-                            return const AdmissionDashboard();
+                            return const ServiceWorkloadView();
                           case 2:
-                            return const AdmissionFormView();
+                            return const AdmissionDashboard();
                           case 3:
+                            return const AdmissionFormView();
+                          case 4:
                             return const AdmissionsSearchView();
                           default:
-                            return const JefeAdmissionsTableView();
+                            return const ServiceNewAdmissionsView();
                         }
                       },
                     ),

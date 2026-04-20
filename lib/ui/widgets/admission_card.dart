@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../data/models/admission_response.dart';
-import '../views/admission_detail_view.dart';
+import '../views/admissions/admission_detail_view.dart';
 import 'glass_container.dart';
 
 class AdmissionCard extends StatelessWidget {

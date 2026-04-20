@@ -3,23 +3,23 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../core/theme/app_theme.dart';
-import '../../data/models/admission_response.dart';
-import '../../data/models/user_response.dart';
-import '../../data/repositories/user_repository.dart';
-import '../viewmodels/admission_viewmodel.dart';
-import '../viewmodels/login_viewmodel.dart';
-import '../widgets/glass_container.dart';
+import '../../../core/theme/app_theme.dart';
+import '../../../data/models/admission_response.dart';
+import '../../../data/models/user_response.dart';
+import '../../../data/repositories/user_repository.dart';
+import '../../viewmodels/admission_viewmodel.dart';
+import '../../viewmodels/login_viewmodel.dart';
+import '../../widgets/glass_container.dart';
 
-class JefeAdmissionsTableView extends StatefulWidget {
-  const JefeAdmissionsTableView({super.key});
+class ServiceNewAdmissionsView extends StatefulWidget {
+  const ServiceNewAdmissionsView({super.key});
 
   @override
-  State<JefeAdmissionsTableView> createState() =>
-      _JefeAdmissionsTableViewState();
+  State<ServiceNewAdmissionsView> createState() =>
+      _ServiceNewAdmissionsViewState();
 }
 
-class _JefeAdmissionsTableViewState extends State<JefeAdmissionsTableView> {
+class _ServiceNewAdmissionsViewState extends State<ServiceNewAdmissionsView> {
   @override
   void initState() {
     super.initState();
@@ -68,7 +68,7 @@ class _JefeAdmissionsTableViewState extends State<JefeAdmissionsTableView> {
           ),
           const SizedBox(height: 8),
           const Text(
-            "Listado de pacientes asignados a tu servicio. Pulsa el botón de edición para reasignar a un médico.",
+            "Listado de nuevas altas en tu servicio. Pulsa el botón de edición para reasignar a un médico.",
             style: TextStyle(fontSize: 16, color: Colors.black54),
           ),
           const SizedBox(height: 24),

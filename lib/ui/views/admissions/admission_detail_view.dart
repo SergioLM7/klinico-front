@@ -2,18 +2,18 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../core/theme/app_theme.dart';
-import '../../data/models/admission_response.dart';
-import '../../data/models/episode_response.dart';
-import '../../data/repositories/admission_repository.dart';
-import '../../data/repositories/episode_repository.dart';
-import '../viewmodels/admission_viewmodel.dart';
-import '../viewmodels/episode_viewmodel.dart';
-import '../views/episode_detail_view.dart';
-import '../views/episode_form_view.dart';
-import '../widgets/barthel_calculator_dialog.dart';
-import '../widgets/glass_container.dart';
-import '../widgets/gradient_scaffold.dart';
+import '../../../core/theme/app_theme.dart';
+import '../../../data/models/admission_response.dart';
+import '../../../data/models/episode_response.dart';
+import '../../../data/repositories/admission_repository.dart';
+import '../../../data/repositories/episode_repository.dart';
+import '../../viewmodels/admission_viewmodel.dart';
+import '../../viewmodels/episode_viewmodel.dart';
+import '../episodes/episode_detail_view.dart';
+import '../episodes/episode_form_view.dart';
+import '../../widgets/barthel_calculator_dialog.dart';
+import '../../widgets/glass_container.dart';
+import '../../widgets/gradient_scaffold.dart';
 
 /// Vista de detalle de un ingreso.
 class AdmissionDetailView extends StatefulWidget {

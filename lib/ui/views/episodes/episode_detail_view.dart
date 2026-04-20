@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../core/theme/app_theme.dart';
-import '../../data/models/episode_response.dart';
-import '../widgets/episode_info_card.dart';
-import '../widgets/glass_container.dart';
-import '../widgets/gradient_scaffold.dart';
+import '../../../core/theme/app_theme.dart';
+import '../../../data/models/episode_response.dart';
+import '../../widgets/episode_info_card.dart';
+import '../../widgets/glass_container.dart';
+import '../../widgets/gradient_scaffold.dart';
 
 /// Vista de detalle de un episodio (evolución clínica).
 class EpisodeDetailView extends StatefulWidget {

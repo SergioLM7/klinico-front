@@ -14,6 +14,7 @@ import 'data/services/auth_service.dart';
 import 'ui/viewmodels/admission_viewmodel.dart';
 import 'ui/viewmodels/episode_viewmodel.dart';
 import 'ui/viewmodels/login_viewmodel.dart';
+import 'ui/viewmodels/service_kpis_viewmodel.dart';
 import 'ui/views/home_view.dart';
 import 'ui/views/login_view.dart';
 
@@ -81,6 +82,10 @@ void main() {
         ChangeNotifierProvider(
           create: (context) =>
               EpisodeViewModel(repository: context.read<EpisodeRepository>()),
+        ),
+        ChangeNotifierProvider(
+          create: (context) =>
+              ServiceKpisViewModel(repository: context.read<UserRepository>()),
         ),
       ],
       child: const MyApp(),

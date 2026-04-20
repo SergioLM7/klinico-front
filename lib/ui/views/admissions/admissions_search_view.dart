@@ -2,11 +2,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../core/theme/app_theme.dart';
-import '../../data/models/admission_response.dart';
-import '../../data/repositories/admission_repository.dart';
-import '../widgets/admission_card.dart';
-import '../widgets/glass_container.dart';
+import '../../../core/theme/app_theme.dart';
+import '../../../data/models/admission_response.dart';
+import '../../../data/repositories/admission_repository.dart';
+import '../../widgets/admission_card.dart';
+import '../../widgets/glass_container.dart';
 
 class AdmissionsSearchView extends StatefulWidget {
   const AdmissionsSearchView({super.key});

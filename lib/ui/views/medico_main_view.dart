@@ -6,8 +6,8 @@ import '../../core/theme/app_theme.dart';
 import '../widgets/admissions_dashoard.dart';
 import '../widgets/glass_container.dart';
 import '../widgets/gradient_scaffold.dart';
-import 'admission_form_view.dart';
-import 'admissions_search_view.dart';
+import 'admissions/admission_form_view.dart';
+import 'admissions/admissions_search_view.dart';
 import '../viewmodels/login_viewmodel.dart';
 import 'login_view.dart';
 
