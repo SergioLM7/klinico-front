@@ -46,8 +46,8 @@ class _JefeServicioMainViewState extends State<JefeServicioMainView> {
                   label: 'Nuevos ingresos',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.dashboard),
-                  label: 'Dashboard',
+                  icon: Icon(Icons.analytics),
+                  label: 'KPIs',
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.person_add),
@@ -265,8 +265,8 @@ class _JefeServicioMainViewState extends State<JefeServicioMainView> {
                     label: Text('Carga de trabajo'),
                   ),
                   NavigationRailDestination(
-                    icon: Icon(Icons.dashboard, color: AppTheme.primaryBlue),
-                    label: Text('Dashboard'),
+                    icon: Icon(Icons.analytics, color: AppTheme.primaryBlue),
+                    label: Text('KPIs'),
                   ),
                   NavigationRailDestination(
                     icon: Icon(Icons.person_add, color: AppTheme.primaryBlue),
