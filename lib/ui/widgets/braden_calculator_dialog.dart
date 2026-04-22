@@ -90,10 +90,26 @@ class _BradenCalculatorDialogState extends State<BradenCalculatorDialog> {
                           value: _sensory,
                           onChanged: (v) => setState(() => _sensory = v),
                           options: [
-                            _Option(4, "Sin alteración", "Responde a órdenes verbales, siente y expresa dolor."),
-                            _Option(3, "Ligeramente limitada", "Responde pero no siempre comunica malestar, o tiene alteración en 1-2 extremidades."),
-                            _Option(2, "Muy limitada", "Responde solo al dolor o quejidos, o alteración en la mitad del cuerpo."),
-                            _Option(1, "Completamente limitada", "No responde a estímulos dolorosos; muy limitada o inconsciente."),
+                            _Option(
+                              4,
+                              "Sin alteración",
+                              "Responde a órdenes verbales, siente y expresa dolor.",
+                            ),
+                            _Option(
+                              3,
+                              "Ligeramente limitada",
+                              "Responde pero no siempre comunica malestar, o tiene alteración en 1-2 extremidades.",
+                            ),
+                            _Option(
+                              2,
+                              "Muy limitada",
+                              "Responde solo al dolor o quejidos, o alteración en la mitad del cuerpo.",
+                            ),
+                            _Option(
+                              1,
+                              "Completamente limitada",
+                              "No responde a estímulos dolorosos; muy limitada o inconsciente.",
+                            ),
                           ],
                         ),
                         _buildCategory(
@@ -101,10 +117,26 @@ class _BradenCalculatorDialogState extends State<BradenCalculatorDialog> {
                           value: _moisture,
                           onChanged: (v) => setState(() => _moisture = v),
                           options: [
-                            _Option(4, "Raramente húmeda", "Piel seca, cambio de ropa habitual."),
-                            _Option(3, "Ocasionalmente húmeda", "Requiere cambio extra ~1 vez/día."),
-                            _Option(2, "Muy húmeda", "A menudo húmeda; cambio al menos una vez por turno."),
-                            _Option(1, "Constantemente húmeda", "Húmeda casi siempre por sudor, orina, etc."),
+                            _Option(
+                              4,
+                              "Raramente húmeda",
+                              "Piel seca, cambio de ropa habitual.",
+                            ),
+                            _Option(
+                              3,
+                              "Ocasionalmente húmeda",
+                              "Requiere cambio extra ~1 vez/día.",
+                            ),
+                            _Option(
+                              2,
+                              "Muy húmeda",
+                              "A menudo húmeda; cambio al menos una vez por turno.",
+                            ),
+                            _Option(
+                              1,
+                              "Constantemente húmeda",
+                              "Húmeda casi siempre por sudor, orina, etc.",
+                            ),
                           ],
                         ),
                         _buildCategory(
@@ -112,10 +144,26 @@ class _BradenCalculatorDialogState extends State<BradenCalculatorDialog> {
                           value: _activity,
                           onChanged: (v) => setState(() => _activity = v),
                           options: [
-                            _Option(4, "Camina con frecuencia", "Camina fuera de habitación ≥2 veces/día y dentro cada 2 horas."),
-                            _Option(3, "Camina ocasionalmente", "Distancias cortas; pasa mayor parte del turno en cama o silla."),
-                            _Option(2, "Confinado a la silla", "Incapaz de soportar peso; necesita ayuda para la silla."),
-                            _Option(1, "Encamado", "Confinado a la cama permanentemente."),
+                            _Option(
+                              4,
+                              "Camina con frecuencia",
+                              "Camina fuera de habitación ≥2 veces/día y dentro cada 2 horas.",
+                            ),
+                            _Option(
+                              3,
+                              "Camina ocasionalmente",
+                              "Distancias cortas; pasa mayor parte del turno en cama o silla.",
+                            ),
+                            _Option(
+                              2,
+                              "Confinado a la silla",
+                              "Incapaz de soportar peso; necesita ayuda para la silla.",
+                            ),
+                            _Option(
+                              1,
+                              "Encamado",
+                              "Confinado a la cama permanentemente.",
+                            ),
                           ],
                         ),
                         _buildCategory(
@@ -123,10 +171,26 @@ class _BradenCalculatorDialogState extends State<BradenCalculatorDialog> {
                           value: _mobility,
                           onChanged: (v) => setState(() => _mobility = v),
                           options: [
-                            _Option(4, "Sin limitación", "Cambios frecuentes e importantes de cuerpo sin ayuda."),
-                            _Option(3, "Ligeramente limitada", "Cambios leves pero frecuentes de forma independiente."),
-                            _Option(2, "Muy limitada", "Cambios ocasionales y leves; no puede por sí solo de forma significativa."),
-                            _Option(1, "Completamente inmóvil", "Ni siquiera cambios leves sin ayuda."),
+                            _Option(
+                              4,
+                              "Sin limitación",
+                              "Cambios frecuentes e importantes de cuerpo sin ayuda.",
+                            ),
+                            _Option(
+                              3,
+                              "Ligeramente limitada",
+                              "Cambios leves pero frecuentes de forma independiente.",
+                            ),
+                            _Option(
+                              2,
+                              "Muy limitada",
+                              "Cambios ocasionales y leves; no puede por sí solo de forma significativa.",
+                            ),
+                            _Option(
+                              1,
+                              "Completamente inmóvil",
+                              "Ni siquiera cambios leves sin ayuda.",
+                            ),
                           ],
                         ),
                         _buildCategory(
@@ -134,10 +198,26 @@ class _BradenCalculatorDialogState extends State<BradenCalculatorDialog> {
                           value: _nutrition,
                           onChanged: (v) => setState(() => _nutrition = v),
                           options: [
-                            _Option(4, "Excelente", "Come casi todas las comidas completas. No rechaza, ≥4 raciones proteínas."),
-                            _Option(3, "Adecuada", "Come más de la mitad; 4 raciones de proteínas. Acepta suplementos / NPT."),
-                            _Option(2, "Probablemente inadecuada", "Come la mitad; 3 raciones de proteína o fluidoterapia subóptima."),
-                            _Option(1, "Muy deficiente", "Nunca come comida completa; ≤2 raciones de proteína; ayuno o fluidoterapia >5 días."),
+                            _Option(
+                              4,
+                              "Excelente",
+                              "Come casi todas las comidas completas. No rechaza, ≥4 raciones proteínas.",
+                            ),
+                            _Option(
+                              3,
+                              "Adecuada",
+                              "Come más de la mitad; 4 raciones de proteínas. Acepta suplementos / NPT.",
+                            ),
+                            _Option(
+                              2,
+                              "Probablemente inadecuada",
+                              "Come la mitad; 3 raciones de proteína o fluidoterapia subóptima.",
+                            ),
+                            _Option(
+                              1,
+                              "Muy deficiente",
+                              "Nunca come comida completa; ≤2 raciones de proteína; ayuno o fluidoterapia >5 días.",
+                            ),
                           ],
                         ),
                         _buildCategory(
@@ -145,9 +225,21 @@ class _BradenCalculatorDialogState extends State<BradenCalculatorDialog> {
                           value: _friction,
                           onChanged: (v) => setState(() => _friction = v),
                           options: [
-                            _Option(3, "Sin problema aparente", "Se mueve en cama/silla independiente con fuerza muscular."),
-                            _Option(2, "Problema potencial", "Mínima ayuda, la piel resbala poco. Mantiene buena posición."),
-                            _Option(1, "Problema", "Ayuda moderada a máxima. Imposible sin resbalar piel. Espasticidad."),
+                            _Option(
+                              3,
+                              "Sin problema aparente",
+                              "Se mueve en cama/silla independiente con fuerza muscular.",
+                            ),
+                            _Option(
+                              2,
+                              "Problema potencial",
+                              "Mínima ayuda, la piel resbala poco. Mantiene buena posición.",
+                            ),
+                            _Option(
+                              1,
+                              "Problema",
+                              "Ayuda moderada a máxima. Imposible sin resbalar piel. Espasticidad.",
+                            ),
                           ],
                         ),
                       ],
@@ -185,9 +277,11 @@ class _BradenCalculatorDialogState extends State<BradenCalculatorDialog> {
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
-                  onPressed: _isComplete ? () => Navigator.of(context).pop(_score) : null,
+                  onPressed: _isComplete
+                      ? () => Navigator.of(context).pop(_score)
+                      : null,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.primaryBlue,
+                    backgroundColor: AppTheme.gradientStart,
                     foregroundColor: Colors.white,
                     disabledBackgroundColor: Colors.grey.shade400,
                     disabledForegroundColor: Colors.white,
@@ -234,14 +328,36 @@ class _BradenCalculatorDialogState extends State<BradenCalculatorDialog> {
               color: Colors.black87,
             ),
           ),
-          subtitle: value != null 
-            ? Text("Puntuación: $value", style: const TextStyle(color: AppTheme.primaryBlue, fontWeight: FontWeight.bold))
-            : const Text("Pendiente", style: TextStyle(color: Colors.redAccent)),
+          subtitle: value != null
+              ? Text(
+                  "Puntuación: $value",
+                  style: const TextStyle(
+                    color: AppTheme.primaryBlue,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
+              : const Text(
+                  "Pendiente",
+                  style: TextStyle(color: Colors.redAccent),
+                ),
           children: options.map((opt) {
             return RadioListTile<int>(
-              contentPadding: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
-              title: Text("${opt.points} - ${opt.title}", style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-              subtitle: Text(opt.description, style: const TextStyle(fontSize: 12, color: Colors.black87)),
+              contentPadding: const EdgeInsets.only(
+                left: 16,
+                right: 16,
+                bottom: 8,
+              ),
+              title: Text(
+                "${opt.points} - ${opt.title}",
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ),
+              subtitle: Text(
+                opt.description,
+                style: const TextStyle(fontSize: 12, color: Colors.black87),
+              ),
               value: opt.points,
               groupValue: value,
               onChanged: (val) {

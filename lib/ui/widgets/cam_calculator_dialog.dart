@@ -14,7 +14,7 @@ class _CamCalculatorDialogState extends State<CamCalculatorDialog> {
   bool? _criterio1; // 1) Inicio agudo y fluctuante
   bool? _criterio2; // 2) Inatención
   bool? _criterio3; // 3) Pensamiento desorganizado
-  int? _criterio4;  // 4) Nivel de conciencia (1=Normal, 2-5=Anormal)
+  int? _criterio4; // 4) Nivel de conciencia (1=Normal, 2-5=Anormal)
 
   bool get _isComplete {
     return _criterio1 != null &&
@@ -28,7 +28,7 @@ class _CamCalculatorDialogState extends State<CamCalculatorDialog> {
     final bool c1 = _criterio1 ?? false;
     final bool c2 = _criterio2 ?? false;
     final bool c3 = _criterio3 ?? false;
-    
+
     // El criterio 4 es positivo si es diferente de 1 (Alerta Normal)
     final bool c4Positivo = (_criterio4 != null && _criterio4 != 1);
 
@@ -89,21 +89,24 @@ class _CamCalculatorDialogState extends State<CamCalculatorDialog> {
                       children: [
                         _buildYesNoQuestion(
                           title: "1. Inicio agudo y curso fluctuante",
-                          description: "¿Evidencia de un cambio agudo del estado mental? O ¿Han fluctuado sus cambios de conducta?",
+                          description:
+                              "¿Evidencia de un cambio agudo del estado mental? O ¿Han fluctuado sus cambios de conducta?",
                           value: _criterio1,
                           onChanged: (v) => setState(() => _criterio1 = v),
                         ),
                         const SizedBox(height: 16),
                         _buildYesNoQuestion(
                           title: "2. Inatención",
-                          description: "¿Dificultad para fijar atención, se distrae fácilmente, conversación difícil de mantener o irrelevante?",
+                          description:
+                              "¿Dificultad para fijar atención, se distrae fácilmente, conversación difícil de mantener o irrelevante?",
                           value: _criterio2,
                           onChanged: (v) => setState(() => _criterio2 = v),
                         ),
                         const SizedBox(height: 16),
                         _buildYesNoQuestion(
                           title: "3. Pensamiento desorganizado",
-                          description: "¿Discurso incoherente, ideas ilógicas, o cambios de tema impredecibles?",
+                          description:
+                              "¿Discurso incoherente, ideas ilógicas, o cambios de tema impredecibles?",
                           value: _criterio3,
                           onChanged: (v) => setState(() => _criterio3 = v),
                         ),
@@ -113,26 +116,60 @@ class _CamCalculatorDialogState extends State<CamCalculatorDialog> {
                           decoration: BoxDecoration(
                             color: Colors.white.withValues(alpha: 0.3),
                             borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: Colors.white.withValues(alpha: 0.6)),
+                            border: Border.all(
+                              color: Colors.white.withValues(alpha: 0.6),
+                            ),
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
                                 "4. Nivel de Conciencia",
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.black87),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                  color: Colors.black87,
+                                ),
                               ),
                               const SizedBox(height: 6),
                               const Text(
                                 "¿Qué nivel de conciencia presenta el paciente?",
-                                style: TextStyle(fontSize: 13, color: Colors.black87),
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.black87,
+                                ),
                               ),
                               const SizedBox(height: 8),
-                              _buildRadio<int>("Alerta (Normal)", 1, _criterio4, (v) => setState(() => _criterio4 = v)),
-                              _buildRadio<int>("Vigilante (Hiperalerta)", 2, _criterio4, (v) => setState(() => _criterio4 = v)),
-                              _buildRadio<int>("Letárgico (Inhibido, somnoliento)", 3, _criterio4, (v) => setState(() => _criterio4 = v)),
-                              _buildRadio<int>("Estuporoso (Difícil despertarlo)", 4, _criterio4, (v) => setState(() => _criterio4 = v)),
-                              _buildRadio<int>("Comatoso (No se despierta)", 5, _criterio4, (v) => setState(() => _criterio4 = v)),
+                              _buildRadio<int>(
+                                "Alerta (Normal)",
+                                1,
+                                _criterio4,
+                                (v) => setState(() => _criterio4 = v),
+                              ),
+                              _buildRadio<int>(
+                                "Vigilante (Hiperalerta)",
+                                2,
+                                _criterio4,
+                                (v) => setState(() => _criterio4 = v),
+                              ),
+                              _buildRadio<int>(
+                                "Letárgico (Inhibido, somnoliento)",
+                                3,
+                                _criterio4,
+                                (v) => setState(() => _criterio4 = v),
+                              ),
+                              _buildRadio<int>(
+                                "Estuporoso (Difícil despertarlo)",
+                                4,
+                                _criterio4,
+                                (v) => setState(() => _criterio4 = v),
+                              ),
+                              _buildRadio<int>(
+                                "Comatoso (No se despierta)",
+                                5,
+                                _criterio4,
+                                (v) => setState(() => _criterio4 = v),
+                              ),
                             ],
                           ),
                         ),
@@ -144,9 +181,11 @@ class _CamCalculatorDialogState extends State<CamCalculatorDialog> {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: isPositive == null 
+                    color: isPositive == null
                         ? Colors.grey.shade200.withValues(alpha: 0.5)
-                        : (isPositive ? Colors.redAccent.withValues(alpha: 0.15) : Colors.green.withValues(alpha: 0.15)),
+                        : (isPositive
+                              ? Colors.redAccent.withValues(alpha: 0.15)
+                              : Colors.green.withValues(alpha: 0.15)),
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
                       color: isPositive == null
@@ -158,9 +197,11 @@ class _CamCalculatorDialogState extends State<CamCalculatorDialog> {
                   child: Row(
                     children: [
                       Icon(
-                        isPositive == null 
-                            ? Icons.pending_actions 
-                            : (isPositive ? Icons.warning_rounded : Icons.check_circle_rounded),
+                        isPositive == null
+                            ? Icons.pending_actions
+                            : (isPositive
+                                  ? Icons.warning_rounded
+                                  : Icons.check_circle_rounded),
                         color: isPositive == null
                             ? Colors.black54
                             : (isPositive ? Colors.redAccent : Colors.green),
@@ -173,18 +214,25 @@ class _CamCalculatorDialogState extends State<CamCalculatorDialog> {
                           children: [
                             const Text(
                               "Resultado CAM:",
-                              style: TextStyle(fontSize: 13, color: Colors.black87),
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Colors.black87,
+                              ),
                             ),
                             Text(
                               isPositive == null
                                   ? "Rellene el test..."
-                                  : (isPositive ? "Positivo (Sospecha de Delirium)" : "Negativo"),
+                                  : (isPositive
+                                        ? "Positivo (Sospecha de Delirium)"
+                                        : "Negativo"),
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                                 color: isPositive == null
                                     ? Colors.black87
-                                    : (isPositive ? Colors.redAccent : Colors.green),
+                                    : (isPositive
+                                          ? Colors.redAccent
+                                          : Colors.green),
                               ),
                             ),
                           ],
@@ -195,9 +243,11 @@ class _CamCalculatorDialogState extends State<CamCalculatorDialog> {
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
-                  onPressed: _isComplete ? () => Navigator.of(context).pop(isPositive) : null,
+                  onPressed: _isComplete
+                      ? () => Navigator.of(context).pop(isPositive)
+                      : null,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.primaryBlue,
+                    backgroundColor: AppTheme.gradientStart,
                     foregroundColor: Colors.white,
                     disabledBackgroundColor: Colors.grey.shade400,
                     disabledForegroundColor: Colors.white,
@@ -235,9 +285,19 @@ class _CamCalculatorDialogState extends State<CamCalculatorDialog> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.black87)),
+          Text(
+            title,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 15,
+              color: Colors.black87,
+            ),
+          ),
           const SizedBox(height: 4),
-          Text(description, style: const TextStyle(fontSize: 13, color: Colors.black87)),
+          Text(
+            description,
+            style: const TextStyle(fontSize: 13, color: Colors.black87),
+          ),
           const SizedBox(height: 12),
           Row(
             children: [
@@ -262,13 +322,18 @@ class _CamCalculatorDialogState extends State<CamCalculatorDialog> {
                 ),
               ),
             ],
-          )
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildRadio<T>(String title, T value, T? groupValue, ValueChanged<T?> onChanged) {
+  Widget _buildRadio<T>(
+    String title,
+    T value,
+    T? groupValue,
+    ValueChanged<T?> onChanged,
+  ) {
     return RadioListTile<T>(
       contentPadding: EdgeInsets.zero,
       visualDensity: VisualDensity.compact,

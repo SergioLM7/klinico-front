@@ -11,7 +11,6 @@ class BarthelCalculatorDialog extends StatefulWidget {
 }
 
 class _BarthelCalculatorDialogState extends State<BarthelCalculatorDialog> {
-  // Inicializamos todas a null para forzar la selección
   int? _feeding;
   int? _bathing;
   int? _grooming;
@@ -285,7 +284,7 @@ class _BarthelCalculatorDialogState extends State<BarthelCalculatorDialog> {
                       ? () => Navigator.of(context).pop(_score)
                       : null,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.primaryBlue,
+                    backgroundColor: AppTheme.gradientStart,
                     foregroundColor: Colors.white,
                     disabledBackgroundColor: Colors.grey.shade400,
                     disabledForegroundColor: Colors.white,
@@ -352,7 +351,7 @@ class _BarthelCalculatorDialogState extends State<BarthelCalculatorDialog> {
                 bottom: 8,
               ),
               title: Text(
-                "${opt.points} - ",
+                "${opt.points}",
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 14,

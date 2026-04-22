@@ -191,7 +191,7 @@ class _Chads2CalculatorDialogState extends State<Chads2CalculatorDialog> {
                 ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(score),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.primaryBlue,
+                    backgroundColor: AppTheme.gradientStart,
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(
