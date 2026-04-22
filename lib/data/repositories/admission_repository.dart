@@ -113,7 +113,7 @@ class AdmissionRepository {
 
   Future<bool> dischargeAdmission(String admissionId) async {
     try {
-      final response = await _apiClient.put(
+      final response = await _apiClient.patch(
         "/admissions/discharge/$admissionId",
       );
       return response.statusCode == 200;
