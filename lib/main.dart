@@ -8,11 +8,13 @@ import 'data/repositories/admission_repository.dart';
 import 'data/repositories/auth_repository.dart';
 import 'data/repositories/episode_repository.dart';
 import 'data/repositories/patient_repository.dart';
+import 'data/repositories/kpis_repository.dart';
 import 'data/repositories/service_repository.dart';
 import 'data/repositories/user_repository.dart';
 import 'data/services/auth_service.dart';
 import 'ui/viewmodels/admission_viewmodel.dart';
 import 'ui/viewmodels/episode_viewmodel.dart';
+import 'ui/viewmodels/kpis_viewmodel.dart';
 import 'ui/viewmodels/login_viewmodel.dart';
 import 'ui/viewmodels/service_kpis_viewmodel.dart';
 import 'ui/views/home_view.dart';
@@ -63,6 +65,9 @@ void main() {
         Provider(
           create: (context) => UserRepository(context.read<ApiClient>()),
         ),
+        Provider(
+          create: (context) => KpisRepository(context.read<ApiClient>()),
+        ),
 
         Provider(
           create: (context) => AuthService(
@@ -86,6 +91,10 @@ void main() {
         ChangeNotifierProvider(
           create: (context) =>
               ServiceKpisViewModel(repository: context.read<UserRepository>()),
+        ),
+        ChangeNotifierProvider(
+          create: (context) =>
+              KpisViewModel(repository: context.read<KpisRepository>()),
         ),
       ],
       child: const MyApp(),
