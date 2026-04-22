@@ -23,9 +23,10 @@ class _ServiceWorkloadViewState extends State<ServiceWorkloadView> {
   @override
   Widget build(BuildContext context) {
     final vm = context.watch<ServiceKpisViewModel>();
+    final isMobile = MediaQuery.of(context).size.width < 600;
 
     return Padding(
-      padding: EdgeInsets.all(32),
+      padding: EdgeInsets.all(isMobile ? 16.0 : 32.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

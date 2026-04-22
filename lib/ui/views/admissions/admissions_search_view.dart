@@ -102,11 +102,12 @@ class _AdmissionsSearchViewState extends State<AdmissionsSearchView> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 600;
+
     return Column(
       children: [
-        // Buscador Glassmorphism
         Padding(
-          padding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
+          padding: EdgeInsets.all(isMobile ? 16.0 : 24.0),
           child: GlassContainer(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
             child: TextField(
@@ -124,12 +125,11 @@ class _AdmissionsSearchViewState extends State<AdmissionsSearchView> {
           ),
         ),
 
-        // Lista de Resultados
         Expanded(
           child: _currentQuery.isEmpty
               ? const Center(
                   child: Text(
-                    "Introduce los apellidos de un paciente para buscar",
+                    "Introduce los apellidos de un paciente",
                     style: TextStyle(color: Colors.black54, fontSize: 16),
                   ),
                 )
@@ -138,6 +138,7 @@ class _AdmissionsSearchViewState extends State<AdmissionsSearchView> {
                   child: Text(
                     "No se han encontrado ingresos en tu servicio con ese criterio de búsqueda",
                     style: TextStyle(color: Colors.black54, fontSize: 16),
+                    textAlign: TextAlign.center,
                   ),
                 )
               : ListView.builder(

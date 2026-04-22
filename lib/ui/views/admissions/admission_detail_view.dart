@@ -92,51 +92,57 @@ class _AdmissionDetailContent extends StatelessWidget {
     final bool isMobile = MediaQuery.of(context).size.width < 600;
 
     return GradientScaffold(
-      appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: GlassContainer(
-            blur: 10,
-            opacity: 0.2,
-            borderRadius: BorderRadius.circular(50),
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                borderRadius: BorderRadius.circular(50),
-                splashColor: AppTheme.primaryBlue.withValues(alpha: 0.3),
-                highlightColor: AppTheme.primaryBlue.withValues(alpha: 0.1),
-                onTap: () => Navigator.of(context).pop(),
-                child: const Icon(
-                  Icons.arrow_back_ios_new_rounded,
-                  color: Colors.black87,
-                ),
-              ),
-            ),
-          ),
-        ),
-        title: Text(
-          "Detalle de Ingreso",
-          style: const TextStyle(
-            color: Colors.black87,
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-          ),
-          overflow: TextOverflow.ellipsis,
-        ),
-      ),
       body: SingleChildScrollView(
         padding: EdgeInsets.only(
-          top:
-              MediaQuery.of(context).padding.top +
-              kToolbarHeight +
-              (isMobile ? 8 : 16),
-          left: isMobile ? 16 : 24,
-          right: isMobile ? 16 : 24,
-          bottom: isMobile ? 24 : 32,
+          top: MediaQuery.of(context).padding.top + (isMobile ? 16.0 : 32.0),
+          left: isMobile ? 16.0 : 32.0,
+          right: isMobile ? 16.0 : 32.0,
+          bottom: isMobile ? 24.0 : 32.0,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Custom Header with Back Button
+            Row(
+              children: [
+                GlassContainer(
+                  blur: 10,
+                  opacity: 0.2,
+                  borderRadius: BorderRadius.circular(50),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(50),
+                      splashColor: AppTheme.primaryBlue.withValues(alpha: 0.3),
+                      highlightColor: AppTheme.primaryBlue.withValues(
+                        alpha: 0.1,
+                      ),
+                      onTap: () => Navigator.of(context).pop(),
+                      child: const Padding(
+                        padding: EdgeInsets.all(12.0),
+                        child: Icon(
+                          Icons.arrow_back_ios_new_rounded,
+                          color: Colors.black87,
+                          size: 20,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                const Expanded(
+                  child: Text(
+                    "Detalle de ingreso",
+                    style: TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
             _PatientInfoCard(
               admission: admission,
               onEdit: () => _openUpdateSheet(context),
@@ -258,25 +264,43 @@ class _PatientInfoCard extends StatelessWidget {
                         spacing: 8,
                         runSpacing: 6,
                         children: [
-                          _DiagnosisChip(
-                            admission.principalDiagnosis ?? "Sin diagnóstico",
+                          _SpecialChip(
+                            (admission.allergies != null &&
+                                    admission.allergies!.trim().isNotEmpty &&
+                                    admission.allergies!.toLowerCase() !=
+                                        "no conocidas")
+                                ? "Alergias: ${admission.allergies!}"
+                                : "Sin alergias conocidas",
+                            Colors.redAccent,
                           ),
+                          _SpecialChip(
+                            admission.principalDiagnosis ?? "Sin diagnóstico",
+                            AppTheme.primaryBlue,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 6),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 6,
+                        children: [
                           _InfoChip(
                             icon: Icons.door_front_door_outlined,
                             label: admission.roomNumber != null
                                 ? "Hab. ${admission.roomNumber}"
                                 : "Pend. habitación",
                           ),
+                          _InfoChip(
+                            icon: Icons.fact_check_outlined,
+                            label:
+                                "Nº HC: ${patient.patientId.length > 8 ? patient.patientId.substring(0, 8) : patient.patientId}",
+                          ),
                         ],
-                      ),
-                      const SizedBox(height: 6),
-                      _InfoChip(
-                        icon: Icons.fact_check_outlined,
-                        label: "Nº HC: ${patient.patientId}",
                       ),
                     ],
                   ),
                 ),
+                const SizedBox(width: 12),
                 // Botón Editar Ingreso
                 GlassContainer(
                   blur: 10,
@@ -400,7 +424,7 @@ class _AdmissionUpdateSheetState extends State<_AdmissionUpdateSheet> {
     super.dispose();
   }
 
-  void _showFeedback(bool success, String message) {
+  void _showFeedback(bool success, String message, {VoidCallback? onConfirm}) {
     showDialog(
       context: context,
       barrierColor: Colors.black.withValues(alpha: 0.05),
@@ -413,7 +437,7 @@ class _AdmissionUpdateSheetState extends State<_AdmissionUpdateSheet> {
             children: [
               Icon(
                 success ? Icons.check_circle : Icons.error_outline_rounded,
-                size: 56,
+                size: 28,
                 color: success ? Colors.green : Colors.redAccent,
               ),
               const SizedBox(height: 16),
@@ -426,17 +450,23 @@ class _AdmissionUpdateSheetState extends State<_AdmissionUpdateSheet> {
                 ),
               ),
               const SizedBox(height: 24),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.gradientStart,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppTheme.gradientStart,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
-                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  onPressed: () {
+                    Navigator.of(ctx).pop();
+                    if (onConfirm != null) onConfirm();
+                  },
+                  child: const Text("Aceptar"),
                 ),
-                onPressed: () => Navigator.of(ctx).pop(),
-                child: const Text("Aceptar"),
               ),
             ],
           ),
@@ -514,6 +544,7 @@ class _AdmissionUpdateSheetState extends State<_AdmissionUpdateSheet> {
                         onPressed: () async {
                           final res = await showDialog<int>(
                             context: context,
+                            barrierColor: Colors.transparent,
                             builder: (_) => const BarthelCalculatorDialog(),
                           );
                           if (res != null) {
@@ -600,11 +631,11 @@ class _AdmissionUpdateSheetState extends State<_AdmissionUpdateSheet> {
                                         const Icon(
                                           Icons.warning_amber_rounded,
                                           color: Colors.redAccent,
-                                          size: 48,
+                                          size: 28,
                                         ),
                                         const SizedBox(height: 16),
                                         const Text(
-                                          "Firmar Alta",
+                                          "Firmar alta",
                                           style: TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold,
@@ -639,8 +670,8 @@ class _AdmissionUpdateSheetState extends State<_AdmissionUpdateSheet> {
                                             Expanded(
                                               child: ElevatedButton(
                                                 style: ElevatedButton.styleFrom(
-                                                  backgroundColor: Colors
-                                                      .redAccent
+                                                  backgroundColor: AppTheme
+                                                      .gradientStart
                                                       .withValues(alpha: 0.8),
                                                   foregroundColor: Colors.white,
                                                   shape: RoundedRectangleBorder(
@@ -667,11 +698,24 @@ class _AdmissionUpdateSheetState extends State<_AdmissionUpdateSheet> {
                                 final success = await vm.dischargeAdmission(
                                   widget.admission.admissionId,
                                 );
-                                if (success && mounted) {
-                                  Navigator.of(context).pop(); // Cierra sheet
-                                  Navigator.of(
-                                    context,
-                                  ).pop(); // Vuelve al dashboard
+                                if (mounted) {
+                                  if (success) {
+                                    final navigator = Navigator.of(context);
+                                    navigator.pop(); // Cierra sheet
+                                    _showFeedback(
+                                      true,
+                                      "Alta firmada con éxito",
+                                      onConfirm: () {
+                                        navigator.pop(); // Vuelve al dashboard
+                                      },
+                                    );
+                                  } else {
+                                    _showFeedback(
+                                      false,
+                                      vm.errorMessage ??
+                                          "Error al firmar el alta",
+                                    );
+                                  }
                                 }
                               }
                             },
@@ -873,25 +917,24 @@ class _LongTextField extends StatelessWidget {
   }
 }
 
-class _DiagnosisChip extends StatelessWidget {
+class _SpecialChip extends StatelessWidget {
+  final Color color;
   final String label;
-  const _DiagnosisChip(this.label);
+  const _SpecialChip(this.label, this.color);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: const Color(0xFF4C56AF).withValues(alpha: 0.15),
+        color: color.withValues(alpha: 0.35),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: const Color(0xFF4C56AF).withValues(alpha: 0.35),
-        ),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.6)),
       ),
       child: Text(
         label,
         style: const TextStyle(
-          color: Color(0xFF4C56AF),
+          color: Colors.white,
           fontSize: 12,
           fontWeight: FontWeight.bold,
         ),
@@ -919,9 +962,12 @@ class _InfoChip extends StatelessWidget {
         children: [
           Icon(icon, size: 14, color: Colors.black54),
           const SizedBox(width: 4),
-          Text(
-            label,
-            style: const TextStyle(fontSize: 12, color: Colors.black54),
+          Flexible(
+            child: Text(
+              label,
+              style: const TextStyle(fontSize: 12, color: Colors.black54),
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ],
       ),

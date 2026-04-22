@@ -39,7 +39,7 @@ class _AdmissionDashboardState extends State<AdmissionDashboard> {
         if (viewModel.admissions.isEmpty) {
           return const Center(
             child: Text(
-              "No hay ingresos asignados.",
+              "No hay ingresos asignados",
               style: TextStyle(fontSize: 18, color: Colors.black54),
             ),
           );
@@ -50,8 +50,8 @@ class _AdmissionDashboardState extends State<AdmissionDashboard> {
         return GridView.builder(
           padding: const EdgeInsets.all(16),
           gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: width < 600 ? 500 : 300,
-            childAspectRatio: width < 600 ? 1.6 : 1.2,
+            maxCrossAxisExtent: width < 600 ? 500 : 350,
+            childAspectRatio: width < 600 ? 1.4 : 1.20,
             crossAxisSpacing: 16,
             mainAxisSpacing: 16,
           ),

@@ -28,7 +28,7 @@ class AdmissionCard extends StatelessWidget {
           },
           child: LayoutBuilder(
             builder: (context, constraints) {
-              final bool isSmallCard = constraints.maxWidth < 300;
+              final bool isSmallCard = constraints.maxWidth < 500;
               final patient = admission.patient;
               final bool isFemale = patient.sex.toUpperCase() == 'F';
 

@@ -49,15 +49,26 @@ class _JefeServicioMainViewState extends State<JefeServicioMainView> {
                     _selectedIndex = index;
                   });
                 },
-                leading: const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                  child: Text(
-                    "KLINICO",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: AppTheme.primaryBlue,
-                    ),
+                leading: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 20,
+                    horizontal: 10,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Image.asset('assets/logo2.png', height: 32),
+                      const SizedBox(width: 8),
+                      const Text(
+                        "KLINICO",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: AppTheme.primaryBlue,
+                          letterSpacing: 1,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 trailing: Expanded(
@@ -109,19 +120,24 @@ class _JefeServicioMainViewState extends State<JefeServicioMainView> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
-                            "KLINICO",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 22,
-                              color: AppTheme.primaryBlue,
-                            ),
+                          Row(
+                            children: [
+                              Image.asset('assets/logo2.png', height: 28),
+                              const SizedBox(width: 8),
+                              const Text(
+                                "KLINICO",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 22,
+                                  color: AppTheme.primaryBlue,
+                                ),
+                              ),
+                            ],
                           ),
                           const _LogoutButton(compact: true),
                         ],
                       ),
                     ),
-                  // Dashboard y Vistas
                   Expanded(
                     child: Builder(
                       builder: (context) {
@@ -274,9 +290,15 @@ class _LogoutButton extends StatelessWidget {
           splashColor: AppTheme.primaryBlue.withValues(alpha: 0.3),
           highlightColor: AppTheme.primaryBlue.withValues(alpha: 0.1),
           child: IconButton(
-            padding: compact ? const EdgeInsets.all(6) : const EdgeInsets.all(8),
+            padding: compact
+                ? const EdgeInsets.all(6)
+                : const EdgeInsets.all(8),
             constraints: compact ? const BoxConstraints() : null,
-            icon: Icon(Icons.logout, color: AppTheme.primaryBlue, size: compact ? 20 : 24),
+            icon: Icon(
+              Icons.logout,
+              color: AppTheme.primaryBlue,
+              size: compact ? 20 : 24,
+            ),
             onPressed: () async {
               final bool? confirm = await showDialog<bool>(
                 context: context,

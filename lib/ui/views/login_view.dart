@@ -15,7 +15,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  // 1. Definimos los controladores (se limpian en el dispose)
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool passwordVisible = false;
@@ -35,20 +34,15 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Escuchamos al ViewModel para saber si hay errores o estamos cargando
     final viewModel = context.watch<LoginViewModel>();
 
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
         decoration: AppTheme.backgroundDecoration,
-        // Centrado total para Tablet
         child: SingleChildScrollView(
-          // Por si sale el teclado
           child: ConstrainedBox(
-            constraints: const BoxConstraints(
-              maxWidth: 450,
-            ), // Bloqueamos el ancho
+            constraints: const BoxConstraints(maxWidth: 450),
             child: Padding(
               padding: const EdgeInsets.all(32.0),
               child: GlassContainer(
@@ -59,12 +53,15 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // TODO: Logo e Icono
+                      Image.asset('assets/logo2.png', height: 100),
+                      const SizedBox(height: 20),
                       const Text(
-                        "Klinico",
+                        "KLINICO",
                         style: TextStyle(
-                          fontSize: 24,
+                          fontSize: 28,
+                          color: AppTheme.primaryBlue,
                           fontWeight: FontWeight.bold,
+                          letterSpacing: 2,
                         ),
                       ),
                       const SizedBox(height: 30),
@@ -104,24 +101,18 @@ class _LoginPageState extends State<LoginPage> {
 
                       const SizedBox(height: 20),
 
-                      // El Botón de Acción
                       viewModel.isLoading
                           ? const CircularProgressIndicator()
                           : ElevatedButton(
                               onPressed: () => _handleLogin(context, viewModel),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Color.fromARGB(
-                                  255,
-                                  128,
-                                  160,
-                                  176,
-                                ),
+                                backgroundColor: AppTheme.gradientStart,
                                 foregroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(16),
                                 ),
                               ),
-                              child: const Text("Iniciar Sesión"),
+                              child: const Text("Iniciar sesión"),
                             ),
                     ],
                   ),

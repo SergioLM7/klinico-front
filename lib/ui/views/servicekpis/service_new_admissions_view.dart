@@ -40,11 +40,8 @@ class _ServiceNewAdmissionsViewState extends State<ServiceNewAdmissionsView> {
     showDialog(
       context: context,
       barrierColor: Colors.black.withValues(alpha: 0.1),
-      builder: (ctx) => _DoctorAssignmentDialog(
-        admission: admission,
-        parentCtx:
-            context, // Pasamos el contexto original para poder notificar éxito
-      ),
+      builder: (ctx) =>
+          _DoctorAssignmentDialog(admission: admission, parentCtx: context),
     );
   }
 
@@ -59,7 +56,7 @@ class _ServiceNewAdmissionsViewState extends State<ServiceNewAdmissionsView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            "Nuevos ingresos del servicio",
+            "Nuevos ingresos",
             style: TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.bold,
@@ -68,7 +65,7 @@ class _ServiceNewAdmissionsViewState extends State<ServiceNewAdmissionsView> {
           ),
           const SizedBox(height: 8),
           const Text(
-            "Listado de nuevas altas en tu servicio. Pulsa el botón de edición para reasignar a un médico.",
+            "Listado de nuevos ingresos en tu servicio. Pulsa el botón de edición para reasignar a un médico",
             style: TextStyle(fontSize: 16, color: Colors.black54),
           ),
           const SizedBox(height: 24),
@@ -89,7 +86,7 @@ class _ServiceNewAdmissionsViewState extends State<ServiceNewAdmissionsView> {
                   : vm.admissions.isEmpty
                   ? const Center(
                       child: Text(
-                        "No hay nuevos ingresos registrados.",
+                        "No hay nuevos ingresos registrados",
                         style: TextStyle(fontSize: 16, color: Colors.black54),
                       ),
                     )
@@ -209,7 +206,7 @@ class _ServiceNewAdmissionsViewState extends State<ServiceNewAdmissionsView> {
     return ListView.separated(
       padding: const EdgeInsets.all(16),
       itemCount: vm.admissions.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 16),
+      separatorBuilder: (_, _) => const SizedBox(height: 16),
       itemBuilder: (context, index) {
         final admission = vm.admissions[index];
         final createdAt = admission.createdAt;
@@ -373,7 +370,7 @@ class _DoctorAssignmentDialogState extends State<_DoctorAssignmentDialog> {
               children: [
                 const Icon(
                   Icons.error_outline_rounded,
-                  size: 56,
+                  size: 28,
                   color: Colors.redAccent,
                 ),
                 const SizedBox(height: 16),
@@ -419,7 +416,7 @@ class _DoctorAssignmentDialogState extends State<_DoctorAssignmentDialog> {
         _isSubmitting = false;
       });
 
-      Navigator.pop(context); // Cerramos el dialog
+      Navigator.pop(context);
 
       showDialog(
         context: widget.parentCtx,
@@ -433,7 +430,7 @@ class _DoctorAssignmentDialogState extends State<_DoctorAssignmentDialog> {
               children: [
                 Icon(
                   success ? Icons.check_circle : Icons.error,
-                  size: 64,
+                  size: 28,
                   color: success ? Colors.green : Colors.red,
                 ),
                 const SizedBox(height: 16),
