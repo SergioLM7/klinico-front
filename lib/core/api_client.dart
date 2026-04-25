@@ -14,7 +14,7 @@ class ApiClient {
       BaseOptions(
         baseUrl: 'http://localhost:8080/api/v1',
         connectTimeout: const Duration(seconds: 5),
-        receiveTimeout: const Duration(seconds: 3),
+        receiveTimeout: const Duration(seconds: 15),
         contentType: 'application/json',
       ),
     );
@@ -96,14 +96,26 @@ class ApiClient {
         error.response?.data['message'] ??
             "Email o contraseña con formato incorrecto. Revisa los datos enviados.",
       );
-    } else if (error.response?.statusCode == 500) {
-      throw AuthException("Error en el servidor. Inténtalo más tarde.");
-    } else if (error.type == DioExceptionType.connectionTimeout) {
+    } else if (error.response?.statusCode == 500 ||
+        error.response?.statusCode == 503) {
       throw AuthException(
-        "El servidor no responde. Revisa tu conexión a internet",
+        error.response?.statusCode == 503
+            ? "Servicio temporalmente no disponible. Inténtalo más tarde o contacta con el servicio técnico."
+            : "Error interno en el servidor. Inténtalo más tarde o contacta con el servicio técnico.",
+      );
+    } else if (error.type == DioExceptionType.connectionTimeout ||
+        error.type == DioExceptionType.connectionError) {
+      throw AuthException(
+        "No se pudo conectar con el servidor. Contacta con el servicio técnico",
+      );
+    } else if (error.response == null) {
+      throw AuthException(
+        "No se recibió respuesta del servidor. Contacta con el servicio técnico",
       );
     } else {
-      throw AuthException("Error inesperado: ${error.message}");
+      throw AuthException(
+        "Error inesperado: ${error.message}. Contacta con el servicio técnico",
+      );
     }
   }
 }

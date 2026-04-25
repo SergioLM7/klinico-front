@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Image.asset('assets/logo2.png', height: 100),
+                      Image.asset('assets/logo.png', height: 100),
                       const SizedBox(height: 20),
                       const Text(
                         "KLINICO",
@@ -135,7 +135,7 @@ class _LoginPageState extends State<LoginPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text("Acceso concedido. Bienvenida/o ${vm.userName ?? ''}."),
-          backgroundColor: Colors.green,
+          backgroundColor: AppTheme.gradientStart,
           behavior: SnackBarBehavior.floating,
         ),
       );

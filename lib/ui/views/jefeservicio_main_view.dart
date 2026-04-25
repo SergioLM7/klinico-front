@@ -57,7 +57,7 @@ class _JefeServicioMainViewState extends State<JefeServicioMainView> {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Image.asset('assets/logo2.png', height: 32),
+                      Image.asset('assets/logo.png', height: 32),
                       const SizedBox(width: 8),
                       const Text(
                         "KLINICO",
@@ -122,7 +122,7 @@ class _JefeServicioMainViewState extends State<JefeServicioMainView> {
                         children: [
                           Row(
                             children: [
-                              Image.asset('assets/logo2.png', height: 28),
+                              Image.asset('assets/logo.png', height: 28),
                               const SizedBox(width: 8),
                               const Text(
                                 "KLINICO",
