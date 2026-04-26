@@ -9,6 +9,7 @@ import '../../widgets/cam_calculator_dialog.dart';
 import '../../widgets/chads2_calculator_dialog.dart';
 import '../../widgets/glass_container.dart';
 import '../../widgets/gradient_scaffold.dart';
+import '../../widgets/scale_button.dart';
 
 class EpisodeFormView extends StatefulWidget {
   final String admissionId;
@@ -165,278 +166,300 @@ class _EpisodeFormViewState extends State<EpisodeFormView> {
     final bool isMobile = MediaQuery.of(context).size.width < 600;
 
     return GradientScaffold(
-      appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: GlassContainer(
-            blur: 10,
-            opacity: 0.2,
-            borderRadius: BorderRadius.circular(50),
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                borderRadius: BorderRadius.circular(50),
-                splashColor: AppTheme.primaryBlue.withValues(alpha: 0.3),
-                highlightColor: AppTheme.primaryBlue.withValues(alpha: 0.1),
-                onTap: () => Navigator.of(context).pop(),
-                child: const Icon(
-                  Icons.arrow_back_ios_new_rounded,
-                  color: Colors.black87,
+      body: SingleChildScrollView(
+        padding: EdgeInsets.only(
+          top: MediaQuery.of(context).padding.top + (isMobile ? 16.0 : 32.0),
+          left: isMobile ? 16.0 : 32.0,
+          right: isMobile ? 16.0 : 32.0,
+          bottom: isMobile ? 24.0 : 32.0,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Custom Header with Back Button
+            Row(
+              children: [
+                ScaleButton(
+                  onTap: () => Navigator.of(context).pop(),
+                  child: GlassContainer(
+                    blur: 10,
+                    opacity: 0.2,
+                    borderRadius: BorderRadius.circular(50),
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(50),
+                      splashColor: AppTheme.primaryBlue.withValues(alpha: 0.3),
+                      highlightColor: AppTheme.primaryBlue.withValues(
+                        alpha: 0.1,
+                      ),
+                      child: const Tooltip(
+                        message: "Volver",
+                        child: Padding(
+                          padding: EdgeInsets.all(12.0),
+                          child: Icon(
+                            Icons.arrow_back_ios_new_rounded,
+                            color: Colors.black87,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Text(
+                    "Nuevo episodio clínico",
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SingleChildScrollView(
+              padding: EdgeInsets.all(16),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    GlassContainer(
+                      blur: 15,
+                      opacity: 0.2,
+                      borderRadius: BorderRadius.circular(20),
+                      padding: EdgeInsets.all(isMobile ? 16 : 24),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Información principal",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          _buildTextField(
+                            controller: _clinicalProgressController,
+                            label: "Progreso clínico*",
+                            hint: "Describa la evolución del paciente...",
+                            maxLines: 4,
+                            validator: (value) => value == null || value.isEmpty
+                                ? "Requerido"
+                                : null,
+                          ),
+                          const SizedBox(height: 16),
+                          _buildTextField(
+                            controller: _diagnosisController,
+                            label: "Diagnóstico*",
+                            hint: "Indique el diagnóstico...",
+                            maxLines: 2,
+                            validator: (value) => value == null || value.isEmpty
+                                ? "Requerido"
+                                : null,
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    GlassContainer(
+                      blur: 15,
+                      opacity: 0.2,
+                      borderRadius: BorderRadius.circular(20),
+                      padding: EdgeInsets.all(isMobile ? 16 : 24),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Escalas (Opcional)",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: _buildTextField(
+                                  controller: _bradenScoreController,
+                                  label: "Braden Score",
+                                  hint: "Ej. 15",
+                                  keyboardType: TextInputType.number,
+                                  suffixIcon: IconButton(
+                                    icon: const Icon(
+                                      Icons.calculate_rounded,
+                                      color: AppTheme.primaryBlue,
+                                    ),
+                                    tooltip: "Calcular escala Braden",
+                                    onPressed: () async {
+                                      final int? result = await showDialog<int>(
+                                        context: context,
+                                        barrierColor: Colors.black.withValues(
+                                          alpha: 0.05,
+                                        ),
+                                        builder: (context) =>
+                                            const BradenCalculatorDialog(),
+                                      );
+                                      if (result != null) {
+                                        _bradenScoreController.text = result
+                                            .toString();
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: _buildTextField(
+                                  controller: _chads2ScoreController,
+                                  label: "CHADS2 Score",
+                                  hint: "Ej. 2",
+                                  keyboardType: TextInputType.number,
+                                  suffixIcon: IconButton(
+                                    icon: const Icon(
+                                      Icons.calculate_rounded,
+                                      color: AppTheme.primaryBlue,
+                                    ),
+                                    tooltip: "Calcular CHADS2 Score",
+                                    onPressed: () async {
+                                      final int? result = await showDialog<int>(
+                                        context: context,
+                                        barrierColor: Colors.black.withValues(
+                                          alpha: 0.05,
+                                        ),
+                                        builder: (context) =>
+                                            const Chads2CalculatorDialog(),
+                                      );
+                                      if (result != null) {
+                                        _chads2ScoreController.text = result
+                                            .toString();
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          const Text(
+                            "CAM Score",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withValues(alpha: 0.4),
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(
+                                      color: Colors.white.withValues(
+                                        alpha: 0.6,
+                                      ),
+                                    ),
+                                  ),
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton<bool?>(
+                                      value: _camScore,
+                                      isExpanded: true,
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                      ),
+                                      borderRadius: BorderRadius.circular(12),
+                                      hint: const Text(
+                                        "Seleccione resultado CAM",
+                                      ),
+                                      items: const [
+                                        DropdownMenuItem(
+                                          value: null,
+                                          child: Text("No evaluado"),
+                                        ),
+                                        DropdownMenuItem(
+                                          value: true,
+                                          child: Text("Positivo"),
+                                        ),
+                                        DropdownMenuItem(
+                                          value: false,
+                                          child: Text("Negativo"),
+                                        ),
+                                      ],
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _camScore = value;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.calculate_rounded,
+                                  color: AppTheme.primaryBlue,
+                                  size: 32,
+                                ),
+                                tooltip: "Calcular escala CAM",
+                                onPressed: () async {
+                                  final bool? result = await showDialog<bool>(
+                                    context: context,
+                                    barrierColor: Colors.black.withValues(
+                                      alpha: 0.05,
+                                    ),
+                                    builder: (context) =>
+                                        const CamCalculatorDialog(),
+                                  );
+                                  if (result != null) {
+                                    setState(() {
+                                      _camScore = result;
+                                    });
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 32),
+
+                    _isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : ElevatedButton(
+                            onPressed: _submitForm,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppTheme.gradientStart,
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            child: const Text(
+                              "Guardar Episodio",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                  ],
                 ),
               ),
             ),
-          ),
-        ),
-        title: const Text(
-          "Nuevo Episodio Clínico",
-          style: TextStyle(
-            color: Colors.black87,
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-          ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.only(
-          top:
-              MediaQuery.of(context).padding.top +
-              kToolbarHeight +
-              (isMobile ? 8 : 16),
-          left: isMobile ? 16 : 24,
-          right: isMobile ? 16 : 24,
-          bottom: isMobile ? 24 : 32,
-        ),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              GlassContainer(
-                blur: 15,
-                opacity: 0.2,
-                borderRadius: BorderRadius.circular(20),
-                padding: EdgeInsets.all(isMobile ? 16 : 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Información principal",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    _buildTextField(
-                      controller: _clinicalProgressController,
-                      label: "Progreso clínico*",
-                      hint: "Describa la evolución del paciente...",
-                      maxLines: 4,
-                      validator: (value) =>
-                          value == null || value.isEmpty ? "Requerido" : null,
-                    ),
-                    const SizedBox(height: 16),
-                    _buildTextField(
-                      controller: _diagnosisController,
-                      label: "Diagnóstico*",
-                      hint: "Indique el diagnóstico...",
-                      maxLines: 2,
-                      validator: (value) =>
-                          value == null || value.isEmpty ? "Requerido" : null,
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 24),
-
-              GlassContainer(
-                blur: 15,
-                opacity: 0.2,
-                borderRadius: BorderRadius.circular(20),
-                padding: EdgeInsets.all(isMobile ? 16 : 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Escalas (Opcional)",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _buildTextField(
-                            controller: _bradenScoreController,
-                            label: "Braden Score",
-                            hint: "Ej. 15",
-                            keyboardType: TextInputType.number,
-                            suffixIcon: IconButton(
-                              icon: const Icon(
-                                Icons.calculate_rounded,
-                                color: AppTheme.primaryBlue,
-                              ),
-                              tooltip: "Calcular Escala Braden",
-                              onPressed: () async {
-                                final int? result = await showDialog<int>(
-                                  context: context,
-                                  barrierColor: Colors.black.withValues(
-                                    alpha: 0.05,
-                                  ),
-                                  builder: (context) =>
-                                      const BradenCalculatorDialog(),
-                                );
-                                if (result != null) {
-                                  _bradenScoreController.text = result
-                                      .toString();
-                                }
-                              },
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: _buildTextField(
-                            controller: _chads2ScoreController,
-                            label: "CHADS2 Score",
-                            hint: "Ej. 2",
-                            keyboardType: TextInputType.number,
-                            suffixIcon: IconButton(
-                              icon: const Icon(
-                                Icons.calculate_rounded,
-                                color: AppTheme.primaryBlue,
-                              ),
-                              tooltip: "Calcular con formulario",
-                              onPressed: () async {
-                                final int? result = await showDialog<int>(
-                                  context: context,
-                                  barrierColor: Colors.black.withValues(
-                                    alpha: 0.05,
-                                  ),
-                                  builder: (context) =>
-                                      const Chads2CalculatorDialog(),
-                                );
-                                if (result != null) {
-                                  _chads2ScoreController.text = result
-                                      .toString();
-                                }
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    const Text(
-                      "CAM Score",
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.black87,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.4),
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: Colors.white.withValues(alpha: 0.6),
-                              ),
-                            ),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton<bool?>(
-                                value: _camScore,
-                                isExpanded: true,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                ),
-                                borderRadius: BorderRadius.circular(12),
-                                hint: const Text("Seleccione resultado CAM"),
-                                items: const [
-                                  DropdownMenuItem(
-                                    value: null,
-                                    child: Text("No evaluado"),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: true,
-                                    child: Text("Positivo"),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: false,
-                                    child: Text("Negativo"),
-                                  ),
-                                ],
-                                onChanged: (value) {
-                                  setState(() {
-                                    _camScore = value;
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        IconButton(
-                          icon: const Icon(
-                            Icons.calculate_rounded,
-                            color: AppTheme.primaryBlue,
-                            size: 32,
-                          ),
-                          tooltip: "Calcular Escala CAM",
-                          onPressed: () async {
-                            final bool? result = await showDialog<bool>(
-                              context: context,
-                              barrierColor: Colors.black.withValues(
-                                alpha: 0.05,
-                              ),
-                              builder: (context) => const CamCalculatorDialog(),
-                            );
-                            if (result != null) {
-                              setState(() {
-                                _camScore = result;
-                              });
-                            }
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 32),
-
-              _isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : ElevatedButton(
-                      onPressed: _submitForm,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppTheme.gradientStart,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      child: const Text(
-                        "Guardar Episodio",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-            ],
-          ),
+          ],
         ),
       ),
     );

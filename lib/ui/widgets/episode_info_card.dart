@@ -10,6 +10,7 @@ import '../widgets/braden_calculator_dialog.dart';
 import '../widgets/cam_calculator_dialog.dart';
 import '../widgets/chads2_calculator_dialog.dart';
 import 'glass_container.dart';
+import 'scale_button.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Tarjeta de información principal del episodio
@@ -81,11 +82,11 @@ class EpisodeInfoCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        "Registro Médico",
+                      Text(
+                        "Registro médico",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                          fontSize: isMobile ? 18 : 20,
                           color: Colors.black87,
                         ),
                       ),
@@ -129,34 +130,36 @@ class EpisodeInfoCard extends StatelessWidget {
                 if (canEdit)
                   Padding(
                     padding: const EdgeInsets.only(left: 4),
-                    child: GlassContainer(
-                      blur: 10,
-                      opacity: 0.2,
-                      borderRadius: BorderRadius.circular(50),
-                      child: Tooltip(
-                        message: "Editar episodio",
-                        child: Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(50),
-                            splashColor: AppTheme.primaryBlue.withValues(
-                              alpha: 0.2,
-                            ),
-                            highlightColor: Colors.transparent,
-                            onTap: () => _openEditSheet(context),
-                            child: Container(
-                              width: 36,
-                              height: 36,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppTheme.primaryBlue.withValues(
-                                  alpha: 0.05,
-                                ),
+                    child: ScaleButton(
+                      onTap: () => _openEditSheet(context),
+                      child: GlassContainer(
+                        blur: 10,
+                        opacity: 0.2,
+                        borderRadius: BorderRadius.circular(50),
+                        child: Tooltip(
+                          message: "Editar episodio",
+                          child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(50),
+                              splashColor: AppTheme.primaryBlue.withValues(
+                                alpha: 0.2,
                               ),
-                              child: const Icon(
-                                Icons.edit_rounded,
-                                size: 24,
-                                color: AppTheme.primaryBlue,
+                              highlightColor: Colors.transparent,
+                              child: Container(
+                                width: 36,
+                                height: 36,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppTheme.primaryBlue.withValues(
+                                    alpha: 0.05,
+                                  ),
+                                ),
+                                child: const Icon(
+                                  Icons.edit_rounded,
+                                  size: 24,
+                                  color: AppTheme.primaryBlue,
+                                ),
                               ),
                             ),
                           ),

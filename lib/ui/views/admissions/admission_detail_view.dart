@@ -14,6 +14,7 @@ import '../episodes/episode_form_view.dart';
 import '../../widgets/barthel_calculator_dialog.dart';
 import '../../widgets/glass_container.dart';
 import '../../widgets/gradient_scaffold.dart';
+import '../../widgets/scale_button.dart';
 
 /// Vista de detalle de un ingreso.
 class AdmissionDetailView extends StatefulWidget {
@@ -105,36 +106,42 @@ class _AdmissionDetailContent extends StatelessWidget {
             // Custom Header with Back Button
             Row(
               children: [
-                GlassContainer(
-                  blur: 10,
-                  opacity: 0.2,
-                  borderRadius: BorderRadius.circular(50),
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(50),
-                      splashColor: AppTheme.primaryBlue.withValues(alpha: 0.3),
-                      highlightColor: AppTheme.primaryBlue.withValues(
-                        alpha: 0.1,
-                      ),
-                      onTap: () => Navigator.of(context).pop(),
-                      child: const Padding(
-                        padding: EdgeInsets.all(12.0),
-                        child: Icon(
-                          Icons.arrow_back_ios_new_rounded,
-                          color: Colors.black87,
-                          size: 20,
+                ScaleButton(
+                  onTap: () => Navigator.of(context).pop(),
+                  child: GlassContainer(
+                    blur: 10,
+                    opacity: 0.2,
+                    borderRadius: BorderRadius.circular(50),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(50),
+                        splashColor: AppTheme.primaryBlue.withValues(
+                          alpha: 0.3,
+                        ),
+                        highlightColor: AppTheme.primaryBlue.withValues(
+                          alpha: 0.1,
+                        ),
+                        child: const Tooltip(
+                          message: "Volver",
+                          child: Padding(
+                            padding: EdgeInsets.all(12.0),
+                            child: Icon(
+                              Icons.arrow_back_ios_new_rounded,
+                              color: Colors.black87,
+                            ),
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
                 const SizedBox(width: 16),
-                const Expanded(
+                Expanded(
                   child: Text(
                     "Detalle de ingreso",
                     style: TextStyle(
-                      fontSize: 26,
+                      fontSize: isMobile ? 20 : 26,
                       fontWeight: FontWeight.bold,
                       color: Colors.black87,
                     ),
@@ -159,40 +166,31 @@ class _AdmissionDetailContent extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 16),
-                GlassContainer(
-                  blur: 10,
-                  opacity: 0.2,
-                  borderRadius: BorderRadius.circular(50),
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(50),
-                      splashColor: AppTheme.primaryBlue.withValues(alpha: 0.3),
-                      highlightColor: AppTheme.primaryBlue.withValues(
-                        alpha: 0.1,
+                ScaleButton(
+                  onTap: () async {
+                    final result = await Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            EpisodeFormView(admissionId: admission.admissionId),
                       ),
-                      onTap: () async {
-                        final result = await Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => EpisodeFormView(
-                              admissionId: admission.admissionId,
-                            ),
-                          ),
-                        );
-                        if (result == true && context.mounted) {
-                          context.read<EpisodeViewModel>().loadEpisodes(
-                            admission.admissionId,
-                          );
-                        }
-                      },
-                      child: const Tooltip(
-                        message: "Nuevo episodio",
-                        child: Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Icon(
-                            Icons.add_rounded,
-                            color: AppTheme.primaryBlue,
-                          ),
+                    );
+                    if (result == true && context.mounted) {
+                      context.read<EpisodeViewModel>().loadEpisodes(
+                        admission.admissionId,
+                      );
+                    }
+                  },
+                  child: GlassContainer(
+                    blur: 10,
+                    opacity: 0.2,
+                    borderRadius: BorderRadius.circular(50),
+                    child: const Tooltip(
+                      message: "Nuevo episodio",
+                      child: Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Icon(
+                          Icons.add_rounded,
+                          color: AppTheme.primaryBlue,
                         ),
                       ),
                     ),
@@ -302,34 +300,26 @@ class _PatientInfoCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 12),
                 // Botón Editar Ingreso
-                GlassContainer(
-                  blur: 10,
-                  opacity: 0.2,
-                  borderRadius: BorderRadius.circular(50),
-                  child: Tooltip(
-                    message: "Editar ingreso",
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(50),
-                        splashColor: AppTheme.primaryBlue.withValues(
-                          alpha: 0.2,
+                ScaleButton(
+                  onTap: onEdit,
+                  child: GlassContainer(
+                    blur: 10,
+                    opacity: 0.2,
+                    borderRadius: BorderRadius.circular(50),
+                    child: Tooltip(
+                      message: "Editar ingreso",
+                      child: Container(
+                        width: 36,
+                        height: 36,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppTheme.primaryBlue.withValues(alpha: 0.05),
                         ),
-                        highlightColor: Colors.transparent,
-                        onTap: onEdit,
-                        child: Container(
-                          width: 36,
-                          height: 36,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppTheme.primaryBlue.withValues(alpha: 0.05),
-                          ),
-                          child: const Icon(
-                            Icons.edit_rounded,
-                            semanticLabel: "Editar ingreso",
-                            size: 24,
-                            color: AppTheme.primaryBlue,
-                          ),
+                        child: const Icon(
+                          Icons.edit_rounded,
+                          semanticLabel: "Editar ingreso",
+                          size: 24,
+                          color: AppTheme.primaryBlue,
                         ),
                       ),
                     ),

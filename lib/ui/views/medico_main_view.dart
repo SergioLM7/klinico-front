@@ -9,6 +9,7 @@ import '../widgets/gradient_scaffold.dart';
 import 'admissions/admission_form_view.dart';
 import 'admissions/admissions_search_view.dart';
 import '../viewmodels/login_viewmodel.dart';
+import '../widgets/scale_button.dart';
 import 'login_view.dart';
 
 class MedicoMainView extends StatefulWidget {
@@ -60,7 +61,7 @@ class _MedicoMainViewState extends State<MedicoMainView> {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Image.asset('assets/logo.png', height: 32),
+                      Image.asset('assets/logo2.png', height: 32),
                       const SizedBox(width: 8),
                       const Text(
                         "KLINICO",
@@ -79,168 +80,7 @@ class _MedicoMainViewState extends State<MedicoMainView> {
                     alignment: Alignment.bottomLeft,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: GlassContainer(
-                        blur: 10,
-                        opacity: 0.2,
-                        borderRadius: BorderRadius.circular(50),
-                        child: Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(50),
-                            splashColor: AppTheme.primaryBlue.withValues(
-                              alpha: 0.3,
-                            ),
-                            highlightColor: AppTheme.primaryBlue.withValues(
-                              alpha: 0.1,
-                            ),
-                            child: IconButton(
-                              icon: const Icon(
-                                Icons.logout,
-                                color: AppTheme.primaryBlue,
-                              ),
-                              onPressed: () async {
-                                final bool? confirm = await showDialog<bool>(
-                                  context: context,
-                                  barrierColor: Colors.black.withValues(
-                                    alpha: 0.05,
-                                  ),
-                                  builder: (BuildContext context) {
-                                    return Dialog(
-                                      backgroundColor: Colors.transparent,
-                                      elevation: 0,
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(20),
-                                        child: BackdropFilter(
-                                          filter: ImageFilter.blur(
-                                            sigmaX: 10,
-                                            sigmaY: 10,
-                                          ),
-                                          child: Container(
-                                            padding: const EdgeInsets.all(24),
-                                            decoration: BoxDecoration(
-                                              color: Colors.white.withValues(
-                                                alpha: 0.20,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                              border: Border.all(
-                                                color: Colors.white.withValues(
-                                                  alpha: 0.35,
-                                                ),
-                                                width: 1.5,
-                                              ),
-                                            ),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                const Row(
-                                                  children: [
-                                                    Icon(
-                                                      Icons
-                                                          .warning_amber_rounded,
-                                                      color: Colors.orange,
-                                                      size: 28,
-                                                    ),
-                                                    SizedBox(width: 10),
-                                                    Text(
-                                                      'Cerrar sesión',
-                                                      style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 20,
-                                                        color: Colors.black87,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                const SizedBox(height: 16),
-                                                const Text(
-                                                  '¿Estás seguro de que deseas cerrar la sesión actual?',
-                                                  style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: Colors.black87,
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 24),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.end,
-                                                  children: [
-                                                    TextButton(
-                                                      onPressed: () =>
-                                                          Navigator.of(
-                                                            context,
-                                                          ).pop(false),
-                                                      child: const Text(
-                                                        'Cancelar',
-                                                        style: TextStyle(
-                                                          color: Colors.black54,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 16,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    const SizedBox(width: 12),
-                                                    ElevatedButton(
-                                                      style: ElevatedButton.styleFrom(
-                                                        backgroundColor:
-                                                            AppTheme
-                                                                .gradientStart,
-                                                        foregroundColor:
-                                                            Colors.white,
-                                                        shape: RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.circular(
-                                                                12,
-                                                              ),
-                                                        ),
-                                                        padding:
-                                                            const EdgeInsets.symmetric(
-                                                              horizontal: 20,
-                                                              vertical: 12,
-                                                            ),
-                                                      ),
-                                                      onPressed: () =>
-                                                          Navigator.of(
-                                                            context,
-                                                          ).pop(true),
-                                                      child: const Text(
-                                                        'Confirmar',
-                                                        style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 16,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                );
-
-                                if (confirm == true && context.mounted) {
-                                  context.read<LoginViewModel>().signOut();
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => const LoginPage(),
-                                    ),
-                                  );
-                                }
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
+                      child: const _LogoutButton(),
                     ),
                   ),
                 ),
@@ -278,7 +118,7 @@ class _MedicoMainViewState extends State<MedicoMainView> {
                         children: [
                           Row(
                             children: [
-                              Image.asset('assets/logo.png', height: 28),
+                              Image.asset('assets/logo2.png', height: 28),
                               const SizedBox(width: 8),
                               const Text(
                                 "KLINICO",
@@ -430,136 +270,127 @@ class _LogoutButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GlassContainer(
-      blur: 10,
-      opacity: 0.2,
-      borderRadius: BorderRadius.circular(50),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(50),
-          splashColor: AppTheme.primaryBlue.withValues(alpha: 0.3),
-          highlightColor: AppTheme.primaryBlue.withValues(alpha: 0.1),
-          child: IconButton(
+    return ScaleButton(
+      onTap: () async {
+        final bool? confirm = await showDialog<bool>(
+          context: context,
+          barrierColor: Colors.black.withValues(alpha: 0.05),
+          builder: (BuildContext context) {
+            return Dialog(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                  child: Container(
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.20),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.35),
+                        width: 1.5,
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Row(
+                          children: [
+                            Icon(
+                              Icons.warning_amber_rounded,
+                              color: Colors.orange,
+                              size: 28,
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              'Cerrar sesión',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Colors.black87,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        const Text(
+                          '¿Estás seguro de que deseas cerrar la sesión actual?',
+                          style: TextStyle(fontSize: 16, color: Colors.black87),
+                        ),
+                        const SizedBox(height: 24),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(false),
+                              child: const Text(
+                                'Cancelar',
+                                style: TextStyle(
+                                  color: Colors.black54,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppTheme.gradientStart,
+                                foregroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 12,
+                                ),
+                              ),
+                              onPressed: () => Navigator.of(context).pop(true),
+                              child: const Text(
+                                'Confirmar',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+
+        if (confirm == true && context.mounted) {
+          context.read<LoginViewModel>().signOut();
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const LoginPage()),
+          );
+        }
+      },
+      child: GlassContainer(
+        blur: 10,
+        opacity: 0.2,
+        borderRadius: BorderRadius.circular(50),
+        child: Tooltip(
+          message: "Cerrar sesión",
+          child: Padding(
             padding: compact
                 ? const EdgeInsets.all(6)
                 : const EdgeInsets.all(8),
-            constraints: compact ? const BoxConstraints() : null,
-            icon: Icon(
+            child: Icon(
               Icons.logout,
               color: AppTheme.primaryBlue,
               size: compact ? 20 : 24,
             ),
-            onPressed: () async {
-              final bool? confirm = await showDialog<bool>(
-                context: context,
-                barrierColor: Colors.black.withValues(alpha: 0.05),
-                builder: (BuildContext context) {
-                  return Dialog(
-                    backgroundColor: Colors.transparent,
-                    elevation: 0,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                        child: Container(
-                          padding: const EdgeInsets.all(24),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withValues(alpha: 0.20),
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                              color: Colors.white.withValues(alpha: 0.35),
-                              width: 1.5,
-                            ),
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Row(
-                                children: [
-                                  Icon(
-                                    Icons.warning_amber_rounded,
-                                    color: Colors.orange,
-                                    size: 28,
-                                  ),
-                                  SizedBox(width: 10),
-                                  Text(
-                                    'Cerrar sesión',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                      color: Colors.black87,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 16),
-                              const Text(
-                                '¿Estás seguro de que deseas cerrar la sesión actual?',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black87,
-                                ),
-                              ),
-                              const SizedBox(height: 24),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.of(context).pop(false),
-                                    child: const Text(
-                                      'Cancelar',
-                                      style: TextStyle(
-                                        color: Colors.black54,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 12),
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: AppTheme.gradientStart,
-                                      foregroundColor: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 20,
-                                        vertical: 12,
-                                      ),
-                                    ),
-                                    onPressed: () =>
-                                        Navigator.of(context).pop(true),
-                                    child: const Text(
-                                      'Confirmar',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              );
-
-              if (confirm == true && context.mounted) {
-                context.read<LoginViewModel>().signOut();
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (_) => const LoginPage()),
-                );
-              }
-            },
           ),
         ),
       ),
