@@ -35,7 +35,6 @@ class KpisViewModel extends ChangeNotifier {
   List<KpiMonthValue> get avgStay => _avgStay;
   List<KpiDoctorData> get avgStayByDoctor => _avgStayByDoctor;
 
-  //Carga inicial de todos los KPIs
   Future<void> loadAll() async {
     _isLoading = true;
     _errorMessage = null;
@@ -74,7 +73,7 @@ class KpisViewModel extends ChangeNotifier {
 
   // --- Helpers para fl_chart ---
 
-  /// Total acumulado de un List<KpiMonthValue> (útil para KPI cards mensuales).
+  /// Total acumulado de un List KpiMonthValue (útil para KPI cards mensuales).
   double totalValue(List<KpiMonthValue> data) =>
       data.fold(0.0, (sum, e) => sum + e.value);
 

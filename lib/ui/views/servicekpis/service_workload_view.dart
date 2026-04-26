@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:klinico_front/ui/viewmodels/service_kpis_viewmodel.dart';
+import 'package:klinico_front/ui/viewmodels/workload_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 import '../../widgets/glass_container.dart';
@@ -16,13 +16,13 @@ class _ServiceWorkloadViewState extends State<ServiceWorkloadView> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<ServiceKpisViewModel>().getServiceWorkload();
+      context.read<WorkloadViewmodel>().getServiceWorkload();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final vm = context.watch<ServiceKpisViewModel>();
+    final vm = context.watch<WorkloadViewmodel>();
     final isMobile = MediaQuery.of(context).size.width < 600;
 
     return Padding(
@@ -68,7 +68,7 @@ class _ServiceWorkloadViewState extends State<ServiceWorkloadView> {
     );
   }
 
-  Widget _buildDesktopTable(BuildContext context, ServiceKpisViewModel vm) {
+  Widget _buildDesktopTable(BuildContext context, WorkloadViewmodel vm) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: SingleChildScrollView(

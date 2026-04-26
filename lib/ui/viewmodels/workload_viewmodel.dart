@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import '../../data/models/workload_response.dart';
 import '../../data/repositories/user_repository.dart';
 
-class ServiceKpisViewModel extends ChangeNotifier {
+class WorkloadViewmodel extends ChangeNotifier {
   final UserRepository _repository;
 
   bool _isLoading = false;
   String? _errorMessage;
   List<WorkloadResponse> _workload = [];
 
-  ServiceKpisViewModel({required UserRepository repository})
+  WorkloadViewmodel({required UserRepository repository})
     : _repository = repository;
 
   bool get isLoading => _isLoading;
