@@ -1,7 +1,7 @@
 <a id="readme-top"></a>
 
 <div align="center">
-  <img src="assets/logo2.png" alt="Klinico Logo" width="120" />
+  <img src="assets/logo.png" alt="Klinico Logo" width="120" />
   <h1>Klinico — App de Gestión Clínica Hospitalaria</h1>
   <p>Plataforma móvil para la digitalización del flujo de trabajo médico en los pases de planta hospitalarios.</p>
 
@@ -89,23 +89,66 @@ El sistema distingue dos perfiles de usuario con vistas y permisos diferenciados
 
 Klinico sigue el patrón **MVVM (Model-View-ViewModel)**, recomendado por Google para Flutter, combinado con el patrón **Repository**, lo que permite desacoplar completamente la lógica de negocio de la interfaz de usuario y de la fuente de datos.
 
-```
-┌─────────────────────────────────────────────────┐
-│                   UI Layer                      │
-│  Views (Widgets) ←→ ViewModels (ChangeNotifier) │
-│                   Provider                      │
-└────────────────────┬────────────────────────────┘
-                     │
-┌────────────────────▼────────────────────────────┐
-│                 Data Layer                      │
-│  Repositories  ←→  ApiClient (Dio)              │
-│  AuthService   ←→  FlutterSecureStorage         │
-└────────────────────┬────────────────────────────┘
-                     │  HTTP / REST
-┌────────────────────▼────────────────────────────┐
-│           Backend (Spring Boot API)             │
-│          http://localhost:8080/api/v1           │
-└─────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+ subgraph DI["INYECCIÓN DE DEPENDENCIAS"]
+        MP["<b>MultiProvider</b><br>(Provider tree en main.dart)"]
+  end
+ subgraph Infra["INFRAESTRUCTURA"]
+        AC["<b>ApiClient</b><br>(Dio + Interceptor JWT + 401)"]
+        SS["<b>Secure Storage</b><br>(flutter_secure_storage)"]
+  end
+ subgraph Data["CAPA DE DATOS"]
+    direction TB
+        FR["<b>Repositorios</b><br>(Acceso a datos API)"]
+        DTO["<b>DTOs</b><br>(*Response, fromJson)"]
+        DM["<b>Modelos de Dominio</b><br>(Admission, Episode)"]
+  end
+ subgraph Domain["CAPA DE SERVICIOS"]
+    direction TB
+        FS["<b>AuthService</b><br>(Sesión, JWT decode, Login)"]
+        EX["<b>AuthException</b><br>(Errores tipados)"]
+  end
+ subgraph Presentation["CAPA DE PRESENTACIÓN"]
+    direction TB
+        UI["<b>Vistas + Widgets</b><br>(Screens, Cards, Dialogs)"]
+        VM["<b>ViewModels</b><br>(ChangeNotifier)"]
+        NAV["<b>AuthWrapper</b><br>(Routing por Rol)"]
+        TH["<b>AppTheme</b><br>(Tema visual centralizado)"]
+  end
+ subgraph Frontend["<b>TABLET (Flutter - MVVM)</b>"]
+    direction TB
+        DI
+        Infra
+        Data
+        Domain
+        Presentation
+  end
+ subgraph Comm["COMUNICACIÓN"]
+        JSON["<b>REST API</b><br>JSON + JWT Header"]
+  end
+    MP -.-> VM & FR & FS & AC
+    AC --> SS
+    FR --> AC & DTO
+    FS --> SS & FR
+    FS -.-> EX
+    VM --> FS & FR
+    VM -.-> EX
+    UI --> VM
+    NAV --> UI
+    TH -.-> UI
+    AC -.-> EX
+    AC == Petición HTTP / HTTPS ==> JSON
+    JSON -. Update UI .-> AC
+
+    style UI fill:#fff
+    style DI fill:#f3e5f5,stroke:#6a1b9a,stroke-width:1px
+    style Infra fill:#fce4ec,stroke:#c62828,stroke-width:1px
+    style Data fill:#fff8e1,stroke:#f9a825,stroke-width:1px
+    style Domain fill:#e8f5e9,stroke:#2e7d32,stroke-width:1px
+    style Presentation fill:#e3f2fd,stroke:#1565c0,stroke-width:1px
+    style Frontend fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    style Comm fill:#f5f5f5,stroke:#333,stroke-dasharray: 5 5
 ```
 
 - **Views**: widgets de pantalla, sin lógica de negocio.
