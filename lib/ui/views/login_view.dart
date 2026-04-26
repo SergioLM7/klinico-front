@@ -131,6 +131,8 @@ class _LoginPageState extends State<LoginPage> {
 
     final success = await vm.signIn(email, password);
 
+    if (!context.mounted) return;
+
     if (success) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

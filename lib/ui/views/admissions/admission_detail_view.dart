@@ -572,7 +572,7 @@ class _AdmissionUpdateSheetState extends State<_AdmissionUpdateSheet> {
                                 ),
                               );
 
-                              if (mounted) {
+                              if (context.mounted) {
                                 if (updated != null) {
                                   widget.onAdmissionUpdated(updated);
                                   Navigator.of(
@@ -684,11 +684,11 @@ class _AdmissionUpdateSheetState extends State<_AdmissionUpdateSheet> {
                                 ),
                               );
 
-                              if (confirm == true && mounted) {
+                              if (confirm == true && context.mounted) {
                                 final success = await vm.dischargeAdmission(
                                   widget.admission.admissionId,
                                 );
-                                if (mounted) {
+                                if (context.mounted) {
                                   if (success) {
                                     final navigator = Navigator.of(context);
                                     navigator.pop(); // Cierra sheet

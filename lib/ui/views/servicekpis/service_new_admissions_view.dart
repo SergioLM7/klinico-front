@@ -411,50 +411,51 @@ class _DoctorAssignmentDialogState extends State<_DoctorAssignmentDialog> {
       widget.admission.patient,
     );
 
-    if (mounted) {
-      setState(() {
-        _isSubmitting = false;
-      });
+    if (!mounted) return;
+    setState(() {
+      _isSubmitting = false;
+    });
 
-      Navigator.pop(context);
+    if (!context.mounted) return;
+    Navigator.pop(context);
 
-      showDialog(
-        context: widget.parentCtx,
-        barrierColor: Colors.black.withValues(alpha: 0.05),
-        builder: (ctx) => Dialog(
-          backgroundColor: Colors.transparent,
-          child: GlassContainer(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  success ? Icons.check_circle : Icons.error,
-                  size: 28,
-                  color: success ? Colors.green : Colors.red,
+    if (!widget.parentCtx.mounted) return;
+    showDialog(
+      context: widget.parentCtx,
+      barrierColor: Colors.black.withValues(alpha: 0.05),
+      builder: (ctx) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: GlassContainer(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                success ? Icons.check_circle : Icons.error,
+                size: 28,
+                color: success ? Colors.green : Colors.red,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                success
+                    ? "Médico reasignado exitosamente"
+                    : (vm.errorMessage ?? "Error al reasignar médico"),
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
                 ),
-                const SizedBox(height: 16),
-                Text(
-                  success
-                      ? "Médico reasignado exitosamente"
-                      : (vm.errorMessage ?? "Error al reasignar médico"),
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-                const SizedBox(height: 24),
-                ElevatedButton(
-                  onPressed: () => Navigator.of(ctx).pop(),
-                  child: const Text("Aceptar"),
-                ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: () => Navigator.of(ctx).pop(),
+                child: const Text("Aceptar"),
+              ),
+            ],
           ),
         ),
-      );
-    }
+      ),
+    );
   }
 
   @override

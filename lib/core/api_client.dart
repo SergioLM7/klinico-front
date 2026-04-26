@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:dio/dio.dart';
 
 import 'exceptions/auth_exception.dart';
@@ -11,10 +12,13 @@ class ApiClient {
   /// Se usa desde main.dart para limpiar el estado y redirigir al Login.
   /// [dio] es opcional y se utiliza para inyectar mocks durante los tests.
   ApiClient({this.getToken, void Function()? onUnauthorized, Dio? dio}) {
-    _dio = dio ??
+    _dio =
+        dio ??
         Dio(
           BaseOptions(
-            baseUrl: 'http://localhost:8080/api/v1',
+            baseUrl: Platform.isAndroid
+                ? 'http://10.0.2.2:8080/api/v1'
+                : 'http://localhost:8080/api/v1',
             connectTimeout: const Duration(seconds: 5),
             receiveTimeout: const Duration(seconds: 15),
             contentType: 'application/json',

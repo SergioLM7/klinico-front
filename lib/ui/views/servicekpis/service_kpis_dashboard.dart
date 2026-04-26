@@ -1032,7 +1032,7 @@ class _DoctorBarChart extends StatelessWidget {
             );
           }).toList(),
         ),
-        swapAnimationDuration: const Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
       ),
     );
   }
