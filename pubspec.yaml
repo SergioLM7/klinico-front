@@ -1,5 +1,5 @@
 name: klinico_front
-description: "Flutter project for Klinico, an app for medical professionals."
+description: "Application for hospital medical wards management for healthcare professionals."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -54,6 +54,7 @@ dev_dependencies:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
+  remove_alpha_ios: true
   image_path: "assets/logo2.png"
   min_sdk_android: 21
 
