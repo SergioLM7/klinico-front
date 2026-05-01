@@ -891,7 +891,7 @@ class _DoctorMultiLineChart extends StatelessWidget {
 }
 
 // ────────────────────────────────────────────────────────
-//  BAR CHART horizontal para datos por médico (vista mensual)
+//  BAR CHART vertical para datos por médico (vista mensual)
 // ────────────────────────────────────────────────────────
 class _DoctorBarItem {
   final String name;
@@ -915,7 +915,7 @@ class _DoctorBarChart extends StatelessWidget {
   Widget build(BuildContext context) {
     if (items.isEmpty) {
       return const SizedBox(
-        height: 150,
+        height: 200,
         child: Center(
           child: Text(
             'Sin datos para este período',
@@ -926,28 +926,29 @@ class _DoctorBarChart extends StatelessWidget {
     }
 
     final maxVal = items.map((e) => e.value).reduce((a, b) => a > b ? a : b);
-    final barHeight = 36.0;
-    final chartHeight = items.length * (barHeight + 12) + 16;
+    final barWidth = 32.0;
 
     return SizedBox(
-      height: chartHeight,
+      height: 260,
       child: BarChart(
         BarChartData(
           alignment: BarChartAlignment.spaceEvenly,
-          maxY: maxVal == 0 ? 1 : maxVal * 1.25,
+          maxY: maxVal == 0 ? 1 : maxVal * 1.3,
           barTouchData: BarTouchData(
             touchTooltipData: BarTouchTooltipData(
               getTooltipColor: (_) =>
                   AppTheme.primaryBlue.withValues(alpha: 0.85),
               getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                final item = items[group.x];
                 final val = isDecimal
                     ? '${rod.toY.toStringAsFixed(1)} días'
                     : '${rod.toY.toInt()} pac.';
                 return BarTooltipItem(
-                  val,
+                  '${item.name}\n$val',
                   const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
+                    fontSize: 12,
                   ),
                 );
               },
@@ -957,27 +958,16 @@ class _DoctorBarChart extends StatelessWidget {
             leftTitles: AxisTitles(
               sideTitles: SideTitles(
                 showTitles: true,
-                reservedSize: 130,
+                reservedSize: 40,
                 getTitlesWidget: (value, meta) {
-                  final idx = value.toInt();
-                  if (idx < 0 || idx >= items.length) {
-                    return const SizedBox.shrink();
-                  }
-                  final parts = items[idx].name.split(' ');
-                  final shortName = parts.length >= 2
-                      ? '${parts[0]} ${parts[1]}'
-                      : items[idx].name;
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: Text(
-                      shortName,
-                      style: const TextStyle(
-                        fontSize: 11,
-                        color: Colors.black54,
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.right,
-                    ),
+                  if (value == meta.max) return const SizedBox.shrink();
+                  final label = isDecimal
+                      ? value.toStringAsFixed(1)
+                      : value.toInt().toString();
+                  return Text(
+                    label,
+                    style: const TextStyle(fontSize: 11, color: Colors.black45),
+                    textAlign: TextAlign.right,
                   );
                 },
               ),
@@ -991,14 +981,27 @@ class _DoctorBarChart extends StatelessWidget {
             bottomTitles: AxisTitles(
               sideTitles: SideTitles(
                 showTitles: true,
+                reservedSize: 52,
                 getTitlesWidget: (value, meta) {
-                  if (value == meta.max) return const SizedBox.shrink();
-                  final label = isDecimal
-                      ? value.toStringAsFixed(1)
-                      : value.toInt().toString();
-                  return Text(
-                    label,
-                    style: const TextStyle(fontSize: 11, color: Colors.black45),
+                  final idx = value.toInt();
+                  if (idx < 0 || idx >= items.length) {
+                    return const SizedBox.shrink();
+                  }
+                  final parts = items[idx].name.split(' ');
+                  // Show "Apellido" (second word) to keep it short
+                  final shortName =
+                      parts.length >= 2 ? parts[1] : items[idx].name;
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Text(
+                      shortName,
+                      style: const TextStyle(
+                        fontSize: 11,
+                        color: Colors.black54,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                    ),
                   );
                 },
               ),
@@ -1006,8 +1009,8 @@ class _DoctorBarChart extends StatelessWidget {
           ),
           gridData: FlGridData(
             show: true,
-            drawHorizontalLine: false,
-            getDrawingVerticalLine: (_) => FlLine(
+            drawVerticalLine: false,
+            getDrawingHorizontalLine: (_) => FlLine(
               color: Colors.black.withValues(alpha: 0.06),
               strokeWidth: 1,
             ),
@@ -1022,17 +1025,22 @@ class _DoctorBarChart extends StatelessWidget {
                   fromY: 0,
                   toY: entry.value.value,
                   color: color,
-                  width: barHeight,
+                  width: barWidth,
                   borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(6),
                     topRight: Radius.circular(6),
-                    bottomRight: Radius.circular(6),
+                  ),
+                  backDrawRodData: BackgroundBarChartRodData(
+                    show: true,
+                    toY: maxVal == 0 ? 1 : maxVal * 1.3,
+                    color: color.withValues(alpha: 0.06),
                   ),
                 ),
               ],
             );
           }).toList(),
         ),
-        duration: const Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 400),
       ),
     );
   }
