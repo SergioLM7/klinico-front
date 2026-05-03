@@ -59,7 +59,7 @@ class EpisodeInfoCard extends StatelessWidget {
       opacity: 0.2,
       borderRadius: BorderRadius.circular(20),
       child: Padding(
-        padding: EdgeInsets.all(isMobile ? 16 : 24),
+        padding: EdgeInsets.all(isMobile ? 12 : 24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -770,9 +770,11 @@ class _InfoChip extends StatelessWidget {
         children: [
           Icon(icon, size: 14, color: Colors.black54),
           const SizedBox(width: 4),
-          Text(
-            label,
-            style: const TextStyle(fontSize: 12, color: Colors.black54),
+          Flexible(
+            child: Text(
+              label,
+              style: const TextStyle(fontSize: 12, color: Colors.black54),
+            ),
           ),
         ],
       ),
