@@ -1,4 +1,4 @@
-package com.example.klinico_front
+package com.klinico.app
 
 import io.flutter.embedding.android.FlutterActivity
 
