@@ -909,6 +909,9 @@ class _DoctorBarChart extends StatelessWidget {
   final List<_DoctorBarItem> items;
   final bool isDecimal;
 
+  // Ancho mínimo reservado por cada médico (barra + nombre)
+  static const double _minWidthPerBar = 80.0;
+
   const _DoctorBarChart({required this.items, this.isDecimal = false});
 
   @override
@@ -926,121 +929,152 @@ class _DoctorBarChart extends StatelessWidget {
     }
 
     final maxVal = items.map((e) => e.value).reduce((a, b) => a > b ? a : b);
-    final barWidth = 32.0;
+    const barWidth = 32.0;
+    // Ancho total mínimo: eje Y (40) + espacio por barra
+    final minChartWidth = 40.0 + items.length * _minWidthPerBar;
 
-    return SizedBox(
-      height: 260,
-      child: BarChart(
-        BarChartData(
-          alignment: BarChartAlignment.spaceEvenly,
-          maxY: maxVal == 0 ? 1 : maxVal * 1.3,
-          barTouchData: BarTouchData(
-            touchTooltipData: BarTouchTooltipData(
-              getTooltipColor: (_) =>
-                  AppTheme.primaryBlue.withValues(alpha: 0.85),
-              getTooltipItem: (group, groupIndex, rod, rodIndex) {
-                final item = items[group.x];
-                final val = isDecimal
-                    ? '${rod.toY.toStringAsFixed(1)} días'
-                    : '${rod.toY.toInt()} pac.';
-                return BarTooltipItem(
-                  '${item.name}\n$val',
-                  const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
+    final chart = BarChart(
+      BarChartData(
+        alignment: BarChartAlignment.spaceEvenly,
+        minY: 0,
+        maxY: maxVal == 0 ? 1 : maxVal * 1.3,
+        barTouchData: BarTouchData(
+          touchTooltipData: BarTouchTooltipData(
+            getTooltipColor: (_) =>
+                AppTheme.primaryBlue.withValues(alpha: 0.85),
+            getTooltipItem: (group, groupIndex, rod, rodIndex) {
+              final item = items[group.x];
+              final val = isDecimal
+                  ? '${rod.toY.toStringAsFixed(1)} días'
+                  : '${rod.toY.toInt()} pac.';
+              return BarTooltipItem(
+                '${item.name}\n$val',
+                const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
+              );
+            },
+          ),
+        ),
+        titlesData: FlTitlesData(
+          leftTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              reservedSize: 40,
+              getTitlesWidget: (value, meta) {
+                if (value == meta.max) return const SizedBox.shrink();
+                final label = isDecimal
+                    ? value.toStringAsFixed(1)
+                    : value.toInt().toString();
+                return Text(
+                  label,
+                  style: const TextStyle(fontSize: 11, color: Colors.black45),
+                  textAlign: TextAlign.right,
+                );
+              },
+            ),
+          ),
+          rightTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
+          topTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
+          bottomTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              reservedSize: 52,
+              getTitlesWidget: (value, meta) {
+                final idx = value.toInt();
+                if (idx < 0 || idx >= items.length) {
+                  return const SizedBox.shrink();
+                }
+                // Mostrar nombre completo (primera palabra = nombre)
+                // y apellido en segunda línea para mayor legibilidad
+                final parts = items[idx].name.split(' ');
+                final lastName = parts.length >= 3 ? parts[2] : '';
+                return Padding(
+                  padding: const EdgeInsets.only(top: 6),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        "Dr.",
+                        style: const TextStyle(
+                          fontSize: 10,
+                          color: Colors.black45,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      if (lastName.isNotEmpty)
+                        Text(
+                          lastName,
+                          style: const TextStyle(
+                            fontSize: 10,
+                            color: Colors.black45,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                        ),
+                    ],
                   ),
                 );
               },
             ),
           ),
-          titlesData: FlTitlesData(
-            leftTitles: AxisTitles(
-              sideTitles: SideTitles(
-                showTitles: true,
-                reservedSize: 40,
-                getTitlesWidget: (value, meta) {
-                  if (value == meta.max) return const SizedBox.shrink();
-                  final label = isDecimal
-                      ? value.toStringAsFixed(1)
-                      : value.toInt().toString();
-                  return Text(
-                    label,
-                    style: const TextStyle(fontSize: 11, color: Colors.black45),
-                    textAlign: TextAlign.right,
-                  );
-                },
-              ),
-            ),
-            rightTitles: const AxisTitles(
-              sideTitles: SideTitles(showTitles: false),
-            ),
-            topTitles: const AxisTitles(
-              sideTitles: SideTitles(showTitles: false),
-            ),
-            bottomTitles: AxisTitles(
-              sideTitles: SideTitles(
-                showTitles: true,
-                reservedSize: 52,
-                getTitlesWidget: (value, meta) {
-                  final idx = value.toInt();
-                  if (idx < 0 || idx >= items.length) {
-                    return const SizedBox.shrink();
-                  }
-                  final parts = items[idx].name.split(' ');
-                  // Show "Apellido" (second word) to keep it short
-                  final shortName =
-                      parts.length >= 2 ? parts[1] : items[idx].name;
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: Text(
-                      shortName,
-                      style: const TextStyle(
-                        fontSize: 11,
-                        color: Colors.black54,
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-          gridData: FlGridData(
-            show: true,
-            drawVerticalLine: false,
-            getDrawingHorizontalLine: (_) => FlLine(
-              color: Colors.black.withValues(alpha: 0.06),
-              strokeWidth: 1,
-            ),
-          ),
-          borderData: FlBorderData(show: false),
-          barGroups: items.asMap().entries.map((entry) {
-            final color = _doctorColors[entry.key % _doctorColors.length];
-            return BarChartGroupData(
-              x: entry.key,
-              barRods: [
-                BarChartRodData(
-                  fromY: 0,
-                  toY: entry.value.value,
-                  color: color,
-                  width: barWidth,
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(6),
-                    topRight: Radius.circular(6),
-                  ),
-                  backDrawRodData: BackgroundBarChartRodData(
-                    show: true,
-                    toY: maxVal == 0 ? 1 : maxVal * 1.3,
-                    color: color.withValues(alpha: 0.06),
-                  ),
-                ),
-              ],
-            );
-          }).toList(),
         ),
-        duration: const Duration(milliseconds: 400),
+        gridData: FlGridData(
+          show: true,
+          drawVerticalLine: false,
+          getDrawingHorizontalLine: (_) => FlLine(
+            color: Colors.black.withValues(alpha: 0.06),
+            strokeWidth: 1,
+          ),
+        ),
+        borderData: FlBorderData(show: false),
+        barGroups: items.asMap().entries.map((entry) {
+          final color = _doctorColors[entry.key % _doctorColors.length];
+          return BarChartGroupData(
+            x: entry.key,
+            barRods: [
+              BarChartRodData(
+                fromY: 0,
+                toY: entry.value.value,
+                color: color,
+                width: barWidth,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(6),
+                  topRight: Radius.circular(6),
+                ),
+                backDrawRodData: BackgroundBarChartRodData(
+                  show: true,
+                  toY: maxVal == 0 ? 1 : maxVal * 1.3,
+                  color: color.withValues(alpha: 0.06),
+                ),
+              ),
+            ],
+          );
+        }).toList(),
+      ),
+      duration: const Duration(milliseconds: 400),
+    );
+
+    return SizedBox(
+      height: 260,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // Si el ancho disponible es menor que el mínimo necesario,
+          // envolvemos en scroll horizontal para que cada barra tenga espacio.
+          if (constraints.maxWidth < minChartWidth) {
+            return SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: SizedBox(width: minChartWidth, child: chart),
+            );
+          }
+          return chart;
+        },
       ),
     );
   }
