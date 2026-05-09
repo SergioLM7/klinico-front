@@ -17,7 +17,7 @@
 
 - [Descripción](#descripción)
 - [Funcionalidades](#funcionalidades)
-- [Interfaz de usuario (Diseño)](#interfaz-de-usuario)
+- [Interfaz de usuario](#interfaz-de-usuario)
 - [Arquitectura](#arquitectura)
 - [Estructura del proyecto](#estructura-del-proyecto)
 - [Stack tecnológico](#stack-tecnológico)
@@ -73,7 +73,7 @@ El sistema distingue dos perfiles de usuario con vistas y permisos diferenciados
 
 ---
 
-## Interfaz de usuario (Diseño)
+## Interfaz de usuario
 
 **Login**
 - Tablet
