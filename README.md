@@ -17,7 +17,7 @@
 
 - [Descripción](#descripción)
 - [Funcionalidades](#funcionalidades)
-- [Interfaz de usuario (Diseño)](#interfaz-de-usuario)
+- [Interfaz de usuario](#interfaz-de-usuario)
 - [Arquitectura](#arquitectura)
 - [Estructura del proyecto](#estructura-del-proyecto)
 - [Stack tecnológico](#stack-tecnológico)
@@ -73,70 +73,70 @@ El sistema distingue dos perfiles de usuario con vistas y permisos diferenciados
 
 ---
 
-## Interfaz de usuario (Diseño)
+## Interfaz de usuario
 
 **Login**
 - Tablet
 
 <img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-login.png" width="50%" height="50%">
 
-- Mobile
+- Móvil
 
 <img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-login.png" width="20%" height="50%">
 
-**Medico main view**
+**Vista principal - Medico**
 - Tablet
 
 <img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-medico-main-view.png" width="50%" height="50%">
 
-- Mobile
+- Móvil
 
 <img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-medico-main-view.png" width="20%" height="50%">
 
-**Admission details view**
+**Vista detalle de ingreso**
 - Tablet
 
 <img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-detalle-ingreso.png" width="50%" height="50%">
 
-- Mobile
+- Móvil
 
 <img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-detalle-ingreso.png" width="20%" height="50%">
 
-**Form new admission (validation)**
+**Formulario nuevo ingreso (validación)**
 - Tablet
 
 <img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-form-nuevo-ingreso-validacion.png" width="50%" height="50%">
 
-- Mobile
+- Móvil
 
 <img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-validacion-nuevo-ingreso.png" width="20%" height="50%">
 
-**Pop-up new admission created**
+**Pop-up nuevo ingreso creado**
 - Tablet
 
 <img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-ingreso-creado-ok.png" width="50%" height="50%">
 
-- Mobile
+- Móvil
 
 <img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-creacion-admision-ok.png" width="20%" height="50%">
 
-**Scales in forms**
+**Escalas automatizadas**
 - Tablet
 
 <img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-escala-chads2.png" width="50%" height="50%"> 
 
 <img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-escala-braden.png" width="50%" height="50%">
 
-- Mobile
+- Móvil
 
 <img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-escala-chads2.png" width="20%" height="50%"> <img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-escala-cam-KO.png" width="20%" height="50%">
 
-**Workload (Jefe de Servicio)**
+**Carga de trabajo (Jefe de Servicio)**
 - Tablet
 
 <img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-carga-trabajo-servicio.png" width="50%" height="50%">
 
-- Mobile
+- Móvil
 
 <img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-carga-trabajo-servicio.png" width="20%" height="50%">
 
@@ -147,16 +147,16 @@ El sistema distingue dos perfiles de usuario con vistas y permisos diferenciados
 
 <img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-kpis-servicio-mes-1.png" width="50%" height="50%">
 
-- Mobile
+- Móvil
 
 <img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-kpis-servicio-1.png" width="20%" height="50%"> <img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-kpis-servicio-mensual.png" width="20%" height="50%">
 
-**Search admissions by service**
+**Buscador de ingresos activos del servicio (por apellidos)**
 - Tablet
 
 <img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-buscador-paciente.png" width="50%" height="50%">
 
-- Mobile
+- Móvil
 
 <img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-buscador-pacientes.png" width="20%" height="50%">
 
