@@ -77,64 +77,91 @@ El sistema distingue dos perfiles de usuario con vistas y permisos diferenciados
 
 **Login**
 - Tablet
-![](https://github.com/SergioLM7/klinico_front/blob/main/assets/screenshots/tablet/tablet-login.png)
+
+<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-login.png" width="50%" height="40%">
+
 - Mobile
-![](https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-login.png)
+
+<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-login.png" width="50%" height="40%">
 
 **Medico main view**
 - Tablet
-![](https://github.com/SergioLM7/klinico_front/blob/main/assets/screenshots/tablet/tablet-medico-main-view.png)
+
+![](https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-medico-main-view.png)
+
 - Mobile
+
 ![](https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-medico-main-view.png)
 
 **Admission details view**
 - Tablet
-![](https://github.com/SergioLM7/klinico_front/blob/main/assets/screenshots/tablet/tablet-detalle-ingreso.png)
+
+![](https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-detalle-ingreso.png)
+
 - Mobile
+
 ![](https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-detalle-ingreso.png)
 
 **Form new admission (validation)**
 - Tablet
-![](https://github.com/SergioLM7/klinico_front/blob/main/assets/screenshots/tablet/tablet-form-nuevo-ingreso-validation.png)
+
+![](https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-form-nuevo-ingreso-validation.png)
+
 - Mobile
+
 ![](https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-validacion-nuevo-ingreso.png)
 
 **Pop-up new admission created**
 - Tablet
-![](https://github.com/SergioLM7/klinico_front/blob/main/assets/screenshots/tablet/tablet-ingreso-creado-ok.png)
+
+![](https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-ingreso-creado-ok.png)
+
 - Mobile
+
 ![](https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-creacion-admision-ok.png)
 
 **Scales in forms**
 - Tablet
-![](https://github.com/SergioLM7/klinico_front/blob/main/assets/screenshots/tablet/tablet-escala-chads2.png)
 
-![](https://github.com/SergioLM7/klinico_front/blob/main/assets/screenshots/tablet/tablet-escala-braden.png)
+![](https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-escala-chads2.png)
+
+![](https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-escala-braden.png)
+
 - Mobile
+
 ![](https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-escala-chads2.png)
 
 ![](https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-escala-cam-ko.png)
 
 **Workload (Jefe de Servicio)**
 - Tablet
-![](https://github.com/SergioLM7/klinico_front/blob/main/assets/screenshots/tablet/tablet-carga-trabajo-servicio.png)
+
+![](https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-carga-trabajo-servicio.png)
+
 - Mobile
+
 ![](https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-carga-trabajo-servicio.png)
 
 **KPIs (Jefe de Servicio)**
 - Tablet
-![](https://github.com/SergioLM7/klinico_front/blob/main/assets/screenshots/tablet/tablet-kpi-servicio-3.png)
 
-![](https://github.com/SergioLM7/klinico_front/blob/main/assets/screenshots/tablet/tablet-kpis-servicio-mes-1.png)
+![](https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-kpi-servicio-3.png)
+
+![](https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-kpis-servicio-mes-1.png)
+
 - Mobile
+
 ![](https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-kpis-servicio-1.png)
 
 ![](https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-kpis-servicio-mensual.png)
 
 **Search admissions by service**
 - Tablet
-![](https://github.com/SergioLM7/klinico_front/blob/main/assets/screenshots/tablet/tablet-buscador-paciente-servicio.png)
+
+![](https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-buscador-paciente-servicio.png)
+
 - Mobile
+
 ![](https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-buscador-pacientes.png)
 
 <p align="right">(<a href="#readme-top">volver arriba</a>)</p>
