@@ -123,15 +123,13 @@ El sistema distingue dos perfiles de usuario con vistas y permisos diferenciados
 **Scales in forms**
 - Tablet
 
-<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-escala-chads2.png" width="50%" height="50%">
+<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-escala-chads2.png" width="50%" height="50%"> 
 
 <img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-escala-braden.png" width="50%" height="50%">
 
 - Mobile
 
-<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-escala-chads2.png" width="20%" height="50%">
-
-<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-escala-cam-KO.png" width="20%" height="50%">
+<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-escala-chads2.png" width="20%" height="50%"> <img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-escala-cam-KO.png" width="20%" height="50%">
 
 **Workload (Jefe de Servicio)**
 - Tablet
@@ -151,9 +149,7 @@ El sistema distingue dos perfiles de usuario con vistas y permisos diferenciados
 
 - Mobile
 
-<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-kpis-servicio-1.png" width="20%" height="50%">
-
-<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-kpis-servicio-mensual.png" width="20%" height="50%">
+<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-kpis-servicio-1.png" width="20%" height="50%"> <img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-kpis-servicio-mensual.png" width="20%" height="50%">
 
 **Search admissions by service**
 - Tablet
