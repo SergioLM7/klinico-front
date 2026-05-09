@@ -105,7 +105,7 @@ El sistema distingue dos perfiles de usuario con vistas y permisos diferenciados
 **Form new admission (validation)**
 - Tablet
 
-<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-form-nuevo-ingreso-validation.png" width="50%" height="50%">
+<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-form-nuevo-ingreso-validacion.png" width="50%" height="50%">
 
 - Mobile
 
@@ -131,7 +131,7 @@ El sistema distingue dos perfiles de usuario con vistas y permisos diferenciados
 
 <img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-escala-chads2.png" width="20%" height="50%">
 
-<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-escala-cam-ko.png" width="20%" height="50%">
+<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-escala-cam-KO.png" width="20%" height="50%">
 
 **Workload (Jefe de Servicio)**
 - Tablet
@@ -158,7 +158,7 @@ El sistema distingue dos perfiles de usuario con vistas y permisos diferenciados
 **Search admissions by service**
 - Tablet
 
-<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-buscador-paciente-servicio.png" width="50%" height="50%">
+<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-buscador-paciente.png" width="50%" height="50%">
 
 - Mobile
 
