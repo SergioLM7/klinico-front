@@ -78,20 +78,20 @@ El sistema distingue dos perfiles de usuario con vistas y permisos diferenciados
 **Login**
 - Tablet
 
-<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-login.png" width="50%" height="40%">
+<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-login.png" width="50%" height="50%">
 
 - Mobile
 
-<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-login.png" width="50%" height="40%">
+<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-login.png" width="20%" height="50%">
 
 **Medico main view**
 - Tablet
 
-![](https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-medico-main-view.png)
+<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-medico-main-view.png" width="50%" height="50%">
 
 - Mobile
 
-![](https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-medico-main-view.png)
+<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-medico-main-view.png" width="20%" height="50%">
 
 **Admission details view**
 - Tablet
