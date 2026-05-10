@@ -4,6 +4,11 @@ import '../../data/repositories/admission_repository.dart';
 import '../../data/models/admission_response.dart';
 import '../../data/models/patient_preview_response.dart';
 
+/// ViewModel de ingresos hospitalarios.
+///
+/// Gestiona el ciclo de vida de los ingresos del médico autenticado:
+/// carga, creación, alta, actualización clínica y reasignación de médico.
+/// Mantiene en memoria la lista [admissions] y la actualiza tras cada operación.
 class AdmissionViewModel extends ChangeNotifier {
   final AdmissionRepository _repository;
 
@@ -18,6 +23,7 @@ class AdmissionViewModel extends ChangeNotifier {
   String? get errorMessage => _errorMessage;
   List<AdmissionResponse> get admissions => _admissions;
 
+  /// Carga los ingresos activos asignados al médico [doctorId].
   Future<void> getUserAdmissions(String doctorId) async {
     _isLoading = true;
     _errorMessage = null;
@@ -33,6 +39,7 @@ class AdmissionViewModel extends ChangeNotifier {
     }
   }
 
+  /// Crea un nuevo ingreso y devuelve `true` si el servidor confirma la creación.
   Future<bool> createAdmission({
     required String patientId,
     required String serviceId,
@@ -66,6 +73,7 @@ class AdmissionViewModel extends ChangeNotifier {
     }
   }
 
+  /// Tramita el alta hospitalaria del ingreso [admissionId].
   Future<bool> dischargeAdmission(String admissionId) async {
     _isLoading = true;
     _errorMessage = null;
@@ -87,6 +95,9 @@ class AdmissionViewModel extends ChangeNotifier {
     }
   }
 
+  /// Actualiza los datos clínicos de un ingreso (diagnóstico, historial, escalas).
+  ///
+  /// Devuelve el [AdmissionResponse] actualizado o `null` si falla.
   Future<AdmissionResponse?> clinicalUpdate({
     required String admissionId,
     required String principalDiagnosis,
@@ -124,6 +135,7 @@ class AdmissionViewModel extends ChangeNotifier {
     }
   }
 
+  /// Reasigna un ingreso a otro médico y actualiza la lista local en memoria.
   Future<bool> assignDoctor(
     String admissionId,
     String doctorId,

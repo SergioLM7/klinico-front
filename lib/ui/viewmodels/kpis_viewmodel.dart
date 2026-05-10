@@ -4,6 +4,11 @@ import '../../data/models/kpi_doctor_data.dart';
 import '../../data/models/kpi_month_value.dart';
 import '../../data/repositories/kpis_repository.dart';
 
+/// ViewModel de indicadores clave (KPIs) del servicio.
+///
+/// Carga los 5 indicadores en paralelo mediante [Future.wait] y expone
+/// los resultados para las gráficas de `fl_chart`. Soporta filtro por año
+/// y, opcionalmente, por mes (vista mensual vs. vista anual).
 class KpisViewModel extends ChangeNotifier {
   final KpisRepository _repository;
 
@@ -35,6 +40,7 @@ class KpisViewModel extends ChangeNotifier {
   List<KpiMonthValue> get avgStay => _avgStay;
   List<KpiDoctorData> get avgStayByDoctor => _avgStayByDoctor;
 
+  /// Carga los 5 KPIs en paralelo con los filtros actuales de año/mes.
   Future<void> loadAll() async {
     _isLoading = true;
     _errorMessage = null;
@@ -65,6 +71,7 @@ class KpisViewModel extends ChangeNotifier {
     }
   }
 
+  /// Cambia los filtros de año/mes y recarga todos los KPIs.
   Future<void> changeFilters({required int year, int? month}) async {
     _selectedYear = year;
     _selectedMonth = month;

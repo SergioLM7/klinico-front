@@ -12,6 +12,15 @@ import '../viewmodels/login_viewmodel.dart';
 import '../widgets/scale_button.dart';
 import 'login_view.dart';
 
+/// Vista principal para el rol MÉDICO con layout adaptativo.
+///
+/// En desktop/tablet muestra un [NavigationRail] lateral; en móvil un
+/// [BottomNavigationBar] con efecto glassmorphism. Las secciones son:
+/// - **Mis pacientes**: dashboard de ingresos asignados ([AdmissionDashboard]).
+/// - **Nuevo ingreso**: formulario de alta ([AdmissionFormView]).
+/// - **Pacientes**: buscador de ingresos del servicio ([AdmissionsSearchView]).
+///
+/// Incluye botón de logout con diálogo de confirmación.
 class MedicoMainView extends StatefulWidget {
   const MedicoMainView({super.key});
 

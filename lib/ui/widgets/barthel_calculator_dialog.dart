@@ -2,6 +2,18 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
 
+/// Diálogo interactivo para calcular el Índice de Barthel.
+///
+/// El Índice de Barthel mide el grado de dependencia funcional en actividades
+/// básicas de la vida diaria. La puntuación va de **0** (dependencia total) a
+/// **100** (independencia completa).
+///
+/// Presenta 10 categorías expandibles con radio buttons. La puntuación se
+/// recalcula en tiempo real conforme el usuario selecciona opciones. El botón
+/// «Aplicar Puntuación» solo se habilita cuando todas las categorías están
+/// respondidas.
+///
+/// Devuelve un [int] con la puntuación total vía `Navigator.pop`.
 class BarthelCalculatorDialog extends StatefulWidget {
   const BarthelCalculatorDialog({super.key});
 

@@ -8,7 +8,7 @@ import '../../../data/models/kpi_month_value.dart';
 import '../../viewmodels/kpis_viewmodel.dart';
 import '../../widgets/glass_container.dart';
 
-// ─── Paleta de colores para las líneas por médico ──────────────────────────
+/// Paleta de colores cíclica asignada a cada médico en los gráficos.
 const List<Color> _doctorColors = [
   Color(0xFF0A1B96),
   Color(0xFF0EA5E9),
@@ -39,6 +39,14 @@ const List<String> _monthNames = [
 // ════════════════════════════════════════════════════════
 //  VISTA PRINCIPAL
 // ════════════════════════════════════════════════════════
+
+/// Dashboard de KPIs del servicio para el Jefe de Servicio.
+///
+/// Ofrece un selector de año y mes para filtrar los datos. Según la
+/// selección muestra dos modos de visualización (usando `fl_chart`):
+/// - **Vista anual**: line charts con la evolución mensual de ingresos,
+///   éxitus, estancia media y desglose por médico.
+/// - **Vista mensual**: KPI cards resumen + bar charts por médico.
 class ServiceKpisDashboard extends StatefulWidget {
   const ServiceKpisDashboard({super.key});
 

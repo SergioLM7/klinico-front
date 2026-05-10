@@ -1,3 +1,7 @@
+/// DTO de usuario (médico) del sistema.
+///
+/// Devuelto por los endpoints de gestión de usuarios y utilizado
+/// en selectores de médico y listados administrativos.
 class UserResponse {
   final String id;
   final String name;
@@ -13,6 +17,7 @@ class UserResponse {
     required this.role,
   });
 
+  /// Crea una instancia a partir del JSON devuelto por el backend.
   factory UserResponse.fromJson(Map<String, dynamic> json) {
     return UserResponse(
       id: json['id'] as String,

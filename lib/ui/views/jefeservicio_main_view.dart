@@ -14,6 +14,17 @@ import '../viewmodels/login_viewmodel.dart';
 import 'login_view.dart';
 import 'servicekpis/service_workload_view.dart';
 
+/// Vista principal para el rol JEFE DE SERVICIO con layout adaptativo.
+///
+/// En desktop/tablet muestra un [NavigationRail] lateral; en móvil un
+/// [BottomNavigationBar] con efecto glassmorphism. Las secciones son:
+/// - **Nuevos ingresos**: listado de ingresos recientes del servicio.
+/// - **Carga de trabajo**: distribución de pacientes por médico.
+/// - **KPIs**: dashboard de indicadores del servicio.
+/// - **Crear ingreso**: formulario de nuevo ingreso ([AdmissionFormView]).
+/// - **Pacientes**: buscador de ingresos del servicio ([AdmissionsSearchView]).
+///
+/// Incluye botón de logout con diálogo de confirmación.
 class JefeServicioMainView extends StatefulWidget {
   const JefeServicioMainView({super.key});
 

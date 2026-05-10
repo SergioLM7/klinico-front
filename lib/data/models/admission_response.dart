@@ -1,6 +1,11 @@
 import '../../core/models/admission.dart';
 import 'patient_preview_response.dart';
 
+/// DTO de respuesta de la API para un ingreso hospitalario.
+///
+/// Incluye el paciente embebido como [PatientPreviewResponse].
+/// Las fechas se reciben como cadenas ISO-8601 generadas por
+/// `LocalDateTime` de Spring Boot y se parsean a [DateTime].
 class AdmissionResponse {
   final String admissionId;
   final PatientPreviewResponse patient;
@@ -41,6 +46,8 @@ class AdmissionResponse {
     this.lastModifiedBy,
   });
 
+  /// Parsea el JSON de la API incluyendo el sub-objeto `patient` y las
+  /// fechas ISO-8601 opcionales (`dischargeDate`, `lastModifiedAt`).
   factory AdmissionResponse.fromJson(Map<String, dynamic> json) {
     return AdmissionResponse(
       admissionId: json['admissionId'] as String,
@@ -70,6 +77,8 @@ class AdmissionResponse {
     );
   }
 
+  /// Convierte este DTO en la entidad de dominio [Admission],
+  /// extrayendo el `patientId` del objeto [patient] embebido.
   Admission toDomain() {
     return Admission(
       admissionId: admissionId,

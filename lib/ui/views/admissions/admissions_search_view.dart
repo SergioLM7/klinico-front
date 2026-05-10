@@ -8,6 +8,11 @@ import '../../../data/repositories/admission_repository.dart';
 import '../../widgets/admission_card.dart';
 import '../../widgets/glass_container.dart';
 
+/// Buscador de ingresos del servicio por apellido del paciente.
+///
+/// Implementa búsqueda con debounce (500 ms) y scroll infinito
+/// (paginación automática al acercarse al final de la lista).
+/// Los resultados se muestran como tarjetas [AdmissionCard].
 class AdmissionsSearchView extends StatefulWidget {
   const AdmissionsSearchView({super.key});
 

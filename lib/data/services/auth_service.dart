@@ -3,6 +3,13 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:klinico_front/data/models/auth_response.dart';
 import '../repositories/auth_repository.dart';
 
+/// Servicio de autenticación que orquesta [AuthRepository] y [FlutterSecureStorage].
+///
+/// Gestiona el ciclo de vida completo de la sesión:
+/// - Login (autenticación + persistencia del JWT).
+/// - Logout (limpieza del almacenamiento seguro).
+/// - Validación y decodificación local del JWT sin llamada a red.
+/// - Restauración de sesión al arrancar la app.
 class AuthService {
   final AuthRepository _authRepository;
   final FlutterSecureStorage _storage;
@@ -15,6 +22,9 @@ class AuthService {
   }) : _authRepository = authRepository,
        _storage = storage;
 
+  /// Inicia sesión y persiste el JWT en el almacenamiento seguro.
+  ///
+  /// Lanza una excepción si las credenciales son inválidas.
   Future<AuthResponse> signIn(String email, String password) async {
     try {
       final response = await _authRepository.login(email, password);
@@ -26,8 +36,10 @@ class AuthService {
     }
   }
 
+  /// Recupera el JWT almacenado, o `null` si no existe sesión.
   Future<String?> getToken() async => await _storage.read(key: _keyToken);
 
+  /// Cierra la sesión eliminando todos los datos del almacenamiento seguro.
   Future<void> logout() async => await _storage.deleteAll();
 
   // ---------------------------------------------------------------------------

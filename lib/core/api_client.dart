@@ -3,8 +3,25 @@ import 'package:dio/dio.dart';
 
 import 'exceptions/auth_exception.dart';
 
+/// Cliente HTTP centralizado de la aplicación, basado en [Dio].
+///
+/// Configura automáticamente la `baseUrl` según la plataforma
+/// (emulador Android vs iOS/escritorio), timeouts de conexión y recepción,
+/// e interceptores para:
+///
+/// - **Inyección JWT**: adjunta el token `Authorization: Bearer` en cada
+///   petición cuando [getToken] está disponible.
+/// - **Expiración de sesión**: detecta respuestas 401 durante el uso activo
+///   de la app (excluyendo el propio login) e invoca [onUnauthorized].
+///
+/// Los métodos [get], [post], [put] y [patch] traducen cualquier
+/// [DioException] a una [AuthException] con mensajes legibles en español
+/// mediante [_handleError].
 class ApiClient {
   late final Dio _dio;
+
+  /// Función asíncrona que devuelve el token JWT almacenado, o `null`
+  /// si el usuario no ha iniciado sesión.
   final Future<String?> Function()? getToken;
 
   /// [onUnauthorized]: callback que se invoca cuando la API devuelve 401
@@ -88,6 +105,8 @@ class ApiClient {
     }
   }
 
+  /// Traduce una [DioException] a una [AuthException] con un mensaje
+  /// descriptivo en español según el código de estado HTTP recibido.
   Never _handleError(DioException error) {
     if (error.response?.statusCode == 401) {
       throw AuthException(

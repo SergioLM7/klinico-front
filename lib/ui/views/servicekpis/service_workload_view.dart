@@ -4,6 +4,11 @@ import 'package:provider/provider.dart';
 
 import '../../widgets/glass_container.dart';
 
+/// Vista de carga de trabajo del servicio para el Jefe de Servicio.
+///
+/// Muestra una tabla con cada médico del servicio y el número de
+/// pacientes que tiene actualmente asignados. Los datos se obtienen
+/// del [WorkloadViewmodel] al inicializar la vista.
 class ServiceWorkloadView extends StatefulWidget {
   const ServiceWorkloadView({super.key});
 

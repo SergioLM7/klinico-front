@@ -1,3 +1,7 @@
+/// Entidad de dominio pura que representa un ingreso hospitalario.
+///
+/// No depende de la capa de datos ni de DTOs de la API.
+/// Es el modelo que manejan los providers y la UI.
 class Admission {
   final String admissionId;
   final String patientId;
@@ -11,6 +15,9 @@ class Admission {
   final String? medicalHistory;
   final String? allergies;
   final String? chronicTreatment;
+
+  /// Índice de Barthel basal: valoración funcional del paciente al ingreso
+  /// (rango 0–100, donde 100 indica independencia total).
   final int? basalBarthel;
   final int? roomNumber;
 

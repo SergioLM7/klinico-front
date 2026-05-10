@@ -11,6 +11,14 @@ import '../../widgets/glass_container.dart';
 import '../../widgets/gradient_scaffold.dart';
 import '../../widgets/scale_button.dart';
 
+/// Formulario para crear un nuevo episodio clínico (evolución).
+///
+/// Campos obligatorios: progreso clínico y diagnóstico.
+/// Campos opcionales: Braden Score, CHADS2 Score y CAM Score, cada uno
+/// con su calculadora integrada ([BradenCalculatorDialog],
+/// [Chads2CalculatorDialog], [CamCalculatorDialog]).
+/// Al guardarse con éxito devuelve `true` a la vista anterior para
+/// refrescar la lista de episodios del ingreso.
 class EpisodeFormView extends StatefulWidget {
   final String admissionId;
 

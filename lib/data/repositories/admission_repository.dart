@@ -4,11 +4,19 @@ import '../models/admission_update_response.dart';
 import '../models/paginated_admission_result.dart';
 import '../models/patient_preview_response.dart';
 
+/// Repositorio de ingresos hospitalarios.
+///
+/// Proporciona acceso CRUD a los endpoints REST de ingresos (`/admissions/*`).
+/// Las respuestas JSON son polimórficas: pueden llegar como [List],
+/// [Map] con clave `'data'` o [Map] con clave `'content'`.
 class AdmissionRepository {
   final ApiClient _apiClient;
 
   AdmissionRepository(this._apiClient);
 
+  /// Obtiene los ingresos activos del médico identificado por [doctorId].
+  ///
+  /// Llama a `GET /admissions/doctor/{doctorId}` con paginación opcional.
   Future<List<AdmissionResponse>> getMyAdmissions({
     required String doctorId,
     int page = 0,
@@ -43,6 +51,10 @@ class AdmissionRepository {
     }
   }
 
+  /// Busca ingresos por apellido del paciente con paginación.
+  ///
+  /// Llama a `GET /admissions/search` y devuelve un [PaginatedAdmissionResult]
+  /// que incluye metadatos de paginación junto con la lista de resultados.
   Future<PaginatedAdmissionResult> searchBySurname({
     required String surname,
     int page = 0,
@@ -82,6 +94,9 @@ class AdmissionRepository {
     }
   }
 
+  /// Crea un nuevo ingreso hospitalario vía `POST /admissions/create`.
+  ///
+  /// Devuelve `true` si el servidor responde con código 201.
   Future<bool> createAdmission({
     required String patientId,
     required String serviceId,
@@ -111,6 +126,9 @@ class AdmissionRepository {
     }
   }
 
+  /// Tramita el alta del ingreso [admissionId] vía `PATCH /admissions/discharge/{id}`.
+  ///
+  /// Devuelve `true` si el servidor confirma el alta (HTTP 200).
   Future<bool> dischargeAdmission(String admissionId) async {
     try {
       final response = await _apiClient.patch(
@@ -122,6 +140,10 @@ class AdmissionRepository {
     }
   }
 
+  /// Actualiza los datos clínicos de un ingreso vía `PUT /admissions/clinical-update/{id}`.
+  ///
+  /// Recibe [patient] para reconstruir la respuesta completa cuando el backend
+  /// devuelve solo la parte de ingreso (sin paciente anidado).
   Future<AdmissionResponse> clinicalUpdate({
     required String admissionId,
     required String principalDiagnosis,
@@ -159,6 +181,10 @@ class AdmissionRepository {
     }
   }
 
+  /// Reasigna el médico responsable de un ingreso vía `PATCH /admissions/assign-doctor/{id}`.
+  ///
+  /// Si la respuesta incluye el paciente, se parsea directamente;
+  /// en caso contrario se reconstruye con [patient].
   Future<AdmissionResponse> assignDoctor({
     required String admissionId,
     required String doctorId,

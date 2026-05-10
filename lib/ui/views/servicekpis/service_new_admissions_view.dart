@@ -11,6 +11,11 @@ import '../../viewmodels/admission_viewmodel.dart';
 import '../../viewmodels/login_viewmodel.dart';
 import '../../widgets/glass_container.dart';
 
+/// Lista de nuevos ingresos del servicio para el Jefe de Servicio.
+///
+/// En desktop muestra una tabla [DataTable]; en móvil usa tarjetas.
+/// Cada ingreso tiene un botón de edición que abre un diálogo de
+/// reasignación de médico con [Autocomplete] de búsqueda por apellido.
 class ServiceNewAdmissionsView extends StatefulWidget {
   const ServiceNewAdmissionsView({super.key});
 
@@ -331,6 +336,11 @@ class _ServiceNewAdmissionsViewState extends State<ServiceNewAdmissionsView> {
   }
 }
 
+/// Diálogo de reasignación de médico para un ingreso.
+///
+/// Permite buscar médicos por apellido con [Autocomplete] y debounce.
+/// Usa [parentCtx] para acceder al [AdmissionViewModel] del árbol
+/// de widgets padre (fuera del diálogo).
 class _DoctorAssignmentDialog extends StatefulWidget {
   final AdmissionResponse admission;
   final BuildContext parentCtx;

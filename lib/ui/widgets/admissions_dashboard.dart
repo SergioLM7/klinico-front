@@ -5,6 +5,15 @@ import 'admission_card.dart';
 import '../viewmodels/admission_viewmodel.dart';
 import '../viewmodels/login_viewmodel.dart';
 
+/// Grid responsivo de tarjetas de ingreso ([AdmissionCard]).
+///
+/// Al inicializarse, carga automáticamente los ingresos del médico logueado
+/// a través de [AdmissionViewModel]. Muestra un indicador de carga mientras
+/// se obtienen los datos, un mensaje de error si falla, o un aviso si no
+/// hay ingresos asignados.
+///
+/// El grid adapta el número de columnas y la relación de aspecto según el
+/// ancho de pantalla (breakpoint en 600 px).
 class AdmissionDashboard extends StatefulWidget {
   const AdmissionDashboard({super.key});
 

@@ -1,11 +1,25 @@
+/// Entidad de dominio pura que representa un episodio clínico (evolución)
+/// asociado a un ingreso hospitalario.
+///
+/// No depende de la capa de datos ni de DTOs de la API.
+/// Es el modelo que manejan los providers y la UI.
 class Episode {
   final String episodeId;
   final String admissionId;
   final String doctorId;
   final String clinicalProgress;
   final String diagnosis;
+
+  /// Escala de Braden: valora el riesgo de úlceras por presión (UPP).
+  /// Rango 6–23; valores más bajos indican mayor riesgo.
   final int? bradenScore;
+
+  /// Resultado del test CAM (Confusion Assessment Method): indica si el
+  /// paciente presenta delirium (`true`) o no (`false`).
   final bool? camScore;
+
+  /// Puntuación CHA₂DS₂-VASc: estima el riesgo tromboembólico en
+  /// pacientes con fibrilación auricular. Rango 0–9.
   final int? chads2Score;
   final DateTime createdAt;
   final String createdBy;

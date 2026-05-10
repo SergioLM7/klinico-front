@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 
+/// Botón con animación de escala al ser pulsado (feedback táctil visual).
+///
+/// Al hacer tap-down el widget se escala a [scaleFactor] (por defecto `1.2`)
+/// y al soltar vuelve a su tamaño original con una transición suave de 100 ms.
+/// Usa [AnimationController] + [ScaleTransition] internamente.
+///
+/// Acepta cualquier [child] como contenido y un [onTap] opcional.
 class ScaleButton extends StatefulWidget {
   final Widget child;
   final VoidCallback? onTap;

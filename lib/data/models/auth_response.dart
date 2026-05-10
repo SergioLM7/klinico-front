@@ -1,3 +1,7 @@
+/// DTO de respuesta del endpoint `POST /auth/login`.
+///
+/// Contiene el token JWT y los datos básicos del usuario autenticado
+/// necesarios para inicializar la sesión en la app.
 class AuthResponse {
   final String token;
   final String userId;
@@ -15,6 +19,7 @@ class AuthResponse {
     this.serviceId,
   });
 
+  /// Crea una instancia a partir del JSON devuelto por el backend.
   factory AuthResponse.fromJson(Map<String, dynamic> json) {
     return AuthResponse(
       token: json['token'] as String,

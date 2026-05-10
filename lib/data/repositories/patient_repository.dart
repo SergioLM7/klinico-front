@@ -1,11 +1,16 @@
 import '../../core/api_client.dart';
 import '../models/patient_response.dart';
 
+/// Repositorio de pacientes.
+///
+/// Permite buscar pacientes registrados en el sistema por apellido
+/// a través del endpoint paginado `GET /patients/search`.
 class PatientRepository {
   final ApiClient _apiClient;
 
   PatientRepository(this._apiClient);
 
+  /// Busca pacientes cuyo apellido contenga [surname], con paginación.
   Future<List<PatientResponse>> searchBySurname(
     String surname, {
     int page = 0,

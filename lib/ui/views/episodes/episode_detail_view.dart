@@ -8,6 +8,10 @@ import '../../widgets/gradient_scaffold.dart';
 import '../../widgets/scale_button.dart';
 
 /// Vista de detalle de un episodio (evolución clínica).
+///
+/// Muestra el progreso clínico, diagnóstico y escalas (Braden, CAM, CHADS2)
+/// del episodio. Es editable únicamente si fue creado hace menos de 2 horas.
+/// Se accede desde [AdmissionDetailView] al pulsar una tarjeta de episodio.
 class EpisodeDetailView extends StatefulWidget {
   final EpisodeResponse episode;
 

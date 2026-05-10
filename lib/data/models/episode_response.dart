@@ -1,5 +1,9 @@
 import '../../core/models/episode.dart';
 
+/// DTO de respuesta de la API para un episodio clínico (evolución).
+///
+/// Mapea directamente el JSON del backend. Usa [toDomain] para obtener
+/// la entidad de dominio [Episode] libre de dependencias de la capa de datos.
 class EpisodeResponse {
   final String episodeId;
   final String admissionId;
@@ -33,6 +37,7 @@ class EpisodeResponse {
     this.lastModifiedBy,
   });
 
+  /// Parsea el JSON de la API incluyendo fechas ISO-8601 opcionales.
   factory EpisodeResponse.fromJson(Map<String, dynamic> json) {
     return EpisodeResponse(
       episodeId: json['episodeId'] as String,
@@ -53,6 +58,7 @@ class EpisodeResponse {
     );
   }
 
+  /// Convierte este DTO en la entidad de dominio [Episode].
   Episode toDomain() {
     return Episode(
       episodeId: episodeId,

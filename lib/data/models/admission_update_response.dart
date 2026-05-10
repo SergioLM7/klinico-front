@@ -1,6 +1,12 @@
 import 'admission_response.dart';
 import 'patient_preview_response.dart';
 
+/// DTO parcial devuelto por `PUT /admissions/clinical-update` y
+/// `PATCH /admissions/assign-doctor`.
+///
+/// A diferencia de [AdmissionResponse], no incluye el objeto paciente
+/// embebido. Usa [toFullResponse] para reconstruir un [AdmissionResponse]
+/// completo inyectando el [PatientPreviewResponse] disponible en caché.
 class AdmissionUpdateResponse {
   final String admissionId;
   final String serviceId;
@@ -36,6 +42,7 @@ class AdmissionUpdateResponse {
     this.lastModifiedBy,
   });
 
+  /// Parsea el JSON parcial de la API (sin objeto `patient`).
   factory AdmissionUpdateResponse.fromJson(Map<String, dynamic> json) {
     return AdmissionUpdateResponse(
       admissionId: json['admissionId'] as String,
@@ -60,7 +67,8 @@ class AdmissionUpdateResponse {
     );
   }
 
-  /// Convierte este objeto parcial en uno completo inyectando el paciente
+  /// Convierte este DTO parcial en un [AdmissionResponse] completo
+  /// inyectando el [patient] que la API no incluye en esta respuesta.
   AdmissionResponse toFullResponse(PatientPreviewResponse patient) {
     return AdmissionResponse(
       admissionId: admissionId,
