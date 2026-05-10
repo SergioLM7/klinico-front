@@ -132,15 +132,6 @@ El sistema distingue dos perfiles de usuario con vistas y permisos diferenciados
 
 <img src="https://raw.githubusercontent.com/SergioLM7/klinico-front/main/assets/screenshots/mobile/movil-escala-chads2.png" width="20%" height="50%"> <img src="https://raw.githubusercontent.com/SergioLM7/klinico-front/main/assets/screenshots/mobile/movil-escala-cam-KO.png" width="20%" height="50%">
 
-**Asignación nuevos ingresos (Jefe de Servicio)**
-- Tablet
-
-<img src="https://raw.githubusercontent.com/SergioLM7/klinico-front/main/assets/screenshots/tablet/tablet-asignacion-pacientes.png" width="50%" height="50%">
-
-- Móvil
-
-<img src="https://raw.githubusercontent.com/SergioLM7/klinico-front/main/assets/screenshots/mobile/movil-asignacion-pacientes.png" width="20%" height="50%">
-
 **Carga de trabajo (Jefe de Servicio)**
 - Tablet
 
@@ -149,6 +140,15 @@ El sistema distingue dos perfiles de usuario con vistas y permisos diferenciados
 - Móvil
 
 <img src="https://raw.githubusercontent.com/SergioLM7/klinico-front/main/assets/screenshots/mobile/movil-carga-trabajo-servicio.png" width="20%" height="50%">
+
+**Asignación nuevos ingresos (Jefe de Servicio)**
+- Tablet
+
+<img src="https://raw.githubusercontent.com/SergioLM7/klinico-front/main/assets/screenshots/tablet/tablet-asignacion-pacientes.png" width="50%" height="50%">
+
+- Móvil
+
+<img src="https://raw.githubusercontent.com/SergioLM7/klinico-front/main/assets/screenshots/mobile/movil-asignacion-pacientes.png" width="20%" height="50%">
 
 **KPIs (Jefe de Servicio)**
 - Tablet
