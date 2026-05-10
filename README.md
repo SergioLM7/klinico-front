@@ -27,6 +27,7 @@
   - [Instalación y ejecución](#instalación-y-ejecución)
 - [Roles de usuario](#roles-de-usuario)
 - [Repositorio del backend](#repositorio-del-backend)
+- [Documentación técnica](#documentación-técnica)
 - [Contacto](#contacto)
 - [License](#license)
 
@@ -130,6 +131,15 @@ El sistema distingue dos perfiles de usuario con vistas y permisos diferenciados
 - Móvil
 
 <img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-escala-chads2.png" width="20%" height="50%"> <img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-escala-cam-KO.png" width="20%" height="50%">
+
+**Asignación nuevos ingresos (Jefe de Servicio)**
+- Tablet
+
+<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-asignacion-pacientes.png" width="50%" height="50%">
+
+- Móvil
+
+<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-asignacion-pacientes.png" width="20%" height="50%">
 
 **Carga de trabajo (Jefe de Servicio)**
 - Tablet
@@ -368,7 +378,24 @@ La API REST con la que se comunica esta aplicación está desarrollada en **Spri
 
 **[https://github.com/SergioLM7/klinico-api](https://github.com/SergioLM7/klinico-api)**
 
+---
+
+## Documentación técnica
+
+La documentación de la API interna (clases, métodos, modelos) se genera automáticamente con [dartdoc](https://pub.dev/packages/dartdoc) y se publica en **GitHub Pages** con cada push a `main`.
+
+**[Consultar documentación técnica](https://sergiolm7.github.io/klinico-front/)**
+
+> Para regenerar la documentación en local:
+>
+> ```bash
+> dart doc
+> open doc/api/index.html
+> ```
+
 <p align="right">(<a href="#readme-top">volver arriba</a>)</p>
+
+---
 
 ## 👨🏽‍💻 Contacto
 

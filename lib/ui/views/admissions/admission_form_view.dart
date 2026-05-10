@@ -12,6 +12,13 @@ import '../../../data/repositories/service_repository.dart';
 import '../../widgets/barthel_calculator_dialog.dart';
 import '../../widgets/glass_container.dart';
 
+/// Formulario para crear un nuevo ingreso hospitalario.
+///
+/// Campos obligatorios: paciente (Autocomplete con debounce), servicio
+/// (Autocomplete con debounce), diagnóstico principal e historial médico.
+/// Campos opcionales: alergias, tratamiento crónico e índice de Barthel
+/// basal (con calculadora integrada [BarthelCalculatorDialog]).
+/// Al enviarse muestra un diálogo de éxito/error y resetea el formulario.
 class AdmissionFormView extends StatefulWidget {
   const AdmissionFormView({super.key});
 

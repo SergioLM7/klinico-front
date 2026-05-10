@@ -8,6 +8,14 @@ import 'jefeservicio_main_view.dart';
 import 'medico_main_view.dart';
 import 'login_view.dart';
 
+/// Router principal post-login que redirige según el rol del usuario.
+///
+/// Lee el rol desde [LoginViewModel] y muestra la vista correspondiente:
+/// - `MEDICO` → [MedicoMainView]
+/// - `JEFESERVICIO` → [JefeServicioMainView]
+///
+/// Si el rol es nulo o no reconocido, muestra un diálogo de acceso no
+/// autorizado con opción de volver al login.
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 

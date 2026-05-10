@@ -2,6 +2,17 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
 
+/// Diálogo interactivo para la escala CHA₂DS₂-VASc.
+///
+/// Evalúa el riesgo de tromboembolismo en pacientes con fibrilación auricular.
+/// El usuario marca comorbilidades mediante checkboxes (insuficiencia cardiaca,
+/// HTA, diabetes, ictus previo, enfermedad vascular) y selecciona edad y sexo
+/// con radio buttons. Cada factor suma puntos ponderados.
+///
+/// La puntuación se actualiza en tiempo real. No requiere completar todos los
+/// campos para aplicar (los valores por defecto son 0).
+///
+/// Devuelve un [int] con la puntuación total vía `Navigator.pop`.
 class Chads2CalculatorDialog extends StatefulWidget {
   const Chads2CalculatorDialog({super.key});
 

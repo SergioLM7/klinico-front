@@ -24,6 +24,12 @@ import 'ui/views/login_view.dart';
 /// sin necesitar un BuildContext.
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
+/// Punto de entrada de la aplicación Klinico.
+///
+/// Configura el árbol de inyección de dependencias mediante [MultiProvider]:
+/// repositorios, servicios y ViewModels necesarios para toda la app.
+/// El [ApiClient] incluye un interceptor 401 que redirige al login
+/// cuando el token JWT caduca durante una sesión activa.
 void main() {
   runApp(
     MultiProvider(
@@ -102,6 +108,8 @@ void main() {
   );
 }
 
+/// Widget raíz que configura [MaterialApp] con el tema global y la
+/// [navigatorKey] necesaria para la navegación desde el interceptor 401.
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -117,6 +125,11 @@ class MyApp extends StatelessWidget {
   }
 }
 
+/// Decide la pantalla inicial según el estado de la sesión JWT.
+///
+/// Usa [FutureBuilder] sobre [LoginViewModel.initialize] para comprobar
+/// si existe un token válido con rol cargado. Si la sesión es válida
+/// navega a [HomePage]; en caso contrario muestra [LoginPage].
 class AuthWrapper extends StatelessWidget {
   const AuthWrapper({super.key});
 

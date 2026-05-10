@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import '../../core/exceptions/auth_exception.dart';
 import '../../data/services/auth_service.dart';
 
+/// ViewModel de autenticación y gestión de sesión.
+///
+/// Expone el estado reactivo de la sesión del usuario: credenciales,
+/// rol, nombre, servicio e ID. Coordina login, logout y restauración
+/// automática de sesión al arrancar la app.
 class LoginViewModel extends ChangeNotifier {
   final AuthService _authService;
   bool _isLoading = false;
@@ -21,6 +26,10 @@ class LoginViewModel extends ChangeNotifier {
   String? get serviceId => _serviceId;
   String? get userId => _userId;
 
+  /// Autentica al usuario y almacena la sesión.
+  ///
+  /// Devuelve `true` si el login fue exitoso. En caso de error,
+  /// establece [errorMessage] con el detalle.
   Future<bool> signIn(String email, String password) async {
     try {
       _isLoading = true;
@@ -51,7 +60,7 @@ class LoginViewModel extends ChangeNotifier {
   /// Llamar al arrancar la app. Decodifica el JWT localmente, comprueba
   /// que no haya caducado y carga en memoria los claims disponibles.
   ///
-  /// Devuelve [true] si la sesión sigue activa, [false] si ha caducado
+  /// Devuelve `true` si la sesión sigue activa, `false` si ha caducado
   /// o no existe token (en cuyo caso el storage ya ha sido limpiado).
   ///
   /// Claims disponibles del JWT de Spring Boot:
@@ -80,6 +89,7 @@ class LoginViewModel extends ChangeNotifier {
     return true;
   }
 
+  /// Cierra la sesión del usuario y limpia el estado local.
   Future<void> signOut() async {
     try {
       _isLoading = true;

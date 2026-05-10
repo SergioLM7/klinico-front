@@ -4,6 +4,15 @@ import '../../data/models/admission_response.dart';
 import '../views/admissions/admission_detail_view.dart';
 import 'glass_container.dart';
 
+/// Tarjeta de ingreso hospitalario para el grid del dashboard y la búsqueda.
+///
+/// Renderiza sobre un [GlassContainer] la información resumida del paciente:
+/// avatar diferenciado por sexo, nombre completo (apellidos, nombre), edad,
+/// habitación asignada, número de historia clínica y chip de diagnóstico
+/// principal.
+///
+/// El layout se adapta según el ancho disponible (`isSmallCard` < 500 px).
+/// Al pulsar navega a [AdmissionDetailView] con los datos del [admission].
 class AdmissionCard extends StatelessWidget {
   final AdmissionResponse admission;
 

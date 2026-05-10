@@ -12,9 +12,17 @@ import '../widgets/chads2_calculator_dialog.dart';
 import 'glass_container.dart';
 import 'scale_button.dart';
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Tarjeta de información principal del episodio
-// ─────────────────────────────────────────────────────────────────────────────
+/// Tarjeta de información principal de un episodio clínico.
+///
+/// Muestra el ícono de registro médico, fecha/hora de creación, autor del
+/// episodio y las escalas clínicas registradas (Braden, CAM, CHADS₂).
+///
+/// Si [canEdit] es `true` (el episodio tiene menos de 2 h de antigüedad),
+/// aparece un botón de edición que abre un bottom sheet con formulario
+/// completo y calculadoras integradas para las escalas.
+///
+/// El callback [onEpisodeUpdated] se invoca tras guardar cambios con éxito,
+/// devolviendo el [EpisodeResponse] actualizado sin necesidad de un GET extra.
 class EpisodeInfoCard extends StatelessWidget {
   final EpisodeResponse episode;
 

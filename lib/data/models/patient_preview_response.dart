@@ -1,3 +1,7 @@
+/// DTO resumido de paciente embebido dentro de [AdmissionResponse].
+///
+/// Contiene solo los datos básicos necesarios para mostrar al paciente
+/// en listados de ingresos sin realizar una consulta adicional.
 class PatientPreviewResponse {
   final String patientId;
   final String name;
@@ -13,6 +17,7 @@ class PatientPreviewResponse {
     required this.sex,
   });
 
+  /// Crea una instancia a partir del sub-objeto `patient` del JSON de ingreso.
   factory PatientPreviewResponse.fromJson(Map<String, dynamic> json) {
     return PatientPreviewResponse(
       patientId: json['patientId'] as String,
@@ -23,6 +28,8 @@ class PatientPreviewResponse {
     );
   }
 
+  /// Calcula la edad actual del paciente a partir de [birthdate],
+  /// ajustando si aún no ha cumplido años en el año en curso.
   int get age {
     final today = DateTime.now();
     int age = today.year - birthdate.year;

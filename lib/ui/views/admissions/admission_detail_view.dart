@@ -17,6 +17,11 @@ import '../../widgets/gradient_scaffold.dart';
 import '../../widgets/scale_button.dart';
 
 /// Vista de detalle de un ingreso.
+///
+/// Muestra los datos del paciente (diagnóstico, antecedentes, alergias,
+/// Barthel basal) y la lista de episodios clínicos asociados.
+/// Permite actualizar datos clínicos o firmar el alta mediante un
+/// bottom sheet, y navegar al detalle o creación de episodios.
 class AdmissionDetailView extends StatefulWidget {
   final AdmissionResponse admission;
 
@@ -63,6 +68,8 @@ class _AdmissionDetailViewState extends State<AdmissionDetailView> {
   }
 }
 
+/// Contenido principal de la vista de detalle: tarjeta de información
+/// del paciente, botón de edición y lista de episodios clínicos.
 class _AdmissionDetailContent extends StatelessWidget {
   final AdmissionResponse admission;
   final Function(AdmissionResponse) onAdmissionUpdated;
@@ -363,6 +370,9 @@ class _PatientInfoCard extends StatelessWidget {
 // ─────────────────────────────────────────────────────────────────────────────
 // Bottom Sheet: Actualización de Ingreso
 // ─────────────────────────────────────────────────────────────────────────────
+
+/// Bottom sheet glassmorphism para actualizar datos clínicos del ingreso
+/// o firmar el alta del paciente (acción irreversible con confirmación).
 class _AdmissionUpdateSheet extends StatefulWidget {
   final AdmissionResponse admission;
   final Function(AdmissionResponse) onAdmissionUpdated;

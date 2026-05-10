@@ -1,3 +1,7 @@
+/// Wrapper de paginación para resultados de búsqueda de ingresos.
+///
+/// Encapsula la lista de resultados junto con los metadatos de paginación
+/// devueltos por el backend (total de elementos, páginas, página actual).
 class PaginatedAdmissionResult {
   final List<dynamic> content;
   final int totalElements;
@@ -13,6 +17,10 @@ class PaginatedAdmissionResult {
     required this.isLast,
   });
 
+  /// Crea una instancia a partir del JSON de paginación del backend.
+  ///
+  /// [parsedContent] se recibe ya parseado externamente para permitir
+  /// tipado flexible (puede contener [AdmissionResponse] u otros DTOs).
   factory PaginatedAdmissionResult.fromJson(Map<String, dynamic> json, List<dynamic> parsedContent) {
     return PaginatedAdmissionResult(
       content: parsedContent,

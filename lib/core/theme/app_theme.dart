@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 /// Usar siempre estos valores en lugar de colores/gradientes hardcodeados
 /// para garantizar consistencia visual en toda la app.
 abstract final class AppTheme {
-  // ── Colores base ────────────────────────────────────────────────────────────
+  // Colores base
   static const Color primaryBlue = Color.fromARGB(221, 10, 27, 150);
   static const Color accentIndigo = Color(0xFF4C56AF);
 
@@ -15,19 +15,19 @@ abstract final class AppTheme {
   /// Color de fin del degradado (esquina inferior-derecha)
   static const Color gradientEnd = Color(0xFFFFFFFF);
 
-  // ── Degradado principal (Login y fondo de toda la app) ─────────────────────
+  // Degradado principal (Login y fondo de toda la app)
   static const LinearGradient backgroundGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     colors: [gradientStart, gradientEnd],
   );
 
-  // ── Decoración de fondo lista para usar en BoxDecoration ──────────────────
+  // Decoración de fondo lista para usar en BoxDecoration
   static const BoxDecoration backgroundDecoration = BoxDecoration(
     gradient: backgroundGradient,
   );
 
-  // ── ThemeData global de la app ─────────────────────────────────────────────
+  // ThemeData global de la app
   static ThemeData get themeData => ThemeData(
     colorScheme: ColorScheme.fromSeed(seedColor: accentIndigo),
     useMaterial3: true,

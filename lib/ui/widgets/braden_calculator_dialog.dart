@@ -2,6 +2,17 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
 
+/// Diálogo interactivo para calcular la Escala de Braden.
+///
+/// La Escala de Braden evalúa el riesgo de desarrollar úlceras por presión.
+/// El rango va de **6** (riesgo máximo) a **23** (sin riesgo); a menor
+/// puntuación, mayor riesgo.
+///
+/// Evalúa 6 categorías: percepción sensorial, humedad, actividad, movilidad,
+/// nutrición y fricción/cizallamiento. Cada categoría muestra opciones con
+/// su puntuación y descripción clínica.
+///
+/// Devuelve un [int] con la puntuación total vía `Navigator.pop`.
 class BradenCalculatorDialog extends StatefulWidget {
   const BradenCalculatorDialog({super.key});
 

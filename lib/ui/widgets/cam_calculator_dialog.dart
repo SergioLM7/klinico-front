@@ -2,6 +2,18 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
 
+/// Diálogo interactivo para el método CAM (Confusion Assessment Method).
+///
+/// El CAM es una herramienta de cribado para la detección de delirium.
+/// Evalúa 4 criterios: inicio agudo/fluctuante, inatención, pensamiento
+/// desorganizado y nivel de conciencia alterado.
+///
+/// El resultado es **positivo** (sospecha de delirium) si se cumplen los
+/// criterios 1 + 2 + (3 ó 4 anormal). Se muestra en tiempo real con
+/// indicador visual de color (rojo = positivo, verde = negativo).
+///
+/// Devuelve un [bool] vía `Navigator.pop`: `true` si positivo, `false` si
+/// negativo.
 class CamCalculatorDialog extends StatefulWidget {
   const CamCalculatorDialog({super.key});
 

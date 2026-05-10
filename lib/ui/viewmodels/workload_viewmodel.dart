@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import '../../data/models/workload_response.dart';
 import '../../data/repositories/user_repository.dart';
 
+/// ViewModel de carga asistencial del servicio.
+///
+/// Consulta la distribución de pacientes ingresados por médico
+/// dentro del servicio al que pertenece el usuario autenticado.
 class WorkloadViewmodel extends ChangeNotifier {
   final UserRepository _repository;
 
@@ -17,6 +21,7 @@ class WorkloadViewmodel extends ChangeNotifier {
   String? get errorMessage => _errorMessage;
   List<WorkloadResponse> get workload => _workload;
 
+  /// Obtiene la carga asistencial (nº de pacientes por médico) del servicio.
   Future<void> getServiceWorkload() async {
     _isLoading = true;
     _errorMessage = null;

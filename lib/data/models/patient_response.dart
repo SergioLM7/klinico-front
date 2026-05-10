@@ -1,3 +1,6 @@
+/// DTO completo de paciente devuelto por `GET /patients/search`.
+///
+/// Incluye datos de contacto, dirección y estado del paciente.
 class PatientResponse {
   final String patientId;
   final String name;
@@ -21,6 +24,7 @@ class PatientResponse {
     required this.status,
   });
 
+  /// Crea una instancia a partir del JSON devuelto por el backend.
   factory PatientResponse.fromJson(Map<String, dynamic> json) {
     return PatientResponse(
       patientId: json['patientId'] as String,
@@ -35,6 +39,8 @@ class PatientResponse {
     );
   }
 
+  /// Calcula la edad actual del paciente a partir de [birthdate],
+  /// ajustando si aún no ha cumplido años en el año en curso.
   int get age {
     final today = DateTime.now();
     int age = today.year - birthdate.year;

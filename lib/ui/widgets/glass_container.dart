@@ -1,6 +1,17 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 
+/// Contenedor con efecto glassmorphism (cristal esmerilado).
+///
+/// Aplica un [BackdropFilter] de desenfoque gaussiano sobre el fondo y
+/// superpone un contenedor blanco semi-transparente con borde sutil,
+/// simulando una superficie de cristal translúcido.
+///
+/// Parámetros configurables:
+/// - [blur]: intensidad del desenfoque gaussiano (sigma). Por defecto `10.0`.
+/// - [opacity]: opacidad del fondo blanco superpuesto. Por defecto `0.15`.
+/// - [borderRadius]: radio de esquinas; si es `null` se usa `16`.
+/// - [padding]: padding interno del contenedor.
 class GlassContainer extends StatelessWidget {
   final Widget child;
   final double blur;

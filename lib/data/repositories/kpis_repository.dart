@@ -2,6 +2,11 @@ import '../../core/api_client.dart';
 import '../models/kpi_month_value.dart';
 import '../models/kpi_doctor_data.dart';
 
+/// Repositorio de indicadores clave (KPIs) del servicio hospitalario.
+///
+/// Consulta los endpoints `/kpis/*` que proporcionan estadísticas agregadas:
+/// ingresos por servicio, ingresos por médico, éxitus, estancia media global
+/// y estancia media por médico. Todos los métodos aceptan filtros de año y mes.
 class KpisRepository {
   final ApiClient _apiClient;
 
@@ -37,6 +42,7 @@ class KpisRepository {
     return raw.map((e) => KpiDoctorData.fromJson(e)).toList();
   }
 
+  /// Obtiene el número de ingresos del servicio, desglosado por mes.
   Future<List<KpiMonthValue>> getAdmissionsByService(
     int year, {
     int? month,
@@ -48,6 +54,7 @@ class KpisRepository {
     return _parseMonthValueList(response.data);
   }
 
+  /// Obtiene el número de ingresos agrupado por médico.
   Future<List<KpiDoctorData>> getAdmissionsByDoctor(
     int year, {
     int? month,
@@ -59,6 +66,7 @@ class KpisRepository {
     return _parseDoctorDataList(response.data);
   }
 
+  /// Obtiene el número de éxitus (fallecimientos) del servicio, desglosado por mes.
   Future<List<KpiMonthValue>> getExitus(int year, {int? month}) async {
     final response = await _apiClient.get(
       '/kpis/exitus',
@@ -67,6 +75,7 @@ class KpisRepository {
     return _parseMonthValueList(response.data);
   }
 
+  /// Obtiene la estancia media (días) del servicio, desglosada por mes.
   Future<List<KpiMonthValue>> getAvgStay(int year, {int? month}) async {
     final response = await _apiClient.get(
       '/kpis/avg-stay',
@@ -75,6 +84,7 @@ class KpisRepository {
     return _parseMonthValueList(response.data);
   }
 
+  /// Obtiene la estancia media (días) agrupada por médico.
   Future<List<KpiDoctorData>> getAvgStayByDoctor(int year, {int? month}) async {
     final response = await _apiClient.get(
       '/kpis/avg-stay-by-doctor',

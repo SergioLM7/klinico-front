@@ -3,6 +3,11 @@ import '../../core/exceptions/auth_exception.dart';
 import '../../data/models/episode_response.dart';
 import '../../data/repositories/episode_repository.dart';
 
+/// ViewModel de episodios clínicos (evoluciones diarias).
+///
+/// Gestiona la carga, creación y actualización de los episodios
+/// asociados a un ingreso hospitalario. Mantiene en memoria la lista
+/// [episodes] y notifica a la UI ante cambios de estado.
 class EpisodeViewModel extends ChangeNotifier {
   final EpisodeRepository _repository;
 
@@ -17,6 +22,7 @@ class EpisodeViewModel extends ChangeNotifier {
   String? get errorMessage => _errorMessage;
   List<EpisodeResponse> get episodes => _episodes;
 
+  /// Carga todos los episodios del ingreso [admissionId].
   Future<void> loadEpisodes(String admissionId) async {
     _isLoading = true;
     _errorMessage = null;
@@ -35,6 +41,9 @@ class EpisodeViewModel extends ChangeNotifier {
     }
   }
 
+  /// Actualiza un episodio existente (evolución clínica, diagnóstico, escalas).
+  ///
+  /// Devuelve `true` si la operación fue exitosa.
   Future<bool> updateEpisode({
     required String episodeId,
     required String clinicalProgress,
@@ -70,6 +79,9 @@ class EpisodeViewModel extends ChangeNotifier {
     }
   }
 
+  /// Crea un nuevo episodio vinculado al ingreso [admissionId].
+  ///
+  /// Devuelve `true` si la creación fue exitosa.
   Future<bool> createEpisode({
     required String admissionId,
     required String doctorId,

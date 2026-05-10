@@ -1,11 +1,17 @@
 import '../../core/api_client.dart';
 import '../models/episode_response.dart';
 
+/// Repositorio de episodios clínicos.
+///
+/// Cada ingreso hospitalario puede contener múltiples episodios (evoluciones diarias).
+/// Este repositorio gestiona la lectura, creación y actualización de episodios
+/// contra los endpoints REST `/episodes/*`.
 class EpisodeRepository {
   final ApiClient _apiClient;
 
   EpisodeRepository(this._apiClient);
 
+  /// Obtiene los episodios asociados a un ingreso vía `GET /episodes/{admissionId}`.
   Future<List<EpisodeResponse>> getEpisodesByAdmission({
     required String admissionId,
     int page = 0,
@@ -39,6 +45,9 @@ class EpisodeRepository {
     }
   }
 
+  /// Actualiza un episodio existente vía `PUT /episodes/update/{id}`.
+  ///
+  /// Permite modificar la evolución clínica, diagnóstico y escalas de valoración.
   Future<Map<String, dynamic>> updateEpisode({
     required String episodeId,
     required String clinicalProgress,
@@ -65,6 +74,9 @@ class EpisodeRepository {
     }
   }
 
+  /// Crea un nuevo episodio clínico vía `POST /episodes/create`.
+  ///
+  /// Vincula el episodio al ingreso [admissionId] y al médico [doctorId].
   Future<Map<String, dynamic>> createEpisode({
     required String admissionId,
     required String doctorId,

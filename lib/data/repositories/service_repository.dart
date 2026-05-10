@@ -1,11 +1,16 @@
 import '../../core/api_client.dart';
 import '../models/service_response.dart';
 
+/// Repositorio de servicios hospitalarios (p. ej. Cardiología, Neumología).
+///
+/// Permite buscar servicios por nombre a través del endpoint
+/// paginado `GET /services/search`.
 class ServiceRepository {
   final ApiClient _apiClient;
 
   ServiceRepository(this._apiClient);
 
+  /// Busca servicios cuyo nombre contenga [name], con paginación.
   Future<List<ServiceResponse>> searchByName(
     String name, {
     int page = 0,

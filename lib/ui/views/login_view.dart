@@ -7,6 +7,11 @@ import '../viewmodels/login_viewmodel.dart';
 import '../widgets/glass_container.dart';
 import 'home_view.dart';
 
+/// Pantalla de inicio de sesión con diseño glassmorphism.
+///
+/// Presenta campos de email y contraseña (con toggle de visibilidad).
+/// Al autenticarse correctamente, navega a [HomePage]. Si falla, muestra
+/// un diálogo de error glassmorphism con el mensaje del servidor.
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
