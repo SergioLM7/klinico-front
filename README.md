@@ -376,13 +376,13 @@ Cualquier otro rol reconocido o no por el backend recibe un diálogo de acceso n
 
 La API REST con la que se comunica esta aplicación está desarrollada en **Spring Boot** y disponible en:
 
-**[https://github.com/SergioLM7/klinico-api](https://github.com/SergioLM7/klinico-api)**
+**[Klinico API](https://github.com/SergioLM7/klinico-api)**
 
 ---
 
-## Documentación técnica
+## Documentación técnica del frontend
 
-La documentación de la API interna (clases, métodos, modelos) se genera automáticamente con [dartdoc](https://pub.dev/packages/dartdoc) y se publica en **GitHub Pages** con cada push a `main`.
+La documentación del código del frontend (clases, métodos, modelos) se genera automáticamente con [dartdoc](https://pub.dev/packages/dartdoc) y se publica en **GitHub Pages** con cada push a `main`.
 
 **[Consultar documentación técnica](https://sergiolm7.github.io/klinico-front/)**
 
