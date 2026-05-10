@@ -1,7 +1,7 @@
 <a id="readme-top"></a>
 
 <div align="center">
-  <img src="assets/logo.png" alt="Klinico Logo" width="120" />
+  <img src="https://raw.githubusercontent.com/SergioLM7/klinico-front/main/assets/logo.png" alt="Klinico Logo" width="120" />
   <h1>Klinico — App de Gestión Clínica Hospitalaria</h1>
   <p>Plataforma móvil para la digitalización del flujo de trabajo médico en los pases de planta hospitalarios.</p>
 
@@ -79,58 +79,67 @@ El sistema distingue dos perfiles de usuario con vistas y permisos diferenciados
 **Login**
 - Tablet
 
-<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-login.png" width="50%" height="50%">
+<img src="https://raw.githubusercontent.com/SergioLM7/klinico-front/main/assets/screenshots/tablet/tablet-login.png" width="50%" height="50%">
 
 - Móvil
 
-<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-login.png" width="20%" height="50%">
+<img src="https://raw.githubusercontent.com/SergioLM7/klinico-front/main/assets/screenshots/mobile/movil-login.png" width="20%" height="50%">
 
 **Vista principal - Medico**
 - Tablet
 
-<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-medico-main-view.png" width="50%" height="50%">
+<img src="https://raw.githubusercontent.com/SergioLM7/klinico-front/main/assets/screenshots/tablet/tablet-medico-main-view.png" width="50%" height="50%">
 
 - Móvil
 
-<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-medico-main-view.png" width="20%" height="50%">
+<img src="https://raw.githubusercontent.com/SergioLM7/klinico-front/main/assets/screenshots/mobile/movil-medico-main-view.png" width="20%" height="50%">
 
 **Vista detalle de ingreso**
 - Tablet
 
-<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-detalle-ingreso.png" width="50%" height="50%">
+<img src="https://raw.githubusercontent.com/SergioLM7/klinico-front/main/assets/screenshots/tablet/tablet-detalle-ingreso.png" width="50%" height="50%">
 
 - Móvil
 
-<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-detalle-ingreso.png" width="20%" height="50%">
+<img src="https://raw.githubusercontent.com/SergioLM7/klinico-front/main/assets/screenshots/mobile/movil-detalle-ingreso.png" width="20%" height="50%">
 
 **Formulario nuevo ingreso (validación)**
 - Tablet
 
-<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-form-nuevo-ingreso-validacion.png" width="50%" height="50%">
+<img src="https://raw.githubusercontent.com/SergioLM7/klinico-front/main/assets/screenshots/tablet/tablet-form-nuevo-ingreso-validacion.png" width="50%" height="50%">
 
 - Móvil
 
-<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-validacion-nuevo-ingreso.png" width="20%" height="50%">
+<img src="https://raw.githubusercontent.com/SergioLM7/klinico-front/main/assets/screenshots/mobile/movil-validacion-nuevo-ingreso.png" width="20%" height="50%">
 
 **Pop-up nuevo ingreso creado**
 - Tablet
 
-<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-ingreso-creado-ok.png" width="50%" height="50%">
+<img src="https://raw.githubusercontent.com/SergioLM7/klinico-front/main/assets/screenshots/tablet/tablet-ingreso-creado-ok.png" width="50%" height="50%">
 
 - Móvil
 
-<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-creacion-admision-ok.png" width="20%" height="50%">
+<img src="https://raw.githubusercontent.com/SergioLM7/klinico-front/main/assets/screenshots/mobile/movil-creacion-admision-ok.png" width="20%" height="50%">
 
 **Escalas automatizadas**
 - Tablet
 
-<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-escala-chads2.png" width="50%" height="50%"> 
+<img src="https://raw.githubusercontent.com/SergioLM7/klinico-front/main/assets/screenshots/tablet/tablet-escala-chads2.png" width="50%" height="50%"> 
 
-<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-escala-braden.png" width="50%" height="50%">
+<img src="https://raw.githubusercontent.com/SergioLM7/klinico-front/main/assets/screenshots/tablet/tablet-escala-braden.png" width="50%" height="50%">
 
 - Móvil
 
-<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-escala-chads2.png" width="20%" height="50%"> <img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-escala-cam-KO.png" width="20%" height="50%">
+<img src="https://raw.githubusercontent.com/SergioLM7/klinico-front/main/assets/screenshots/mobile/movil-escala-chads2.png" width="20%" height="50%"> <img src="https://raw.githubusercontent.com/SergioLM7/klinico-front/main/assets/screenshots/mobile/movil-escala-cam-KO.png" width="20%" height="50%">
+
+**Asignación nuevos ingresos (Jefe de Servicio)**
+- Tablet
+
+<img src="https://raw.githubusercontent.com/SergioLM7/klinico-front/main/assets/screenshots/tablet/tablet-asignacion-pacientes.png" width="50%" height="50%">
+
+- Móvil
+
+<img src="https://raw.githubusercontent.com/SergioLM7/klinico-front/main/assets/screenshots/mobile/movil-asignacion-pacientes.png" width="20%" height="50%">
 
 **Asignación nuevos ingresos (Jefe de Servicio)**
 - Tablet
@@ -144,31 +153,31 @@ El sistema distingue dos perfiles de usuario con vistas y permisos diferenciados
 **Carga de trabajo (Jefe de Servicio)**
 - Tablet
 
-<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-carga-trabajo-servicio.png" width="50%" height="50%">
+<img src="https://raw.githubusercontent.com/SergioLM7/klinico-front/main/assets/screenshots/tablet/tablet-carga-trabajo-servicio.png" width="50%" height="50%">
 
 - Móvil
 
-<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-carga-trabajo-servicio.png" width="20%" height="50%">
+<img src="https://raw.githubusercontent.com/SergioLM7/klinico-front/main/assets/screenshots/mobile/movil-carga-trabajo-servicio.png" width="20%" height="50%">
 
 **KPIs (Jefe de Servicio)**
 - Tablet
 
-<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-kpi-servicio-3.png" width="50%" height="50%">
+<img src="https://raw.githubusercontent.com/SergioLM7/klinico-front/main/assets/screenshots/tablet/tablet-kpi-servicio-3.png" width="50%" height="50%">
 
-<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-kpis-servicio-mes-1.png" width="50%" height="50%">
+<img src="https://raw.githubusercontent.com/SergioLM7/klinico-front/main/assets/screenshots/tablet/tablet-kpis-servicio-mes-1.png" width="50%" height="50%">
 
 - Móvil
 
-<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-kpis-servicio-1.png" width="20%" height="50%"> <img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-kpis-servicio-mensual.png" width="20%" height="50%">
+<img src="https://raw.githubusercontent.com/SergioLM7/klinico-front/main/assets/screenshots/mobile/movil-kpis-servicio-1.png" width="20%" height="50%"> <img src="https://raw.githubusercontent.com/SergioLM7/klinico-front/main/assets/screenshots/mobile/movil-kpis-servicio-mensual.png" width="20%" height="50%">
 
 **Buscador de ingresos activos del servicio (por apellidos)**
 - Tablet
 
-<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/tablet/tablet-buscador-paciente.png" width="50%" height="50%">
+<img src="https://raw.githubusercontent.com/SergioLM7/klinico-front/main/assets/screenshots/tablet/tablet-buscador-paciente.png" width="50%" height="50%">
 
 - Móvil
 
-<img src="https://github.com/SergioLM7/klinico-front/blob/main/assets/screenshots/mobile/movil-buscador-pacientes.png" width="20%" height="50%">
+<img src="https://raw.githubusercontent.com/SergioLM7/klinico-front/main/assets/screenshots/mobile/movil-buscador-pacientes.png" width="20%" height="50%">
 
 <p align="right">(<a href="#readme-top">volver arriba</a>)</p>
 
